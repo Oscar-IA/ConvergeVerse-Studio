@@ -1,0 +1,21 @@
+node_modules/
+.next/
+.env
+.env.local
+.env*.local
+*.pyc
+__pycache__/
+.venv/
+venv/
+*.log
+.DS_Store
+dist/
+*.egg-info/
+# Local World Engine DB (optional: remove line to track a seed DB)
+apps/api/data/*.db
+# Pipeline maestro JSON outputs (local)
+apps/api/storage/**/*.json
+# Crónicas por capítulo (HTML, PNG, JPG, JSON)
+apps/api/storage/chronicles/
+# TTS local (OpenAI → static/audio)
+apps/api/static/audio/*.mp3

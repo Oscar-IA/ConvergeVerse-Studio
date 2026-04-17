@@ -1,0 +1,44 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "error": "Error"
+  },
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "settings": "Configuración",
+    "studio": "Estudio"
+  },
+  "auth": {
+    "connectBondCentral": "Conectar a BOND Central",
+    "signIn": "Iniciar Sesión"
+  },
+  "studio": {
+    "newProject": "Nuevo Proyecto",
+    "openProject": "Abrir Proyecto",
+    "exportProject": "Exportar Proyecto"
+  },
+  "storyEngine": {
+    "title": "CONVERGEVERSE · MOTOR DE HISTORIAS",
+    "mangaArchive": "ARCHIVO MANGA",
+    "legacyBook": "LIBRO LEGADO (API)",
+    "day": "DÍA {day}",
+    "legacy": "LEGADO",
+    "canon": "CANON",
+    "drafts": "BORRADORES",
+    "learning": "APRENDIENDO…",
+    "learnFromEdits": "APRENDER DE EDITS",
+    "generating": "GENERANDO…",
+    "pending": "{count} PENDIENTES",
+    "generator": "GENERADOR",
+    "generatingPanels": "GENERANDO PANELES…",
+    "generateMangaPanels": "◆ GENERAR PANELES MANGA",
+    "mangaPhase": "FASE MANGA — Keyframes → Replicate (Solo Leveling / webtoon)",
+    "noImage": "SIN IMAGEN",
+    "panels": "PANELES ({count})",
+    "enrichFuture": "◇ ENRIQUECER FUTURO",
+    "regenerateHardReset": "↻ REGENERAR (HARD RESET)"
+  }
+}

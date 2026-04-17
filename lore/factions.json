@@ -1,0 +1,28 @@
+{
+  "factions": [
+    {
+      "id": "archive_order",
+      "name": "The Archive Order",
+      "goal": "Understand Orbets and document the Wanderers. Scholarly, analytical.",
+      "alignment": "neutral"
+    },
+    {
+      "id": "sovereign_dominion",
+      "name": "The Sovereign Dominion",
+      "goal": "Capture Orbets to dominate worlds. Imperial, expansionist.",
+      "alignment": "antagonist"
+    },
+    {
+      "id": "wanderer_cult",
+      "name": "The Wanderer Cult",
+      "goal": "Worship players as divine. Fanatical, reverent.",
+      "alignment": "chaotic"
+    },
+    {
+      "id": "null_syndicate",
+      "name": "The Null Syndicate",
+      "goal": "Destroy Orbets to prevent reality collapse. Secret, apocalyptic.",
+      "alignment": "antagonist"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "description": "Roles de casting ConvergeVerse Studio — integración lore / prompts",
+  "characters": [
+    {
+      "id": "luis",
+      "name": "Luis",
+      "class": "General King",
+      "ability": "Estrategia Militar",
+      "role": "Liderazgo de campo y planificación de batalla"
+    },
+    {
+      "id": "paula",
+      "name": "Paula",
+      "class": "High Healer",
+      "ability": "Regeneración Celular",
+      "role": "Sanación avanzada basada en experiencia médica real"
+    },
+    {
+      "id": "yaritza",
+      "name": "Yaritza",
+      "class": "Eco-Engineer",
+      "ability": "Restauración Bioma",
+      "role": "Ingeniería ecológica y recuperación de entornos"
+    },
+    {
+      "id": "sara_matheo",
+      "name": "Sara & Matheo",
+      "class": "Beast Tamers",
+      "ability": "Vínculo y mando de bestias",
+      "role": "Dúo: Sara es mentora; Matheo es aprendiz"
+    },
+    {
+      "id": "aren_valis",
+      "name": "Aren Valis",
+      "class": "Vanguard",
+      "ability": "Orbet / archivo (contexto Bond Converge)",
+      "personality": "Estilo Konosuba — calamidad andante; straight man cómico bajo presión"
+    }
+  ]
+}

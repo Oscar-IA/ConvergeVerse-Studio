@@ -1,0 +1,39 @@
+{
+  "name": "convergeverse-studio",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.js",
+  "workspaces": [
+    "apps/web",
+    "packages/shared"
+  ],
+  "scripts": {
+    "start": "npm run dev --workspace=apps/web",
+    "electron-dev": "concurrently \"browser-sync start --proxy 'localhost:3000' --no-ui\" \"wait-on http://localhost:3000 && electron .\"",
+    "build": "npm run build --workspace=apps/web",
+    "dist": "electron-builder",
+    "desktop": "electron ."
+  },
+  "build": {
+    "appId": "com.oscarlaguna.convergeverse",
+    "productName": "ConvergeVerse Studio",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "icon.icns"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "package.json"
+    ]
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.3",
+    "concurrently": "^9.1.2",
+    "electron": "^41.0.3",
+    "electron-builder": "^26.0.12",
+    "wait-on": "^8.0.1"
+  }
+}

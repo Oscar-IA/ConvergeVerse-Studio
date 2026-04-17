@@ -1,0 +1,44 @@
+{
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement...",
+    "error": "Erreur"
+  },
+  "nav": {
+    "home": "Accueil",
+    "projects": "Projets",
+    "settings": "Paramètres",
+    "studio": "Studio"
+  },
+  "auth": {
+    "connectBondCentral": "Connecter à BOND Central",
+    "signIn": "Se Connecter"
+  },
+  "studio": {
+    "newProject": "Nouveau Projet",
+    "openProject": "Ouvrir un Projet",
+    "exportProject": "Exporter le Projet"
+  },
+  "storyEngine": {
+    "title": "CONVERGEVERSE · MOTEUR DE RÉCIT",
+    "mangaArchive": "ARCHIVE MANGA",
+    "legacyBook": "LIVRE HÉRITAGE (API)",
+    "day": "JOUR {day}",
+    "legacy": "HÉRITAGE",
+    "canon": "CANON",
+    "drafts": "BROUILLONS",
+    "learning": "APPRENTISSAGE…",
+    "learnFromEdits": "APPRENDRE DES ÉDITS",
+    "generating": "GÉNÉRATION…",
+    "pending": "{count} EN ATTENTE",
+    "generator": "GÉNÉRATEUR",
+    "generatingPanels": "GÉNÉRATION DES PLANCHES…",
+    "generateMangaPanels": "◆ GÉNÉRER PLANCHES MANGA",
+    "mangaPhase": "PHASE MANGA — Keyframes → Replicate (Solo Leveling / webtoon)",
+    "noImage": "SANS IMAGE",
+    "panels": "PLANCHES ({count})",
+    "enrichFuture": "◇ ENRICHIR L'AVENIR",
+    "regenerateHardReset": "↻ RÉGÉNÉRER (HARD RESET)"
+  }
+}

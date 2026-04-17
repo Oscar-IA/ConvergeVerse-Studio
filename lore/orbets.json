@@ -1,0 +1,25 @@
+{
+  "orbets": [
+    {
+      "id": "traveler",
+      "name": "Traveler Orbet",
+      "power": "Allows world traversal between realms"
+    },
+    {
+      "id": "memory",
+      "name": "Memory Orbet",
+      "power": "Stores knowledge from past civilizations"
+    },
+    {
+      "id": "ascension",
+      "name": "Ascension Orbet",
+      "power": "Allows evolution beyond species limits"
+    },
+    {
+      "id": "echo",
+      "name": "Echo Orbet",
+      "power": "Records actions of its bearer"
+    }
+  ],
+  "creation_myth": "The Architect designed reality as a network of worlds. To accelerate evolution, the Architect created Orbets. External consciousness (Players) began entering through Orbets. NPCs call them The Wanderers."
+}

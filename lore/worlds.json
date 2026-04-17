@@ -1,0 +1,32 @@
+{
+  "worlds": [
+    {
+      "id": "nova_terra",
+      "name": "Nova Terra",
+      "type": "fantasy",
+      "description": "Kingdom world with medieval aesthetics, magic, and feudal politics.",
+      "civilizations": ["Valorian Kingdom", "Eastern Clans"]
+    },
+    {
+      "id": "astra_nexus",
+      "name": "Astra Nexus",
+      "type": "sci-fi",
+      "description": "Advanced technological civilization with interdimensional gates.",
+      "civilizations": ["Nexus Council", "Rogue Colonies"]
+    },
+    {
+      "id": "verdant_sphere",
+      "name": "Verdant Sphere",
+      "type": "nature",
+      "description": "Nature-dominated world, ancient forests, druidic cultures.",
+      "civilizations": ["Druid Councils", "Beast Tribes"]
+    },
+    {
+      "id": "abyssal_domain",
+      "name": "Abyssal Domain",
+      "type": "dark",
+      "description": "Dark world full of monsters, consumed by void energies.",
+      "civilizations": ["Survivor Enclaves", "Void Cult"]
+    }
+  ]
+}

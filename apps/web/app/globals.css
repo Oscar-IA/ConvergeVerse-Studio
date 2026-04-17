@@ -1,0 +1,2553 @@
+:root {
+  --bg: #050505;
+  --bg-card: #0d0d0d;
+  --border: #2a2a2a;
+  --text: #e8e8e8;
+  --text-muted: #6b6b6b;
+  --accent: #ff2a2a;
+  --accent-dim: #c41e1e;
+  --crt-green: rgba(0, 255, 180, 0.04);
+  --crt-scan: rgba(0, 0, 0, 0.45);
+  /*
+   * Tipografía (next/font en layout.tsx):
+   * --font-inter      → cuerpo / prosa UI (Apple-like)
+   * --font-cinzel     → títulos épicos / novela / marca
+   * --font-uncial     → acento fantasía antigua (carátula)
+   * --font-bangers    → diálogos manga / comic
+   * --font-jetbrains  → técnico / HUD / monospace
+   */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utilidades de marca (sin Tailwind) */
+.font-inter,
+.font-body {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+.font-cinzel,
+.font-epic-title {
+  font-family: var(--font-cinzel), 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  font-feature-settings: 'kern' 1;
+}
+
+.font-uncial {
+  font-family: var(--font-uncial), 'Segoe UI Historic', serif;
+}
+
+.font-manga-dialogue {
+  font-family: var(--font-bangers), 'Comic Sans MS', fantasy;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+/* Guion manga / bloques de prosa legibles (no monospace) */
+.font-manga-script {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* Poster / cinema: chapter & section titles — Cinzel épico */
+.font-poster,
+h1,
+h2,
+h3 {
+  font-family: var(--font-cinzel), 'Palatino Linotype', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  line-height: 0.95;
+}
+h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1;
+}
+h3 {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  line-height: 1.05;
+}
+
+/* Technical / Orbet readouts — always mono */
+.font-datum,
+.font-orbet,
+pre,
+code,
+kbd,
+textarea,
+input,
+.label-tech {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-feature-settings: 'liga' 0;
+  letter-spacing: 0.02em;
+}
+
+.chapter-title {
+  font-family: var(--font-cinzel), 'Palatino Linotype', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.orbet-readout {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+  text-transform: uppercase;
+}
+
+.orbet-readout strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent-dim);
+  text-decoration: underline;
+}
+
+button {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Brutalist surfaces */
+.surface {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+}
+.surface:hover {
+  border-color: var(--accent);
+}
+
+.grid-brutal {
+  display: grid;
+  gap: 1rem;
+}
+
+a.card-link {
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+a.card-link:hover {
+  border-color: var(--accent) !important;
+}
+
+/* CRT archive overlay — high-tech terminal feel */
+.crt-root {
+  position: relative;
+  min-height: 100vh;
+}
+
+.crt-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Horizontal scanlines */
+.crt-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--crt-scan) 2px,
+    var(--crt-scan) 3px
+  );
+  opacity: 0.35;
+  animation: crt-flicker 8s infinite;
+}
+
+/* Subtle green phosphor tint + vignette */
+.crt-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(180deg, var(--crt-green), transparent 40%);
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+
+@keyframes crt-flicker {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  48% {
+    opacity: 0.32;
+  }
+  50% {
+    opacity: 0.38;
+  }
+  52% {
+    opacity: 0.3;
+  }
+}
+
+/* Manga flip stage: 3D perspective */
+.manga-flip-stage {
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+}
+
+.manga-flip-inner {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+@keyframes manga-panel-in {
+  from {
+    opacity: 0;
+    transform: perspective(1400px) rotateY(-14deg) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(0deg) scale(1);
+  }
+}
+
+.manga-flip-animate {
+  animation: manga-panel-in 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ——— App shell (modern brutalist chrome) ——— */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-width: 0 0 3px 0;
+  background: rgba(5, 5, 5, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+.app-header__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.app-header__logo {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.14em;
+  color: var(--text);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.app-header__logo:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.app-header__tag {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.2em;
+}
+
+.app-header__nav {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.app-header__link {
+  padding: 0.45rem 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  border: 2px solid transparent;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+}
+
+.app-header__link:hover {
+  color: var(--text);
+  border-color: var(--border);
+  text-decoration: none;
+}
+
+.app-header__link--active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.app-header__status {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.app-header__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--border);
+}
+
+.app-header__dot--ok {
+  background: #00c853;
+  box-shadow: 0 0 12px rgba(0, 200, 83, 0.5);
+}
+
+.app-header__dot--err {
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(255, 42, 42, 0.4);
+}
+
+.app-header__dot--pending {
+  animation: dot-pulse 1.2s ease infinite;
+}
+
+@keyframes dot-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ——— Home ——— */
+.page-home__header {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 3px solid var(--border);
+}
+
+.page-home__eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.page-home__title {
+  margin-bottom: 0.5rem;
+}
+
+.page-home__sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  max-width: 42rem;
+}
+
+.page-home__grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  margin-bottom: 3rem;
+}
+
+.page-home__card {
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 180px;
+}
+
+.page-home__card--hero {
+  grid-column: 1 / -1;
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--bg-card) 0%, #120808 100%);
+}
+
+@media (min-width: 900px) {
+  .page-home__card--hero {
+    grid-column: span 2;
+  }
+}
+
+.page-home__card--muted {
+  opacity: 0.55;
+}
+
+.page-home__card-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.page-home__card-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.page-home__card-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.page-home__status-heading {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.page-home__pre {
+  text-transform: none;
+  max-width: 100%;
+}
+
+/* ——— Manga page ——— */
+.page-manga__hero {
+  margin-bottom: 1.5rem;
+}
+
+.page-manga__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.page-manga__title {
+  margin-bottom: 0.5rem;
+}
+
+.page-manga__lede {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 36rem;
+  margin-bottom: 1rem;
+}
+
+.page-manga__back {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.page-manga__back:hover {
+  color: var(--accent);
+}
+
+.page-manga__section-title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: 1.25rem;
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+}
+
+.page-manga__output {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 3px solid var(--border);
+}
+
+.reader-layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1100px) {
+  .reader-layout {
+    grid-template-columns: minmax(280px, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+}
+
+.reader-layout__script {
+  order: 2;
+}
+
+.reader-layout__manga {
+  order: 1;
+}
+
+@media (min-width: 1100px) {
+  .reader-layout__script {
+    order: 1;
+  }
+  .reader-layout__manga {
+    order: 2;
+  }
+}
+
+.page-manga__footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--border);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.page-manga__pulse {
+  color: var(--accent);
+}
+
+/* ——— Director's Cut (manga page) ——— */
+.page-directors-cut {
+  max-width: 100%;
+}
+
+.directors-cut-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  padding: 0.65rem 1rem;
+  margin-bottom: 0.75rem;
+  border: 2px solid var(--border);
+}
+
+.directors-cut-bar__brand {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.directors-cut-bar__flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+
+.directors-cut-bar__arrow {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.directors-cut-bar__step {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.4rem 0.65rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.directors-cut-bar__step:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.directors-cut-bar__step--active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 42, 42, 0.08);
+}
+
+.directors-cut-bar__meta {
+  margin-left: auto;
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  max-width: 100%;
+  word-break: break-all;
+}
+
+.directors-cut-panel {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--border);
+}
+
+.directors-cut-panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border-bottom: 2px solid var(--border);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.directors-cut-panel__label {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.directors-cut-panel__hint {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.directors-cut-panel__body {
+  padding: 1rem;
+}
+
+.directors-cut-panel__textarea {
+  width: 100%;
+  min-height: 320px;
+  resize: vertical;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  color: var(--text);
+  padding: 0.85rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.directors-cut-panel__textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.directors-cut-panel__spell {
+  margin-top: 0.5rem;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+}
+
+.directors-cut-panel__empty {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  padding: 1rem 0;
+}
+
+.directors-cut-panel__manga .manga-reader,
+.directors-cut-panel__manga .reader-layout {
+  margin-top: 0.75rem;
+}
+
+.directors-cut-panel__script-wrap {
+  margin-bottom: 1rem;
+}
+
+.manga-studio__persist-note {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  margin: 0.5rem 0 0;
+  letter-spacing: 0.04em;
+}
+
+/* ——— Manga Studio (mesa de edición) ——— */
+.manga-studio {
+  max-width: 100%;
+  padding-bottom: 2rem;
+}
+
+.manga-studio__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.manga-studio__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.manga-studio__title {
+  margin-bottom: 0.5rem;
+}
+
+.manga-studio__lede {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 42rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.manga-studio__back {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.manga-studio__back:hover {
+  color: var(--accent);
+}
+
+.manga-studio__header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.manga-studio__ghost-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.65rem;
+}
+
+.manga-studio__ghost-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.manga-studio__desk {
+  display: grid;
+  gap: 0.75rem;
+  min-height: min(70vh, 820px);
+}
+
+@media (min-width: 1100px) {
+  .manga-studio__desk {
+    grid-template-columns: 240px minmax(0, 1fr) 280px;
+    align-items: stretch;
+  }
+}
+
+.manga-studio__rail {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.manga-studio__rail--left {
+  order: 1;
+}
+
+.manga-studio__center {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+}
+
+.manga-studio__rail--right {
+  order: 3;
+}
+
+@media (max-width: 1099px) {
+  .manga-studio__rail--left {
+    order: 1;
+  }
+  .manga-studio__rail--right {
+    order: 2;
+  }
+  .manga-studio__center {
+    order: 3;
+    min-height: 400px;
+  }
+}
+
+.manga-studio__rail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: 2px solid var(--border);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.manga-studio__rail-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.manga-studio__rail-meta {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-align: right;
+}
+
+.manga-studio__rail-body {
+  padding: 0.65rem 0.75rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.manga-studio__new-draft {
+  width: 100%;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.65rem;
+  background: var(--bg);
+  border: 2px dashed var(--border);
+  color: var(--text);
+  font-size: 0.65rem;
+}
+
+.manga-studio__new-draft:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.manga-studio__nav-hint {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+
+.manga-studio__season-list {
+  list-style: none;
+}
+
+.manga-studio__season {
+  margin-bottom: 1rem;
+}
+
+.manga-studio__season-title {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+
+.manga-studio__season-slug {
+  color: var(--text-muted);
+  font-size: 0.6rem;
+}
+
+.manga-studio__chapter-list {
+  list-style: none;
+  padding-left: 0.25rem;
+  border-left: 2px solid var(--border);
+}
+
+.manga-studio__chapter {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0.35rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.manga-studio__chapter:hover {
+  color: var(--text);
+}
+
+.manga-studio__chapter--active {
+  color: var(--accent);
+  background: rgba(255, 42, 42, 0.06);
+}
+
+.manga-studio__chapter-num {
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+}
+
+.manga-studio__chapter-title {
+  font-size: 0.72rem;
+  color: inherit;
+}
+
+.manga-studio__chapter-formats {
+  font-size: 0.58rem;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.manga-studio__center-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  gap: 0.75rem;
+  min-height: 0;
+}
+
+.manga-studio__novel-input {
+  flex: 1;
+  width: 100%;
+  min-height: 280px;
+  resize: vertical;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  color: var(--text);
+  padding: 0.85rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.manga-studio__novel-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.manga-studio__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.manga-studio__btn {
+  padding: 0.55rem 1rem;
+  font-size: 0.68rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  color: var(--text);
+}
+
+.manga-studio__btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.manga-studio__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.manga-studio__btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0a0a0a;
+}
+
+.manga-studio__btn--primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.manga-studio__persist {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.manga-studio__persist input {
+  accent-color: var(--accent);
+}
+
+.manga-studio__ai-help {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.65rem;
+}
+
+.manga-studio__chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.manga-studio__chip {
+  text-align: left;
+  padding: 0.45rem 0.55rem;
+  font-size: 0.62rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.manga-studio__chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.manga-studio__ai-label {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+
+.manga-studio__ai-input {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  color: var(--text);
+  padding: 0.65rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.manga-studio__ai-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.manga-studio__alert {
+  margin-top: 1rem;
+}
+
+.manga-studio__timings {
+  margin-top: 1rem;
+}
+
+.manga-studio__output {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 3px solid var(--border);
+}
+
+.manga-studio__section-title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: 1.25rem;
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+}
+
+.manga-studio__novel-out {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+}
+
+.manga-studio__subhead {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: 0.65rem;
+}
+
+.manga-studio__pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.manga-studio__reader-layout {
+  margin-top: 0.5rem;
+}
+
+.manga-studio__vfx {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+}
+
+.manga-studio__vfx-list {
+  list-style: none;
+}
+
+.manga-studio__vfx-item {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+
+.manga-studio__vfx-item:last-child {
+  border-bottom: none;
+}
+
+.manga-studio__vfx-type {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.manga-studio__vfx-meta {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.manga-studio__footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--border);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.manga-studio__pulse {
+  color: var(--accent);
+}
+
+/* ——— Manga Studio: dashboard Control Total ——— */
+/* ——— The Architect's Quill ——— */
+.architects-quill {
+  margin-bottom: 1rem;
+  padding: 1rem 1.15rem 1.15rem;
+  border: 2px solid rgba(0, 255, 247, 0.22);
+  background: linear-gradient(165deg, rgba(15, 22, 32, 0.95), rgba(8, 10, 16, 0.98));
+  box-shadow: 0 0 32px rgba(0, 255, 247, 0.06);
+}
+
+.architects-quill__head {
+  margin-bottom: 0.85rem;
+}
+
+.architects-quill__brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.architects-quill__glyph {
+  font-size: 1.75rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 247, 0.35));
+}
+
+.architects-quill__title {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(0, 255, 247, 0.92);
+  margin: 0 0 0.35rem;
+}
+
+.architects-quill__tagline {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 52rem;
+}
+
+.architects-quill__flow {
+  list-style: decimal;
+  padding-left: 1.35rem;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.architects-quill__step {
+  display: block;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.15rem;
+}
+
+.architects-quill__desc {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.architects-quill__cast {
+  border-top: 1px dashed var(--border);
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.architects-quill__cast-label {
+  display: block;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 0.45rem;
+}
+
+.architects-quill__cast-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.architects-quill__class {
+  color: rgba(0, 255, 247, 0.75);
+}
+
+.architects-quill__ability {
+  color: var(--text-muted);
+}
+
+.architects-quill__cast-empty {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.architects-quill__hint {
+  margin: 0.75rem 0 0;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.architects-quill__run-badge {
+  margin: 0.75rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 255, 247, 0.35);
+  background: rgba(0, 255, 247, 0.06);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: rgba(0, 255, 247, 0.9);
+}
+
+.manga-studio--production-dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 2rem);
+  padding-bottom: 0;
+}
+
+.manga-studio__desk--dashboard {
+  min-height: min(78vh, 920px);
+  flex: 1;
+}
+
+@media (min-width: 1100px) {
+  .manga-studio__desk--dashboard {
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) minmax(300px, 400px);
+  }
+}
+
+.manga-studio__inventory-scroll {
+  max-height: none;
+}
+
+.manga-studio__rail--inventory .manga-studio__rail-body {
+  max-height: min(70vh, 880px);
+}
+
+.prod-inv-section {
+  margin-bottom: 1.25rem;
+}
+
+.prod-inv-heading {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.prod-inv-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prod-inv-card {
+  padding: 0.5rem 0.55rem;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.25);
+  font-size: 0.65rem;
+  line-height: 1.4;
+}
+
+.prod-inv-card__name {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.prod-inv-card__src {
+  display: inline-block;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.prod-inv-card__detail {
+  margin-top: 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.62rem;
+}
+
+.prod-inv-card__detail--muted {
+  opacity: 0.85;
+}
+
+.prod-inv-divider {
+  margin: 1rem 0 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 2px dashed var(--border);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.manga-studio__center--dashboard {
+  min-height: 360px;
+}
+
+.prod-editor-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.prod-editor-tabs__tab {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.4rem 0.65rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+
+.prod-editor-tabs__tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.prod-editor-tabs__tab--active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 42, 42, 0.08);
+}
+
+.manga-studio__center-body--tabs {
+  flex: 1;
+  min-height: 0;
+}
+
+.manga-studio__novel-input--tabbed {
+  min-height: min(42vh, 420px);
+  flex: 1;
+}
+
+.manga-studio__rail--panels .manga-studio__rail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 0;
+}
+
+.manga-studio__panels-stack {
+  flex: 1;
+  overflow-y: auto;
+  max-height: min(78vh, 900px);
+}
+
+.prod-panels-viewer {
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 0.5rem;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.prod-panels-empty {
+  padding: 1rem;
+  text-align: center;
+}
+
+.prod-vfx-section {
+  border: 1px solid var(--border);
+  padding: 0.65rem 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.prod-vfx-heading {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.prod-vfx-notes {
+  margin-top: 0.5rem;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.prod-ai-strip {
+  border: 1px dashed var(--border);
+  padding: 0.65rem 0.75rem;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.manga-studio__btn--ghost {
+  background: transparent;
+  border-style: dashed;
+}
+
+.manga-studio__footer-total {
+  margin-top: auto;
+  padding: 0.85rem 0.75rem 1rem;
+  border-top: 2px solid var(--border);
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.45));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.manga-studio__footer-lang {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+}
+
+.manga-studio__footer-lang-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+.manga-studio__lang-toggle {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.manga-studio__lang-btn {
+  min-width: 2.5rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.62rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+}
+
+.manga-studio__lang-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.manga-studio__lang-btn--active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 42, 42, 0.12);
+}
+
+.manga-studio__spell-pill {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--border);
+  max-width: min(100%, 28rem);
+  line-height: 1.35;
+}
+
+.manga-studio__spell-pill--active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.manga-studio__spell-pill--ok {
+  border-color: rgba(0, 200, 140, 0.45);
+  color: rgba(0, 220, 160, 0.95);
+}
+
+.manga-studio__spell-pill--err {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.manga-studio__footer-agents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+/* ——— Legacy Book Viewer (react-pageflip) ——— */
+.legacy-book {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px dashed var(--border);
+}
+
+.legacy-book__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.legacy-book__toolbar-hint {
+  flex: 1 1 12rem;
+  color: var(--text-muted);
+  opacity: 0.9;
+}
+
+.legacy-book__toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.legacy-book__autosave-pill {
+  font-size: 0.55rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  max-width: 14rem;
+  line-height: 1.3;
+}
+
+.legacy-book__nav-btn {
+  padding: 0.35rem 0.55rem;
+  font-size: 0.58rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.legacy-book__nav-btn:hover {
+  border-color: rgba(0, 255, 247, 0.55);
+  color: #7fffeb;
+  box-shadow: 0 0 12px rgba(0, 255, 247, 0.15);
+}
+
+.legacy-book__page-indicator {
+  font-size: 0.58rem;
+  color: var(--accent);
+  min-width: 4rem;
+  text-align: center;
+}
+
+.legacy-book__stage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0.5rem 0 1.5rem;
+  overflow-x: auto;
+}
+
+.legacy-book__flip-root {
+  box-shadow: 0 0 40px rgba(0, 255, 247, 0.08), 0 24px 48px rgba(0, 0, 0, 0.65);
+}
+
+.legacy-book__sheet {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Carátula rígida: oscura, runas neón */
+/* Carátula: cuero digital + escudo Aethel */
+.legacy-book__sheet--cover,
+.legacy-book__sheet--leather {
+  background: linear-gradient(125deg, #4a3525 0%, #2d2118 35%, #1a1410 70%, #251c14 100%);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  box-shadow:
+    inset 0 0 100px rgba(0, 0, 0, 0.65),
+    inset 0 0 30px rgba(90, 55, 30, 0.35);
+  position: relative;
+}
+
+.legacy-book__sheet--cover::before,
+.legacy-book__sheet--leather::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  background: linear-gradient(#2a1f18, #2a1f18) padding-box,
+    linear-gradient(135deg, rgba(201, 162, 39, 0.55), rgba(0, 255, 247, 0.35), rgba(90, 55, 30, 0.8))
+      border-box;
+  pointer-events: none;
+  border-radius: 3px;
+}
+
+.legacy-book__leather-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.legacy-book__aethel-shield {
+  position: relative;
+  z-index: 2;
+  width: min(42%, 140px);
+  margin-bottom: 0.35rem;
+  filter: drop-shadow(0 0 16px rgba(0, 255, 247, 0.2));
+}
+
+.legacy-book__shield-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.legacy-book__cover-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem 1.25rem;
+  color: #e8e4f0;
+}
+
+.legacy-book__cover-ornament {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(0, 255, 247, 0.45);
+  box-shadow: 0 0 14px rgba(0, 255, 247, 0.25);
+  pointer-events: none;
+}
+
+.legacy-book__cover-ornament--tl {
+  top: 12px;
+  left: 12px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.legacy-book__cover-ornament--br {
+  bottom: 12px;
+  right: 12px;
+  border-left: none;
+  border-top: none;
+}
+
+.legacy-book__cover-series {
+  font-family: var(--font-cinzel), 'Palatino Linotype', Georgia, serif;
+  font-size: clamp(0.72rem, 2.6vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  color: rgba(232, 212, 170, 0.95);
+  text-shadow: 0 0 18px rgba(0, 255, 247, 0.25);
+  margin-bottom: 0.5rem;
+}
+
+.legacy-book__cover-title {
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: clamp(0.95rem, 3.5vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+  color: #f5f0e8;
+  text-transform: uppercase;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85), 0 0 20px rgba(201, 162, 39, 0.35);
+  max-width: 16rem;
+}
+
+.legacy-book__cover-sub {
+  margin-top: 1.25rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  color: rgba(200, 195, 220, 0.55);
+}
+
+/* Páginas papiro + borde neón digital */
+.legacy-book__sheet--parchment {
+  background-color: #f4ecd8;
+  background-image: radial-gradient(ellipse 120% 80% at 20% 30%, rgba(255, 255, 255, 0.45), transparent 55%),
+    radial-gradient(ellipse 90% 70% at 80% 70%, rgba(212, 190, 140, 0.35), transparent 50%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(101, 82, 58, 0.05) 2px,
+      rgba(101, 82, 58, 0.05) 3px
+    ),
+    linear-gradient(165deg, #f8f1e0 0%, #f4ecd8 45%, #e8dcc4 100%);
+  position: relative;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.legacy-book__sheet--parchment::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  background: linear-gradient(transparent, transparent) padding-box,
+    linear-gradient(
+        135deg,
+        rgba(0, 200, 255, 0.95) 0%,
+        rgba(0, 255, 247, 0.85) 35%,
+        rgba(60, 140, 255, 0.9) 100%
+      )
+      border-box;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 28px rgba(0, 200, 255, 0.12),
+    0 0 18px rgba(0, 255, 247, 0.18);
+}
+
+.legacy-book__parchment-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 1.1rem 1.15rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.legacy-book__parchment-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 255, 247, 0.12), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.legacy-book__page-meta {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-family: var(--font-cinzel), Georgia, serif;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: rgba(62, 52, 38, 0.55);
+  margin-bottom: 0.65rem;
+}
+
+.legacy-book__page-body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: #2a2418;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: justify;
+  hyphens: auto;
+  padding-right: 0.25rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.legacy-book__page-body--edit {
+  width: 100%;
+  min-height: 12rem;
+  margin: 0;
+  padding: 0.15rem 0.35rem 0.15rem 0;
+  resize: vertical;
+  border: none;
+  outline: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.legacy-book__page-body--edit:focus {
+  outline: 1px dashed rgba(0, 200, 255, 0.45);
+  outline-offset: 2px;
+}
+
+/* Contracubierta */
+.legacy-book__sheet--back {
+  background: linear-gradient(145deg, #0c0c14 0%, #15121c 100%);
+  position: relative;
+}
+
+.legacy-book__sheet--back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid transparent;
+  background: linear-gradient(#0c0c14, #0c0c14) padding-box,
+    linear-gradient(-35deg, rgba(123, 45, 255, 0.7), rgba(0, 255, 247, 0.55)) border-box;
+  pointer-events: none;
+}
+
+.legacy-book__back-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: rgba(200, 195, 220, 0.65);
+}
+
+.legacy-book__back-sig {
+  font-size: 2rem;
+  letter-spacing: 0.2em;
+  color: rgba(0, 255, 247, 0.45);
+  text-shadow: 0 0 20px rgba(0, 255, 247, 0.35);
+}
+
+.legacy-book__back-line {
+  font-size: 0.55rem;
+  letter-spacing: 0.28em;
+}
+
+/* ——— Multilingual spellcheck hints (nspell API) ——— */
+.spellcheck-hints {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.35);
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.spellcheck-hints--error {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.spellcheck-hints__tag {
+  display: inline-block;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  margin-right: 0.35rem;
+}
+
+.spellcheck-hints__lang {
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.spellcheck-hints__summary {
+  margin: 0;
+}
+
+.spellcheck-hints__list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+.spellcheck-hints__list li {
+  margin-bottom: 0.25rem;
+}
+
+.spellcheck-hints__word {
+  background: rgba(255, 42, 42, 0.2);
+  color: var(--text);
+  padding: 0.05rem 0.2rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+.spellcheck-hints__sug {
+  color: var(--text-muted);
+}
+
+/* Telemetry */
+.telemetry-bar__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.telemetry-bar__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem 1.25rem;
+}
+
+@media (min-width: 600px) {
+  .telemetry-bar__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.telemetry-bar__k {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.telemetry-bar__v {
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+/* BVL panels (brutalist blocks) */
+.bvl-panel {
+  border: 2px solid var(--border);
+  background: var(--bg-card);
+  margin-bottom: 1.25rem;
+}
+
+.bvl-panel--tall {
+  max-height: min(420px, 50vh);
+  display: flex;
+  flex-direction: column;
+}
+
+.bvl-panel__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 2px solid var(--border);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+}
+
+.bvl-panel__label {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.bvl-panel__meta {
+  color: var(--text-muted);
+}
+
+.bvl-panel__body {
+  padding: 1rem;
+}
+
+.bvl-panel__body--scroll {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+  padding: 1rem;
+}
+
+.bvl-textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 1rem;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  color: var(--text);
+  font-size: 0.85rem;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.bvl-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.bvl-textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.bvl-actions {
+  margin-top: 1rem;
+}
+
+.bvl-btn {
+  padding: 0.85rem 1.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.bvl-btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.bvl-btn--primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.bvl-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.bvl-loading-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px dashed var(--border);
+}
+
+.bvl-loading-hint__time {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.pipeline-timings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+  align-items: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+}
+
+.pipeline-timings__label {
+  color: var(--accent);
+  margin-right: 0.25rem;
+}
+
+.manga-reader-loading {
+  padding: 2rem;
+  border: 2px dashed var(--border);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.bvl-script {
+  white-space: pre-wrap;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+.bvl-alert {
+  padding: 1rem 1.25rem;
+  border: 2px solid var(--accent);
+  background: rgba(255, 42, 42, 0.06);
+  margin-bottom: 1.25rem;
+  font-size: 0.8rem;
+}
+
+/* Manga reader toolbar */
+.manga-reader__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.manga-reader__toolbar-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+}
+
+.manga-reader__toggle {
+  display: flex;
+  border: 2px solid var(--border);
+}
+
+.bvl-toggle {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  background: var(--bg);
+  color: var(--text-muted);
+  border: none;
+  border-right: 2px solid var(--border);
+}
+
+.bvl-toggle:last-child {
+  border-right: none;
+}
+
+.bvl-toggle--on {
+  background: var(--bg-card);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Strip viewer (webtoon-style) */
+.manga-strip__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 1rem;
+  border-bottom: 2px solid var(--border);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.manga-strip__title {
+  color: var(--accent);
+}
+
+.manga-strip__scroll {
+  max-height: min(75vh, 900px);
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg);
+}
+
+.manga-strip__page {
+  border: 2px solid var(--border);
+  background: #000;
+}
+
+.manga-strip__frame {
+  position: relative;
+  background: #000;
+}
+
+.manga-strip__img {
+  width: 100%;
+  display: block;
+  vertical-align: middle;
+}
+
+.manga-strip__placeholder {
+  aspect-ratio: 3/4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  background: var(--border);
+  padding: 1rem;
+  text-align: center;
+}
+
+.manga-strip__placeholder--err {
+  background: #120808;
+  border: 2px solid var(--accent);
+}
+
+.manga-strip__err {
+  color: var(--accent);
+  font-size: 0.68rem;
+  max-width: 100%;
+}
+
+.manga-strip__caption {
+  padding: 1rem;
+  background: var(--bg-card);
+  border-top: 2px solid var(--border);
+}
+
+.manga-strip__meta {
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.manga-strip__desc {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.manga-strip__dialogue {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+  padding-left: 0.75rem;
+}
+
+/* ── Creative Hub (glass / minimal, sin Tailwind) ───────────────────────── */
+.creative-hub {
+  min-height: calc(100vh - 4rem);
+  padding: 2rem 1.5rem 3rem;
+  background: radial-gradient(ellipse 120% 80% at 50% -20%, #1a1a2e 0%, #050505 55%);
+}
+
+.creative-hub__header {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+}
+
+.creative-hub__title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #fafafa;
+  margin-bottom: 0.35rem;
+}
+
+.creative-hub__subtitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.creative-hub__error {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(180, 40, 40, 0.15);
+  border: 1px solid rgba(255, 80, 80, 0.35);
+  border-radius: 10px;
+  color: #ff9a9a;
+  font-size: 0.8rem;
+}
+
+.creative-hub__loading {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.creative-hub__grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+  .creative-hub__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+.creative-hub__panel {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+}
+
+.creative-hub__panel--blue {
+  border-color: rgba(96, 165, 250, 0.2);
+}
+
+.creative-hub__panel--purple {
+  border-color: rgba(192, 132, 252, 0.22);
+}
+
+.creative-hub__panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.creative-hub__panel--blue .creative-hub__panel-title {
+  color: #93c5fd;
+}
+
+.creative-hub__panel--purple .creative-hub__panel-title {
+  color: #d8b4fe;
+}
+
+.creative-hub__panel-hint {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.creative-hub__scroll {
+  max-height: 22rem;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+  margin-bottom: 1.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.creative-hub__card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.creative-hub__card-title {
+  font-weight: 600;
+  color: #f5f5f5;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.creative-hub__card-title--purple {
+  color: #e9d5ff;
+}
+
+.creative-hub__card-desc {
+  font-size: 0.8rem;
+  color: #a3a3a3;
+  margin-top: 0.4rem;
+  line-height: 1.5;
+}
+
+.creative-hub__card-notes {
+  font-size: 0.72rem;
+  color: #888;
+  margin-top: 0.35rem;
+}
+
+.creative-hub__tag {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.creative-hub__tag--muted {
+  color: #737373;
+}
+
+.creative-hub__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.creative-hub__chip {
+  font-size: 0.62rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+}
+
+.creative-hub__chip--blue {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
+
+.creative-hub__chip--purple {
+  background: rgba(168, 85, 247, 0.2);
+  color: #d8b4fe;
+}
+
+.creative-hub__chip--cat {
+  margin-top: 0.35rem;
+  margin-right: 0.35rem;
+}
+
+.creative-hub__chip--style {
+  font-style: italic;
+  display: inline-block;
+  margin-top: 0.35rem;
+}
+
+.creative-hub__empty {
+  color: #525252;
+  font-size: 0.75rem;
+  padding: 1rem 0;
+}
+
+.creative-hub__btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.creative-hub__btn:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.creative-hub__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.creative-hub__btn--blue {
+  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  color: #fff;
+}
+
+.creative-hub__btn--purple {
+  background: linear-gradient(180deg, #9333ea 0%, #7e22ce 100%);
+  color: #fff;
+}
+
+.creative-hub__btn--ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ccc;
+  width: auto;
+}
+
+.creative-hub__modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1rem;
+}
+
+.creative-hub__modal {
+  width: min(420px, 100%);
+  background: rgba(20, 20, 22, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+}
+
+.creative-hub__modal-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #fafafa;
+}
+
+.creative-hub__label {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+  margin-top: 0.65rem;
+}
+
+.creative-hub__label:first-of-type {
+  margin-top: 0;
+}
+
+.creative-hub__input,
+.creative-hub__textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  color: #eee;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.creative-hub__textarea {
+  resize: vertical;
+  min-height: 4rem;
+}
+
+.creative-hub__modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}
+
+.creative-hub__modal-actions .creative-hub__btn {
+  width: auto;
+  min-width: 6rem;
+}

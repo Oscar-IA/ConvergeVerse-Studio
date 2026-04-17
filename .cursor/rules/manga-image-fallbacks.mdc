@@ -1,0 +1,12 @@
+---
+description: Fallbacks cuando Replicate falla — placeholders locales y URLs de muestra para el layout manga
+globs: apps/api/app/agents/image_agent.py
+alwaysApply: false
+---
+
+# Manga: imágenes cuando Replicate falla
+
+- Si **Replicate** falla o no hay token, el pipeline debe seguir devolviendo **`image_url`** usables para el lector: primero **Pollinations** (si `POLLINATIONS_FALLBACK=true` y `REPLICATE_FAIL_FALLBACK` no es `design`), luego **placeholders de diseño**.
+- **Placeholders locales**: SVG en `apps/web/public/manga-placeholders/panel-0.svg` y `panel-1.svg`. La API debe construir URLs absolutas con **`WEB_APP_PUBLIC_URL`** (ej. `http://localhost:3000`) para que el `<img>` del front cargue esos archivos.
+- Sin `WEB_APP_PUBLIC_URL`, usar **URLs de muestra** estables (`placehold.co` u otras) para que siempre se vea el **marco del manga** y el **texto cómico** (guión Konosuba) encaje en el diseño.
+- Opcional: `REPLICATE_FAIL_FALLBACK=design` omite Pollinations tras fallo de Replicate y va directo a placeholders (vista previa rápida).

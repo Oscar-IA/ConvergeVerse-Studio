@@ -1,0 +1,33 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf .next",
+    "dev": "next dev",
+    "dev:clean": "npm run clean && next dev",
+    "dev:poll": "WEBPACK_POLL_MS=2000 npm run dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next-intl": "^3.26.3",
+    "dictionary-en-us": "^2.2.1",
+    "dictionary-es": "^4.0.0",
+    "dictionary-fr": "^3.0.0",
+    "franc-min": "^6.2.0",
+    "next": "14.2.15",
+    "nspell": "^2.1.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-pageflip": "^2.0.3",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="1024" viewBox="0 0 768 1024">
+  <defs>
+    <pattern id="dots-a" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#4a3a5c" opacity="0.45"/>
+    </pattern>
+    <linearGradient id="g-a" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1224"/>
+      <stop offset="100%" style="stop-color:#2d1f3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="768" height="1024" fill="url(#g-a)"/>
+  <rect x="24" y="24" width="720" height="976" fill="url(#dots-a)" stroke="#e8b4ff" stroke-width="6" rx="4"/>
+  <rect x="48" y="48" width="672" height="520" fill="#120c18" stroke="#7c5cbf" stroke-width="3" opacity="0.9"/>
+  <text x="384" y="320" text-anchor="middle" fill="#e8b4ff" font-family="system-ui,sans-serif" font-size="28" font-weight="700">VISTA PREVIA</text>
+  <text x="384" y="368" text-anchor="middle" fill="#b8a0d4" font-family="system-ui,sans-serif" font-size="18">Replicate no disponible</text>
+  <text x="384" y="410" text-anchor="middle" fill="#8a7aa8" font-family="system-ui,sans-serif" font-size="15">Panel A · diseño manga</text>
+  <path d="M 120 620 Q 200 560 280 600 L 520 580 Q 600 560 640 640 L 620 780 Q 400 820 180 760 Z" fill="#f5e6ff" stroke="#2d1f3d" stroke-width="4"/>
+  <text x="380" y="690" text-anchor="middle" fill="#2d1f3d" font-family="system-ui,sans-serif" font-size="22" font-weight="700">¡El texto cómico va aquí!</text>
+  <text x="380" y="730" text-anchor="middle" fill="#4a3a5c" font-family="system-ui,sans-serif" font-size="16">Estilo Konosuba / caos NPC</text>
+</svg>

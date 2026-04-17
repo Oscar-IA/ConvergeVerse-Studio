@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "characters": [
+    {
+      "id": "aren_valis",
+      "name": "Aren Valis",
+      "description": "Archivista del Nexo que manipula Orbets con más entusiasmo que sentido común.",
+      "visual_traits": "male scholar, dark indigo archive robes with silver trim, messy dark hair, tired eyes, slim build, always slightly sweating, Orbet fragments on a leather belt, soft blue reflection on glasses",
+      "comedy_factor": "Konosuba-style straight man who snaps; overexplains under pressure; roasted by every NPC; physical comedy when handling relics"
+    },
+    {
+      "id": "guard_korr",
+      "name": "Korr",
+      "description": "Guardia veterano del Archivo Abisal; desconfía de los eruditos teóricos.",
+      "visual_traits": "broad-shouldered guard, scarred jaw, short gray buzz cut, heavy pauldrons, torch in hand, exaggerated angry eyebrows",
+      "comedy_factor": "loud skeptic; yells in ALL CAPS energy; blames the scholar first; sweatdrops and vein pops"
+    }
+  ],
+  "locations": [
+    {
+      "id": "abyssal_domain",
+      "name": "Abyssal Domain",
+      "aesthetic": "Inverted floating ruins, bioluminescent teal mist, broken bridges between monoliths, rain that falls upward, ancient holographic UI fragments"
+    },
+    {
+      "id": "neo_aethel",
+      "name": "Neo-Aethel",
+      "aesthetic": "Brutalist crystal spires over a drowned city, neon sigils on wet concrete, mag-lev trams through fog, corporate-cult banners"
+    }
+  ]
+}

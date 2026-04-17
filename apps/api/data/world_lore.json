@@ -1,0 +1,67 @@
+{
+  "version": 2,
+  "kingdom": "Aethel-Arévalo",
+  "architect": "Oscar Laguna (The Creator/Architect)",
+  "royal_family": {
+    "kings": {
+      "Luis": "Rey Estratega (Ex-Militar, disciplina inquebrantable)",
+      "Fanny": "Reina de la Cohesión (Sabiduría y diplomacia)"
+    },
+    "high_council": {
+      "Paula": "Gran Sanadora (Medicina avanzada y magia de luz)",
+      "Yaritza": "Ingeniera Eco-Ambiental (Arquitecta de biomas y tecnología limpia)"
+    },
+    "the_legacy": {
+      "Sara": "Domadora de Bestias Aladas (Exploradora de los cielos)",
+      "Matheo": "Domador de Crías del Vacío (Vínculo empático con la fauna mágica)"
+    }
+  },
+  "protagonist": "Aren Valis (Vanguardia torpe, bajo supervisión real)",
+  "locations": {
+    "Valle de Matheo": "Santuario de criaturas místicas",
+    "Biosfera Yaritza": "Laboratorio natural de regeneración",
+    "Sanatorio de Paula": "Epicentro de curación del reino"
+  },
+  "rules": {
+    "comedy_style": "Konosuba + corte real Aethel-Arévalo: ironía, reacciones exageradas, Aren como calamidad bajo mirada regia",
+    "visual_theme": "Neo-Aethel: cristal, neón suave, Orbet cian, solemnidad real vs caos del protagonista",
+    "master_plan": "Plano Maestro — familia real y legado integrados en Bond Converge"
+  },
+  "characters": [
+    {
+      "name": "Luis",
+      "traits": "Rey Estratega; ex-militar; disciplina inquebrantable; General King del cast extendido",
+      "visual": "Presencia regia, porte militar, insignias Aethel-Arévalo, mirada evaluadora"
+    },
+    {
+      "name": "Fanny",
+      "traits": "Reina de la Cohesión; sabiduría y diplomacia; equilibrio del trono",
+      "visual": "Elegancia sobria, detalles dorados suaves, aura de mediación"
+    },
+    {
+      "name": "Paula",
+      "traits": "Gran Sanadora; medicina avanzada; magia de luz; High Healer",
+      "visual": "Bata o túnica sanadora, brillo cálido/blanco, manos de cirujana mística"
+    },
+    {
+      "name": "Yaritza",
+      "traits": "Ingeniera Eco-Ambiental; biomas; tecnología limpia; Eco-Engineer",
+      "visual": "Equipo híbrido natural-tech, verdes y cianes, sensores orgánicos"
+    },
+    {
+      "name": "Sara",
+      "traits": "Domadora de Bestias Aladas; exploradora de los cielos; mentora de Matheo",
+      "visual": "Atuendo de vuelo, bestias aladas al fondo, confianza de cazadora celeste"
+    },
+    {
+      "name": "Matheo",
+      "traits": "Domador de Crías del Vacío; vínculo empático con fauna mágica; aprendiz",
+      "visual": "Joven, criaturas pequeñas etéreas cerca, Valle de Matheo"
+    },
+    {
+      "name": "Aren Valis",
+      "traits": "Vanguardia torpe; bajo supervisión real; Konosuba calamity; Orbet/archivo",
+      "visual": "Pelo oscuro, ojos cian con Orbet, capa de archivo, expresión de pánico cómico"
+    }
+  ]
+}

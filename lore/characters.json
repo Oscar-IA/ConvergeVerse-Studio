@@ -1,0 +1,15 @@
+{
+  "characters": [
+    {
+      "id": "aren_valis",
+      "name": "Aren Valis",
+      "role": "Archivist of the Convergence Institute",
+      "main": true,
+      "faction": "archive_order",
+      "goal": "Understand the truth behind the Wanderers and Orbets",
+      "personality": "curious, analytical, morally conflicted",
+      "arc": "From observer to bridge between NPC and Wanderer realities",
+      "visual_description": "Young male scholar, dark hair, intense eyes, Archive robes, often holding scrolls or an Orbet shard"
+    }
+  ]
+}
