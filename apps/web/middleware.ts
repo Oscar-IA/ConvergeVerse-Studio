@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// ─── BOND Central satellite gating ───────────────────────────────────────────
+const SATELLITE_SESSION_COOKIE = 'bond_satellite_session';
+const BOND_AUTH_PATH = '/bond-auth';
+const PUBLIC_PATHS = [BOND_AUTH_PATH, '/bond-auth/callback', '/api/'];
+
+function isSatelliteSessionValid(req: NextRequest): boolean {
+  const token = req.cookies.get(SATELLITE_SESSION_COOKIE)?.value;
+  if (!token || token.length < 10) return false;
+  // Token format: base64url payload — presence check only (JWT verified server-side in API routes)
+  return true;
+}
+
 const SUPPORTED_LOCALES = ['en', 'es', 'fr'] as const;
 const DEFAULT_LOCALE = 'en';
 const LOCALE_COOKIE = 'bond_lang';
@@ -35,6 +47,16 @@ function resolveLocale(req: NextRequest): SupportedLocale {
 }
 
 export function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // Gate all non-public routes behind BOND Central satellite session
+  const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+  if (!isPublic && !isSatelliteSessionValid(req)) {
+    const authUrl = req.nextUrl.clone();
+    authUrl.pathname = BOND_AUTH_PATH;
+    return NextResponse.redirect(authUrl);
+  }
+
   const locale = resolveLocale(req);
   const response = NextResponse.next();
 

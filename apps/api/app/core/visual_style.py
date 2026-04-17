@@ -7,15 +7,19 @@ docs/CONVERGEVERSE_LAGUNA_LEGACY_MASTER_PROMPT.md (Laguna Legacy + Orbet).
 """
 
 # Mandatory keywords for Flux / manga panels (Solo Leveling + aura energy)
-IMAGE_PROMPT_SUFFIX = "Solo Leveling style, high contrast, blue aura energy"
+IMAGE_PROMPT_SUFFIX = "Solo Leveling style, high contrast, blue aura energy, cinematic manga composition"
 
-# Extra quality tags appended after the suffix
-IMAGE_PROMPT_QUALITY = "cel-shading, high quality manga art, dramatic lighting"
+# Extra quality tags appended after the suffix — boosted for higher quality output
+IMAGE_PROMPT_QUALITY = (
+    "masterpiece, best quality, ultra detailed, sharp focus, "
+    "professional manga illustration, dynamic pose, cinematic lighting, "
+    "8k resolution, vibrant colors, ink outline, dramatic shadows"
+)
 
 
 def build_image_prompt(scene_prompt: str) -> str:
     """Combine user/LLM scene description with mandatory visual keywords."""
     scene = (scene_prompt or "").strip().rstrip(",.")
     if not scene:
-        scene = "anime manga panel, cinematic composition"
+        scene = "anime manga panel, cinematic composition, dramatic atmosphere"
     return f"{scene}, {IMAGE_PROMPT_SUFFIX}, {IMAGE_PROMPT_QUALITY}"

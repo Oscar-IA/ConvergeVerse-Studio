@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 _DEFAULT_TIMEOUT = int(os.getenv("REPLICATE_TIMEOUT_SEC", "180"))
 _POLLINATIONS_FALLBACK = os.getenv("POLLINATIONS_FALLBACK", "true").lower() in ("1", "true", "yes")
 _POLLINATIONS_MAX_PROMPT = 900
-_POLLINATIONS_WIDTH = int(os.getenv("POLLINATIONS_WIDTH", "768"))
-_POLLINATIONS_HEIGHT = int(os.getenv("POLLINATIONS_HEIGHT", "1024"))
+_POLLINATIONS_WIDTH = int(os.getenv("POLLINATIONS_WIDTH", "1024"))
+_POLLINATIONS_HEIGHT = int(os.getenv("POLLINATIONS_HEIGHT", "1536"))
 
 # When Replicate fails: "pollinations" (default) then design preview; "design" = skip Pollinations, use static preview fast.
 _REPLICATE_FAIL_FALLBACK = os.getenv("REPLICATE_FAIL_FALLBACK", "pollinations").strip().lower()
