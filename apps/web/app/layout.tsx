@@ -3,7 +3,13 @@ import { Bangers, Cinzel, Inter, JetBrains_Mono, Uncial_Antiqua } from 'next/fon
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { StudioShell } from '@/components/StudioShell';
+import dynamic from 'next/dynamic';
 import './globals.css';
+
+const BondOnboardingModal = dynamic(
+  () => import('@/components/onboarding/BondOnboardingModal'),
+  { ssr: false }
+);
 
 /** Cuerpo UI — legibilidad tipo Apple (SF-like) */
 const inter = Inter({
@@ -65,6 +71,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <StudioShell>{children}</StudioShell>
+          <BondOnboardingModal />
         </NextIntlClientProvider>
       </body>
     </html>
