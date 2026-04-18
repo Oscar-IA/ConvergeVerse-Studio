@@ -1,10 +1,13 @@
-import dynamic from 'next/dynamic';
+import lazyLoad from 'next/dynamic';
+
+// Force dynamic rendering — this page uses headers() via next-intl
+export const dynamic = 'force-dynamic';
 
 /**
  * Solo cliente: evita Flight/RSC + webpack al pre-renderizar el árbol con MangaFlipViewer en iframe.
  * Sin StudioShell (layout raíz): el embed no carga AppShell ni health en bucle.
  */
-const MangaEmbedClient = dynamic(() => import('./MangaEmbedClient'), {
+const MangaEmbedClient = lazyLoad(() => import('./MangaEmbedClient'), {
   ssr: false,
   loading: () => (
     <div

@@ -1,15 +1,13 @@
+// Force dynamic rendering globally — root layout uses next-intl getLocale() which reads request headers
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from 'next';
 import { Bangers, Cinzel, Inter, JetBrains_Mono, Uncial_Antiqua } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { StudioShell } from '@/components/StudioShell';
-import dynamic from 'next/dynamic';
 import './globals.css';
-
-const BondOnboardingModal = dynamic(
-  () => import('@/components/onboarding/BondOnboardingModal'),
-  { ssr: false }
-);
+import BondOnboardingModal from '@/components/onboarding/BondOnboardingModal';
 
 /** Cuerpo UI — legibilidad tipo Apple (SF-like) */
 const inter = Inter({
