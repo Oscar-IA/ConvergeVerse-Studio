@@ -46,7 +46,7 @@ function resolveLocale(req: NextRequest): SupportedLocale {
   return DEFAULT_LOCALE;
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Gate all non-public routes behind BOND Central satellite session
