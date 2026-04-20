@@ -19,3 +19,4 @@ apps/api/storage/**/*.json
 apps/api/storage/chronicles/
 # TTS local (OpenAI → static/audio)
 apps/api/static/audio/*.mp3
+.vercel
