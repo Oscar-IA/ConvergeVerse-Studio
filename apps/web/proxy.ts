@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getCentralUrl } from './lib/bond-central';
 
 // ─── BOND Central satellite gating ───────────────────────────────────────────
 const SATELLITE_SESSION_COOKIE = 'bond_satellite_session';
@@ -54,6 +55,8 @@ export function proxy(req: NextRequest) {
   if (!isPublic && !isSatelliteSessionValid(req)) {
     const authUrl = req.nextUrl.clone();
     authUrl.pathname = BOND_AUTH_PATH;
+    authUrl.searchParams.set("central", getCentralUrl());
+    authUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(authUrl);
   }
 
