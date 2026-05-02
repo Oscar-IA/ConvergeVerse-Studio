@@ -593,6 +593,76 @@ async def delete_visual_reference_route(ref_id: str):
     return {"ok": True, "deleted_id": ref_id}
 
 
+# ── Drawing Studio routes ─────────────────────────────────────────────────────
+
+from app.story_engine.drawing_analyzer import analyze_drawing, generate_panel_images  # noqa: E402
+from fastapi import Form  # noqa: E402 (already imported above, but safe to re-import)
+
+
+@router.post("/drawing/analyze")
+async def analyze_drawing_route(
+    file: UploadFile = File(...),
+    generate_images: bool = Form(default=False),
+    language: str = Form(default="es"),
+):
+    """Analiza un dibujo a mano con Claude Vision → historia de cómic estructurada."""
+    raw = await file.read()
+    if len(raw) > 15 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="Imagen demasiado grande (máx 15MB)")
+    content_type = file.content_type or "image/jpeg"
+
+    # Upload to Supabase storage (best-effort)
+    db = _get_db()
+    image_url = ""
+    try:
+        image_url = db.upload_visual_reference_image_bytes(
+            raw,
+            content_type=content_type,
+            original_filename=file.filename or "drawing.jpg",
+        )
+    except Exception as e:
+        logger.warning(f"Drawing Supabase upload failed: {e}")
+
+    # Analyze with Claude Vision
+    try:
+        story = await analyze_drawing(raw, content_type, user_language=language)
+    except Exception as e:
+        logger.exception("analyze_drawing_route")
+        raise HTTPException(status_code=500, detail=f"Análisis del dibujo fallido: {e}")
+
+    # Optionally generate panel images
+    panels_with_images = story.get("panels", [])
+    if generate_images and story.get("panels"):
+        try:
+            panels_with_images = await generate_panel_images(
+                story["panels"], story.get("style_notes", "manga style")
+            )
+        except Exception as e:
+            logger.warning(f"Panel generation failed: {e}")
+
+    return {
+        "ok": True,
+        "story": story,
+        "image_url": image_url,
+        "panels": panels_with_images,
+    }
+
+
+@router.post("/drawing/generate-panels")
+async def generate_drawing_panels_route(body: dict):
+    """Genera/regenera imágenes para paneles de una historia analizada."""
+    panels = body.get("panels", [])
+    style_notes = body.get("style_notes", "professional manga style")
+    if not panels:
+        raise HTTPException(status_code=400, detail="Se requieren paneles")
+    try:
+        result = await generate_panel_images(panels, style_notes)
+    except Exception as e:
+        logger.exception("generate_drawing_panels_route")
+        raise HTTPException(status_code=500, detail=str(e))
+    return {"ok": True, "panels": result}
+
+
 @router.post("/proactive-feedback")
 async def proactive_feedback_route(body: ProactiveFeedbackRequest):
     """

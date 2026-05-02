@@ -8,6 +8,7 @@ import { getLocale, getMessages } from 'next-intl/server';
 import { StudioShell } from '@/components/StudioShell';
 import './globals.css';
 import BondOnboardingModal from '@/components/onboarding/BondOnboardingModal';
+import { BondCentralGuard } from '@/components/BondCentralGuard';
 
 /** Cuerpo UI — legibilidad tipo Apple (SF-like) */
 const inter = Inter({
@@ -67,10 +68,12 @@ export default async function RootLayout({
       className={`dark ${inter.variable} ${cinzel.variable} ${uncialAntiqua.variable} ${bangers.variable} ${jetbrainsMono.variable}`}
     >
       <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <StudioShell>{children}</StudioShell>
-          <BondOnboardingModal />
-        </NextIntlClientProvider>
+        <BondCentralGuard>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <StudioShell>{children}</StudioShell>
+            <BondOnboardingModal />
+          </NextIntlClientProvider>
+        </BondCentralGuard>
       </body>
     </html>
   );

@@ -19,6 +19,7 @@ import { ArchitectWorkspace } from '@/components/story-engine/ArchitectWorkspace
 import { DecisionTimeline, type TimelineEventRow } from '@/components/story-engine/DecisionTimeline';
 import { VisualRefUploader } from '@/components/story-engine/VisualRefUploader';
 import { ProactiveFeedbackPanel } from '@/components/story-engine/ProactiveFeedbackPanel';
+import { DrawingStudio } from '@/components/story-engine/DrawingStudio';
 
 function formatApiError(body: unknown, status: number): string {
   if (body && typeof body === 'object' && 'detail' in body) {
@@ -1663,6 +1664,18 @@ export default function StoryEnginePage() {
           <div style={{ marginBottom: '1.25rem' }}>
             <DecisionTimeline events={timelineEvents} loading={timelineLoading} />
           </div>
+        )}
+
+        {!loading && (
+          <section style={{ marginBottom: '1.25rem' }}>
+            <h3 style={{
+              color: '#ec4899', fontSize: '0.75rem', letterSpacing: '0.18em',
+              textTransform: 'uppercase', marginBottom: '0.75rem',
+            }}>
+              🎨 Drawing Studio — Convierte tu dibujo en historieta
+            </h3>
+            <DrawingStudio locale="es" />
+          </section>
         )}
 
         {!loading && <VisualRefUploader />}

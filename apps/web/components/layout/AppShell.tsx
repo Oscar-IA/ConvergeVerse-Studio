@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useKidsMode } from '@/hooks/useKidsMode';
 
 const navItems = [
   { href: '/', key: 'home' as const },
@@ -19,6 +20,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [apiOk, setApiOk] = useState<boolean | null>(null);
   const t = useTranslations('nav');
   const tCommon = useTranslations('common');
+  const { kidsMode, toggle: toggleKidsMode } = useKidsMode();
 
   useEffect(() => {
     let cancelled = false;
@@ -37,7 +39,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell${kidsMode ? ' kids-mode' : ''}`}>
       <header className="app-header surface">
         <div className="app-header__brand">
           <Link href="/story-engine" className="app-header__logo">
@@ -58,7 +60,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
 
-        <div className="app-header__actions font-datum" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="app-header__actions font-datum" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <button
+            onClick={toggleKidsMode}
+            className={`kids-mode-toggle${kidsMode ? ' kids-mode-toggle--active' : ''}`}
+            title={kidsMode ? 'Cambiar a modo adulto' : 'Cambiar a modo niños'}
+            aria-pressed={kidsMode}
+          >
+            {kidsMode ? '🧒 NIÑOS' : '👨‍💻 ADULTOS'}
+          </button>
           <LanguageSelector />
 
           <div className="app-header__status" title="Python API /health">

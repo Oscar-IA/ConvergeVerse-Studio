@@ -2551,3 +2551,130 @@ a.card-link:hover {
   width: auto;
   min-width: 6rem;
 }
+
+/* ── Mobile Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Story engine layout */
+  .story-engine-layout { flex-direction: column !important; }
+  .story-engine-sidebar { width: 100% !important; max-width: 100% !important; }
+
+  /* Manga studio desk */
+  .manga-studio__desk {
+    grid-template-columns: 1fr !important;
+  }
+  .manga-studio__rail--left { order: 2 !important; }
+  .manga-studio__center { order: 1 !important; }
+  .manga-studio__rail--right { order: 3 !important; }
+
+  /* Panel grids */
+  .manga-panel-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* App header: stack on mobile */
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+  .app-header__nav {
+    flex-wrap: wrap;
+    gap: 0.15rem;
+  }
+  .app-header__link {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.65rem;
+  }
+
+  /* App main padding */
+  .app-main {
+    padding: clamp(0.75rem, 3vw, 1.5rem);
+  }
+
+  /* Typography scale down on mobile */
+  h1 { font-size: clamp(1.5rem, 5vw, 2.5rem) !important; }
+  h2 { font-size: clamp(1.2rem, 4vw, 1.75rem) !important; }
+  h3 { font-size: clamp(1rem, 3vw, 1.25rem) !important; }
+
+  /* Creative hub */
+  .creative-hub { padding: 1rem 0.75rem 2rem; }
+  .creative-hub__grid { gap: 1rem; }
+
+  /* Reader layout: single column */
+  .reader-layout { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 480px) {
+  .manga-panel-grid { grid-template-columns: 1fr !important; }
+  .character-grid { grid-template-columns: 1fr !important; }
+
+  /* Drawing studio panels */
+  .drawing-canvas-root canvas {
+    min-height: 280px;
+  }
+
+  /* Directors cut bar stacking */
+  .directors-cut-bar { flex-direction: column; align-items: flex-start; }
+  .directors-cut-bar__flow { flex-direction: column; }
+}
+
+/* ── Kids Mode ──────────────────────────────────────────────────────────────── */
+.kids-mode {
+  --accent-color: #ec4899;
+  --bg-primary: #0f0a1e;
+  font-size: 1.1em;
+}
+
+.kids-mode h1,
+.kids-mode h2,
+.kids-mode h3 {
+  letter-spacing: 0.02em;
+}
+
+.kids-mode button {
+  border-radius: 12px !important;
+}
+
+.kids-mode .glass-card {
+  border-radius: 20px !important;
+}
+
+.kids-mode .app-header {
+  background: rgba(15, 10, 30, 0.95);
+  border-bottom-color: rgba(236, 72, 153, 0.35);
+}
+
+.kids-mode .app-header__logo {
+  color: #ec4899;
+}
+
+.kids-mode .app-header__link--active {
+  color: #ec4899;
+  border-color: #ec4899;
+}
+
+/* Kids mode toggle button */
+.kids-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.65rem;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: transparent;
+  color: #6b6b6b;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.kids-mode-toggle:hover {
+  border-color: #ec4899;
+  color: #ec4899;
+}
+
+.kids-mode-toggle--active {
+  border-color: #ec4899;
+  color: #ec4899;
+  background: rgba(236, 72, 153, 0.1);
+}

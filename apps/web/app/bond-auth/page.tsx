@@ -14,7 +14,7 @@ function BondAuthContent() {
   const central = params.get("central") ?? (process.env.NEXT_PUBLIC_BOND_CENTRAL_URL ?? "https://bond-central.vercel.app");
   const error = params.get("error");
   const redirect = params.get("redirect") ?? "/";
-  const nexusUrl = `${central}/nexus/bond-convergeverse`;
+  const nexusUrl = `${central}/nexus`;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black px-6 py-12 text-white">
