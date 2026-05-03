@@ -6,13 +6,12 @@ const withNextIntl = createNextIntlPlugin('./i18n.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /**
-   * Monorepo (npm workspaces): ancla trazas al root del repo.
-   * Evita desajustes de chunks tipo "Cannot find module './974.js'" tras builds parciales.
+   * Monorepo: ancla trazas de archivos al root del repo para evitar desajustes de chunks.
+   * En Next.js 14 esto va dentro de `experimental`.
    */
-  outputFileTracingRoot: path.join(__dirname, '../..'),
-
-  // Diccionarios Hunspell (ESM + top-level await) y nspell: no empaquetar con Webpack en la ruta /api/spellcheck
   experimental: {
+    // outputFileTracingRoot moved here (Next 14 correct location)
+    outputFileTracingRoot: path.join(__dirname, '../..'),
     serverComponentsExternalPackages: [
       'nspell',
       'dictionary-en-us',
