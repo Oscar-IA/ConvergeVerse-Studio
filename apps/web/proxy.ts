@@ -50,16 +50,44 @@ function resolveLocale(req: NextRequest): SupportedLocale {
 export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Gate all non-public routes behind BOND Central satellite session
+  // ── Token in URL → pipe straight to /bond-auth/callback ──────────────────
+  // BOND Studios (or any satellite launcher) passes ?token=xxx[&central=xxx].
+  // If the middleware were to redirect to /bond-auth first, the token would be
+  // stripped from the URL. Detect it here and forward immediately so the
+  // callback can set the httpOnly cookie in one round-trip.
+  const incomingToken = req.nextUrl.searchParams.get('token');
+  if (incomingToken && !pathname.startsWith('/bond-auth')) {
+    const callbackUrl = req.nextUrl.clone();
+    callbackUrl.pathname = '/bond-auth/callback';
+
+    // Preserve or supply the central URL
+    if (!callbackUrl.searchParams.get('central')) {
+      callbackUrl.searchParams.set('central', getCentralUrl());
+    }
+
+    // Build a clean redirect path (without token/central params)
+    const cleanPath = req.nextUrl.clone();
+    cleanPath.searchParams.delete('token');
+    cleanPath.searchParams.delete('central');
+    callbackUrl.searchParams.set(
+      'redirect',
+      cleanPath.pathname + (cleanPath.search || ''),
+    );
+
+    return NextResponse.redirect(callbackUrl);
+  }
+
+  // ── Normal session gate ────────────────────────────────────────────────────
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
   if (!isPublic && !isSatelliteSessionValid(req)) {
     const authUrl = req.nextUrl.clone();
     authUrl.pathname = BOND_AUTH_PATH;
-    authUrl.searchParams.set("central", getCentralUrl());
-    authUrl.searchParams.set("redirect", pathname);
+    authUrl.searchParams.set('central', getCentralUrl());
+    authUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(authUrl);
   }
 
+  // ── Locale injection ───────────────────────────────────────────────────────
   const locale = resolveLocale(req);
   const response = NextResponse.next();
 

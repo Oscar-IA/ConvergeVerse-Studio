@@ -1,10 +1,11 @@
-// Force dynamic rendering globally — root layout uses next-intl getLocale() which reads request headers
+// Force dynamic rendering globally — root layout reads request headers for locale
 export const dynamic = 'force-dynamic';
 
 import type { Metadata } from 'next';
 import { Bangers, Cinzel, Inter, JetBrains_Mono, Uncial_Antiqua } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
+import { headers } from 'next/headers';
 import { StudioShell } from '@/components/StudioShell';
 import './globals.css';
 import BondOnboardingModal from '@/components/onboarding/BondOnboardingModal';
@@ -66,12 +67,20 @@ export const metadata: Metadata = {
   },
 };
 
+const SUPPORTED_LOCALES = ['en', 'es', 'fr'] as const;
+type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const locale = await getLocale();
+  // Read locale from the x-bond-locale header set by our middleware.
+  // This avoids depending on next-intl's URL routing system.
+  const rawLocale = headers().get('x-bond-locale') ?? 'en';
+  const locale: SupportedLocale = (SUPPORTED_LOCALES as readonly string[]).includes(rawLocale)
+    ? (rawLocale as SupportedLocale)
+    : 'en';
   const messages = await getMessages();
 
   return (
