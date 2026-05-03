@@ -345,7 +345,7 @@ class NarrateChapterRequest(BaseModel):
 
 
 class MangaIllustrateRequest(BaseModel):
-    """Fase Manga: keyframes → Replicate (Solo Leveling style)."""
+    """Fase Manga: keyframes → Replicate — style engine supported."""
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -360,6 +360,11 @@ class MangaIllustrateRequest(BaseModel):
         False,
         validation_alias=AliasChoices("overwrite",),
         description="Si true, regenera aunque el panel ya tenga image_url.",
+    )
+    style_id: str | None = Field(
+        None,
+        validation_alias=AliasChoices("style_id", "styleId"),
+        description="ID del estilo anime/manga del style_engine (ej. solo_leveling, demon_slayer). None = estilo legacy.",
     )
 
 
@@ -1237,6 +1242,7 @@ async def manga_illustrate_chapter(body: MangaIllustrateRequest):
             ch,
             max_panels=body.max_panels,
             overwrite=body.overwrite,
+            style_id=body.style_id or None,
         )
         updated = await db.update_chapter_panels_and_production_phase(
             body.chapter_id,
@@ -1621,3 +1627,123 @@ async def verify_story_secret(body: StorySecretVerify):
             detail="Código incorrecto o capítulo sin secretos — lee el capítulo con atención.",
         )
     return {"ok": True, **result}
+
+
+# ── Style Engine ─────────────────────────────────────────────────────────────
+
+@router.get("/styles")
+async def list_anime_styles():
+    """Return all available anime/manga generation style presets."""
+    from app.story_engine.style_engine import list_styles
+    return {"styles": list_styles(), "count": len(list_styles())}
+
+
+# ── Series Platform ───────────────────────────────────────────────────────────
+
+import json as _json
+import time as _time
+import uuid as _uuid
+from pathlib import Path as _Path
+
+_SERIES_STORE = _Path(os.environ.get("SERIES_STORE_PATH", "/tmp/convergeverse_series.json"))
+
+
+def _load_series_store() -> list[dict]:
+    if _SERIES_STORE.exists():
+        try:
+            return _json.loads(_SERIES_STORE.read_text()) or []
+        except Exception:
+            return []
+    return []
+
+
+def _save_series_store(data: list[dict]) -> None:
+    _SERIES_STORE.write_text(_json.dumps(data, ensure_ascii=False, indent=2))
+
+
+class SeriesCreate(BaseModel):
+    title: str = Field(..., min_length=1, max_length=120)
+    description: str = Field("", max_length=500)
+    genre: str = Field("", max_length=60)
+    style_id: str = Field("solo_leveling", max_length=60)
+    cover_url: str | None = None
+    tags: list[str] = Field(default_factory=list)
+
+
+class SeriesUpdate(BaseModel):
+    title: str | None = Field(None, max_length=120)
+    description: str | None = Field(None, max_length=500)
+    genre: str | None = None
+    style_id: str | None = None
+    cover_url: str | None = None
+    tags: list[str] | None = None
+    status: str | None = None  # "active" | "hiatus" | "completed"
+
+
+@router.post("/series", status_code=201)
+async def create_series(body: SeriesCreate):
+    """Create a new manga/story series."""
+    store = _load_series_store()
+    series = {
+        "id": str(_uuid.uuid4()),
+        "title": body.title,
+        "description": body.description,
+        "genre": body.genre,
+        "style_id": body.style_id,
+        "cover_url": body.cover_url,
+        "tags": body.tags,
+        "status": "active",
+        "chapter_count": 0,
+        "created_at": _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime()),
+        "updated_at": _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime()),
+    }
+    store.append(series)
+    _save_series_store(store)
+    return series
+
+
+@router.get("/series")
+async def list_series(status: str | None = None, genre: str | None = None):
+    """List all series, optionally filtered by status or genre."""
+    store = _load_series_store()
+    if status:
+        store = [s for s in store if s.get("status") == status]
+    if genre:
+        store = [s for s in store if s.get("genre") == genre]
+    # Sort newest first
+    store = sorted(store, key=lambda s: s.get("created_at", ""), reverse=True)
+    return {"series": store, "count": len(store)}
+
+
+@router.get("/series/{series_id}")
+async def get_series(series_id: str):
+    """Get a series by ID."""
+    store = _load_series_store()
+    item = next((s for s in store if s["id"] == series_id), None)
+    if not item:
+        raise HTTPException(status_code=404, detail="Series not found.")
+    return item
+
+
+@router.put("/series/{series_id}")
+async def update_series(series_id: str, body: SeriesUpdate):
+    """Update series metadata."""
+    store = _load_series_store()
+    idx = next((i for i, s in enumerate(store) if s["id"] == series_id), None)
+    if idx is None:
+        raise HTTPException(status_code=404, detail="Series not found.")
+    patch = body.model_dump(exclude_none=True)
+    patch["updated_at"] = _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime())
+    store[idx].update(patch)
+    _save_series_store(store)
+    return store[idx]
+
+
+@router.delete("/series/{series_id}", status_code=204)
+async def delete_series(series_id: str):
+    """Delete a series."""
+    store = _load_series_store()
+    new_store = [s for s in store if s["id"] != series_id]
+    if len(new_store) == len(store):
+        raise HTTPException(status_code=404, detail="Series not found.")
+    _save_series_store(new_store)

@@ -9,7 +9,8 @@
     "home": "Home",
     "projects": "Projects",
     "settings": "Settings",
-    "studio": "Studio"
+    "studio": "Studio",
+    "series": "Series"
   },
   "auth": {
     "connectBondCentral": "Connect to BOND Central",

@@ -20,6 +20,7 @@ import { DecisionTimeline, type TimelineEventRow } from '@/components/story-engi
 import { VisualRefUploader } from '@/components/story-engine/VisualRefUploader';
 import { ProactiveFeedbackPanel } from '@/components/story-engine/ProactiveFeedbackPanel';
 import { DrawingStudio } from '@/components/story-engine/DrawingStudio';
+import { StyleSelector } from '@/components/manga/StyleSelector';
 
 function formatApiError(body: unknown, status: number): string {
   if (body && typeof body === 'object' && 'detail' in body) {
@@ -1036,6 +1037,7 @@ export default function StoryEnginePage() {
   const [architectLocalSyncing, setArchitectLocalSyncing] = useState(false);
   const [skipArchitectTriangulation, setSkipArchitectTriangulation] = useState(false);
   const [consumeArchitectNotes, setConsumeArchitectNotes] = useState(true);
+  const [mangaStyleId, setMangaStyleId] = useState<string>('solo_leveling');
   const [mangaBusyChapterId, setMangaBusyChapterId] = useState<string | null>(null);
   const [cascadeBusyChapterId, setCascadeBusyChapterId] = useState<string | null>(null);
   const [loreSyncBusyChapterId, setLoreSyncBusyChapterId] = useState<string | null>(null);
@@ -1451,6 +1453,7 @@ export default function StoryEnginePage() {
         chapter_id: chapterId,
         max_panels: 6,
         overwrite: false,
+        style_id: mangaStyleId || null,
       });
       const row = data.chapter as Chapter | undefined;
       if (row) {
@@ -1995,6 +1998,22 @@ export default function StoryEnginePage() {
                 <div>◎ {draftCount} borradores</div>
               </div>
             </div>
+
+            {/* Manga Style Selector — affects all manga-illustrate calls */}
+            {chapters.some(c => ['manga', 'animation'].includes(String(c.production_phase ?? ''))) && (
+              <div style={{
+                background: 'rgba(236,72,153,0.06)',
+                border: '1px solid rgba(236,72,153,0.18)',
+                borderRadius: 12,
+                padding: '14px 18px',
+                marginBottom: 12,
+              }}>
+                <div style={{ fontSize: 11, color: '#ec4899', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 10, textTransform: 'uppercase' }}>
+                  🎨 Estilo de Paneles Manga
+                </div>
+                <StyleSelector value={mangaStyleId} onChange={setMangaStyleId} compact />
+              </div>
+            )}
 
             {chapters.map(chapter => (
               <ChapterCard

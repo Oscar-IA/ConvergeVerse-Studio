@@ -12,6 +12,7 @@ const navItems = [
   { href: '/', key: 'home' as const },
   { href: '/story-engine', key: 'studio' as const },
   { href: '/manga', key: 'projects' as const },
+  { href: '/series', key: 'series' as const },
   { href: '/creative-hub', key: 'settings' as const },
 ];
 

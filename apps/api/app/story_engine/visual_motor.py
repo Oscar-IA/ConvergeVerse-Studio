@@ -17,7 +17,7 @@ from app.core.llm_completion import llm_complete_text
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_FLUX_MODEL = os.getenv("REPLICATE_FLUX_MODEL", "black-forest-labs/flux-schnell")
+DEFAULT_FLUX_MODEL = os.getenv("REPLICATE_FLUX_MODEL", "black-forest-labs/flux-dev")
 DEFAULT_ASPECT = os.getenv("REPLICATE_HERO_ASPECT_RATIO", "16:9")
 MANGA_PANEL_ASPECT = os.getenv("REPLICATE_MANGA_ASPECT_RATIO", "2:3")
 MAX_PROMPT_CHARS = int(os.getenv("REPLICATE_HERO_PROMPT_MAX", "1900"))
@@ -54,6 +54,54 @@ def build_hero_illustration_prompt(
     tail = COMPACT_COVER_PROMPT_EN[:400]
     out = f"{core} {tail}"
     return out[:MAX_PROMPT_CHARS]
+
+
+def _replicate_run_sync_styled(
+    prompt: str,
+    aspect_ratio: str,
+    model: str | None = None,
+    extra_params: dict | None = None,
+) -> str | None:
+    """Replicate run with explicit model + extra params (used by style engine)."""
+    token = get_replicate_token()
+    if not token:
+        logger.warning("REPLICATE_API_TOKEN no configurada — omite ilustración Replicate.")
+        return None
+    os.environ["REPLICATE_API_TOKEN"] = token
+    try:
+        import replicate
+
+        run_model = model or DEFAULT_FLUX_MODEL
+        payload: dict = {"prompt": prompt[:MAX_PROMPT_CHARS], "aspect_ratio": aspect_ratio}
+        if extra_params:
+            payload.update(extra_params)
+
+        out = replicate.run(run_model, input=payload)
+        if isinstance(out, str) and out.startswith("http"):
+            return out
+        if isinstance(out, (list, tuple)) and out:
+            u = out[0]
+            if isinstance(u, str) and u.startswith("http"):
+                return u
+        url = getattr(out, "url", None)
+        if url and str(url).startswith("http"):
+            return str(url)
+    except Exception as e:
+        logger.exception("Replicate styled illustration: %s", e)
+    return None
+
+
+async def generate_styled_panel_image_url(
+    prompt: str,
+    model: str | None = None,
+    aspect_ratio: str | None = None,
+    extra_params: dict | None = None,
+) -> str | None:
+    """Generate a panel image using a specific model/params from the style engine."""
+    if not get_replicate_token():
+        return None
+    ar = aspect_ratio or MANGA_PANEL_ASPECT
+    return await asyncio.to_thread(_replicate_run_sync_styled, prompt, ar, model, extra_params)
 
 
 def _replicate_run_sync(prompt: str, aspect_ratio: str) -> str | None:
