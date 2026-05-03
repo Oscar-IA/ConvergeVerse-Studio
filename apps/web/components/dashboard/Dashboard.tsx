@@ -2,53 +2,27 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { loadBondStories, autoSaveBondStory, parseBondFile, seedDemoStory, hasDemoStory } from '@/lib/bondSave'
 import type { BondStory } from '@/lib/bondSave'
+import { useKidsMode } from '@/hooks/useKidsMode'
 
-// ── Action Cards Data ─────────────────────────────────────────────────────────
+// ── Tips arrays (EN + ES) ────────────────────────────────────────────────────
 
-const ACTION_CARDS = [
-  {
-    href: '/story-engine',
-    emoji: '✨',
-    label: 'Crear Historia',
-    sub: '¡Escribe tu aventura con IA!',
-    gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
-    glow: 'rgba(236,72,153,0.5)',
-    delay: '0s',
-  },
-  {
-    href: '/manga',
-    emoji: '🎨',
-    label: 'Mis Dibujos',
-    sub: '¡Convierte tu historia en manga!',
-    gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
-    glow: 'rgba(139,92,246,0.5)',
-    delay: '0.05s',
-  },
-  {
-    href: '/series',
-    emoji: '📚',
-    label: 'Mis Series',
-    sub: '¡Organiza tus historias!',
-    gradient: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)',
-    glow: 'rgba(56,189,248,0.5)',
-    delay: '0.1s',
-  },
-  {
-    href: '/templates',
-    emoji: '🌸',
-    label: 'Plantillas',
-    sub: '¡Elige el estilo de tu historia!',
-    gradient: 'linear-gradient(135deg, #fb923c 0%, #ea580c 100%)',
-    glow: 'rgba(251,146,60,0.5)',
-    delay: '0.15s',
-  },
+const TIPS_EN = [
+  '💡 Start with a hero who has a big dream',
+  '🌟 The best villains also believe they are right',
+  '🎭 Give your special move an awesome name',
+  '📖 Every chapter should end with a surprise',
+  '🤝 Your hero needs a loyal best friend',
+  '⚡ The coolest powers always have a price',
+  '🌈 Describe the colors of your world',
+  '🗺️ Draw the map of your imaginary world',
+  '🔥 A great villain makes the hero stronger',
+  '🌙 Night scenes feel more mysterious and exciting',
 ]
 
-// ── Quick tips for kids ───────────────────────────────────────────────────────
-
-const TIPS = [
+const TIPS_ES = [
   '💡 Empieza con un héroe que tenga un gran sueño',
   '🌟 Los mejores villanos también creen que tienen razón',
   '🎭 Dale un nombre genial a tu técnica especial',
@@ -57,28 +31,31 @@ const TIPS = [
   '⚡ Los poderes más cool tienen un costo',
   '🌈 Describe los colores de tu mundo',
   '🗺️ Dibuja el mapa de tu mundo imaginario',
+  '🔥 Un buen villano hace más fuerte al héroe',
+  '🌙 Las escenas de noche son más misteriosas',
 ]
 
 // ── HeroBanner ────────────────────────────────────────────────────────────────
 
-function HeroBanner() {
+function HeroBanner({ kidsMode }: { kidsMode: boolean }) {
+  const t = useTranslations('dashboard')
+
   return (
     <div style={{
       position: 'relative',
       marginBottom: 32,
-      padding: '32px 24px',
+      padding: kidsMode ? '40px 24px' : '32px 24px',
       overflow: 'hidden',
       borderRadius: 24,
       background: 'linear-gradient(135deg, rgba(236,72,153,0.15) 0%, rgba(139,92,246,0.15) 50%, rgba(56,189,248,0.1) 100%)',
-      border: '2px solid rgba(236,72,153,0.25)',
-      boxShadow: '0 0 60px rgba(236,72,153,0.1)',
+      border: `2px solid rgba(236,72,153,${kidsMode ? '0.4' : '0.25'})`,
+      boxShadow: kidsMode
+        ? '0 0 80px rgba(236,72,153,0.15), 0 0 0 2px rgba(236,72,153,0.08)'
+        : '0 0 60px rgba(236,72,153,0.1)',
     }}>
       {/* Decorative burst SVG */}
-      <svg
-        aria-hidden="true"
-        style={{ position: 'absolute', right: -20, top: -20, opacity: 0.18, pointerEvents: 'none' }}
-        width="260" height="260" viewBox="0 0 260 260"
-      >
+      <svg aria-hidden style={{ position: 'absolute', right: -20, top: -20, opacity: 0.18, pointerEvents: 'none' }}
+        width="260" height="260" viewBox="0 0 260 260">
         <polygon points="130,10 155,90 240,90 175,140 200,220 130,170 60,220 85,140 20,90 105,90"
           fill="none" stroke="#ec4899" strokeWidth="3" />
         <polygon points="130,30 150,95 225,95 165,135 188,210 130,168 72,210 95,135 35,95 110,95"
@@ -86,20 +63,20 @@ function HeroBanner() {
         <circle cx="130" cy="130" r="40" fill="none" stroke="#a855f7" strokeWidth="2" strokeDasharray="6 4" />
       </svg>
 
-      {/* Mascot emoji */}
+      {/* Mascot — bigger in kids mode */}
       <div style={{
-        fontSize: 64,
+        fontSize: kidsMode ? 80 : 64,
         textAlign: 'center',
         marginBottom: 12,
         animation: 'bond-bounce 2s ease-in-out infinite',
         display: 'block',
       }}>
-        🦸
+        {kidsMode ? '🦸' : '🦸'}
       </div>
 
       <h1 style={{
         textAlign: 'center',
-        fontSize: 'clamp(1.4rem, 5vw, 2.4rem)',
+        fontSize: kidsMode ? 'clamp(1.8rem, 5vw, 2.8rem)' : 'clamp(1.4rem, 5vw, 2.4rem)',
         fontWeight: 900,
         margin: '0 0 8px',
         background: 'linear-gradient(135deg, #fff 0%, #ec4899 60%, #a855f7 100%)',
@@ -107,10 +84,10 @@ function HeroBanner() {
         WebkitTextFillColor: 'transparent',
         letterSpacing: '-0.02em',
       }}>
-        ¡Bienvenido a ConvergeVerse!
+        {t('heroTitle')}
       </h1>
-      <p style={{ textAlign: 'center', fontSize: 15, color: '#94a3b8', marginBottom: 28 }}>
-        Tu estudio de manga y anime personal ✨
+      <p style={{ textAlign: 'center', fontSize: kidsMode ? 17 : 15, color: '#94a3b8', marginBottom: 28 }}>
+        {t('heroSubtitle')}
       </p>
 
       {/* 3-step hero flow */}
@@ -122,25 +99,25 @@ function HeroBanner() {
         flexWrap: 'wrap',
       }}>
         {[
-          { emoji: '💡', label: 'Imagina' },
-          { emoji: '→', label: '' },
-          { emoji: '✍️', label: 'Crea' },
-          { emoji: '→', label: '' },
-          { emoji: '💾', label: 'Guarda' },
+          { emoji: '💡', key: 'step1' as const },
+          { emoji: '→', key: null },
+          { emoji: '✍️', key: 'step2' as const },
+          { emoji: '→', key: null },
+          { emoji: '💾', key: 'step3' as const },
         ].map((step, i) =>
-          step.label ? (
+          step.key ? (
             <div key={i} style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-              padding: '12px 20px',
+              padding: kidsMode ? '14px 24px' : '12px 20px',
               background: 'rgba(255,255,255,0.07)',
               border: '2px solid rgba(255,255,255,0.15)',
-              borderRadius: 16,
-              minWidth: 90,
+              borderRadius: kidsMode ? 20 : 16,
+              minWidth: kidsMode ? 100 : 90,
               boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
               animation: `bond-pop-in 0.4s ease ${i * 0.08}s both`,
             }}>
-              <span style={{ fontSize: 32 }}>{step.emoji}</span>
-              <span style={{ fontSize: 14, fontWeight: 700, color: '#e2e8f0' }}>{step.label}</span>
+              <span style={{ fontSize: kidsMode ? 38 : 32 }}>{step.emoji}</span>
+              <span style={{ fontSize: kidsMode ? 16 : 14, fontWeight: 700, color: '#e2e8f0' }}>{t(step.key)}</span>
             </div>
           ) : (
             <span key={i} style={{ fontSize: 22, color: 'rgba(255,255,255,0.3)', fontWeight: 300 }}>→</span>
@@ -153,26 +130,72 @@ function HeroBanner() {
 
 // ── ActionGrid ────────────────────────────────────────────────────────────────
 
-function ActionGrid() {
+function ActionGrid({ kidsMode }: { kidsMode: boolean }) {
+  const t = useTranslations('dashboard')
+
+  const cards = [
+    {
+      href: '/story-engine',
+      emoji: '✨',
+      labelKey: 'actionCreate' as const,
+      subKey: 'actionCreateSub' as const,
+      gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+      glow: 'rgba(236,72,153,0.5)',
+      delay: '0s',
+    },
+    {
+      href: '/manga',
+      emoji: '🎨',
+      labelKey: 'actionDraw' as const,
+      subKey: 'actionDrawSub' as const,
+      gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+      glow: 'rgba(139,92,246,0.5)',
+      delay: '0.05s',
+    },
+    {
+      href: '/series',
+      emoji: '📚',
+      labelKey: 'actionSeries' as const,
+      subKey: 'actionSeriesSub' as const,
+      gradient: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)',
+      glow: 'rgba(56,189,248,0.5)',
+      delay: '0.1s',
+    },
+    {
+      href: '/templates',
+      emoji: '🌸',
+      labelKey: 'actionTemplates' as const,
+      subKey: 'actionTemplatesSub' as const,
+      gradient: 'linear-gradient(135deg, #fb923c 0%, #ea580c 100%)',
+      glow: 'rgba(251,146,60,0.5)',
+      delay: '0.15s',
+    },
+  ]
+
   return (
     <div style={{ marginBottom: 36 }}>
-      <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 16 }}>
-        ¿Qué quieres hacer hoy? 🚀
+      <h2 style={{ fontSize: kidsMode ? 20 : 18, fontWeight: 800, color: '#fff', marginBottom: 16 }}>
+        {t('whatToDo')}
       </h2>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: 14,
+        gap: kidsMode ? 16 : 14,
       }}>
-        {ACTION_CARDS.map((card) => (
-          <ActionCard key={card.href} card={card} />
+        {cards.map((card) => (
+          <ActionCard key={card.href} card={card} label={t(card.labelKey)} sub={t(card.subKey)} kidsMode={kidsMode} />
         ))}
       </div>
     </div>
   )
 }
 
-function ActionCard({ card }: { card: typeof ACTION_CARDS[0] }) {
+function ActionCard({
+  card, label, sub, kidsMode,
+}: {
+  card: { href: string; emoji: string; gradient: string; glow: string; delay: string };
+  label: string; sub: string; kidsMode: boolean;
+}) {
   const [hov, setHov] = useState(false)
 
   return (
@@ -181,7 +204,7 @@ function ActionCard({ card }: { card: typeof ACTION_CARDS[0] }) {
       className="btn-action"
       style={{
         background: hov ? card.gradient : 'rgba(255,255,255,0.06)',
-        minHeight: 130,
+        minHeight: kidsMode ? 150 : 130,
         position: 'relative',
         overflow: 'hidden',
         animationDelay: card.delay,
@@ -191,6 +214,7 @@ function ActionCard({ card }: { card: typeof ACTION_CARDS[0] }) {
         border: `3px solid ${hov ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.15)'}`,
         transform: hov ? 'translateY(-6px) scale(1.02)' : 'translateY(0) scale(1)',
         transition: 'all 0.2s cubic-bezier(0.34,1.56,0.64,1)',
+        borderRadius: kidsMode ? 20 : undefined,
       }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
@@ -204,23 +228,24 @@ function ActionCard({ card }: { card: typeof ACTION_CARDS[0] }) {
         transition: 'opacity 0.2s',
       }} />
 
-      <span style={{ fontSize: 48, position: 'relative', zIndex: 1, display: 'block' }}>
+      <span style={{ fontSize: kidsMode ? 56 : 48, position: 'relative', zIndex: 1, display: 'block',
+        animation: kidsMode && hov ? 'bond-wiggle 0.4s ease' : undefined,
+      }}>
         {card.emoji}
       </span>
       <span style={{
-        fontSize: 16, fontWeight: 800, color: '#fff',
+        fontSize: kidsMode ? 18 : 16, fontWeight: 800, color: '#fff',
         textShadow: '0 2px 8px rgba(0,0,0,0.5)',
-        position: 'relative', zIndex: 1,
-        textAlign: 'center',
+        position: 'relative', zIndex: 1, textAlign: 'center',
       }}>
-        {card.label}
+        {label}
       </span>
       <span style={{
-        fontSize: 11, color: 'rgba(255,255,255,0.75)',
+        fontSize: kidsMode ? 13 : 11, color: 'rgba(255,255,255,0.75)',
         textAlign: 'center', lineHeight: 1.3,
         position: 'relative', zIndex: 1,
       }}>
-        {card.sub}
+        {sub}
       </span>
     </Link>
   )
@@ -228,15 +253,14 @@ function ActionCard({ card }: { card: typeof ACTION_CARDS[0] }) {
 
 // ── MyStoriesGallery ──────────────────────────────────────────────────────────
 
-function MyStoriesGallery() {
+function MyStoriesGallery({ kidsMode }: { kidsMode: boolean }) {
+  const t = useTranslations('dashboard')
   const [stories, setStories] = useState<BondStory[]>([])
   const [importMsg, setImportMsg] = useState<string | null>(null)
 
   const reload = () => setStories(loadBondStories())
-
   useEffect(() => { reload() }, [])
 
-  // Import .bond file from user's computer
   const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -245,66 +269,60 @@ function MyStoriesGallery() {
       const content = ev.target?.result as string
       const story = parseBondFile(content)
       if (!story) {
-        setImportMsg('❌ Archivo no válido. Asegúrate de que sea un archivo .bond de BOND Studios.')
+        setImportMsg('❌ ' + (kidsMode
+          ? 'That file didn\'t work. Make sure it\'s a .bond file! / ¡Ese archivo no funcionó. Asegúrate de que sea .bond!'
+          : 'Archivo no válido. Asegúrate de que sea un archivo .bond de BOND Studios.'))
       } else {
         autoSaveBondStory(story)
         reload()
-        setImportMsg(`✅ "${story.title}" cargada desde tu computadora!`)
+        setImportMsg(`✅ "${story.title}" loaded! / ¡cargada!`)
       }
       setTimeout(() => setImportMsg(null), 3000)
     }
     reader.readAsText(file)
-    e.target.value = '' // reset so same file can be re-imported
+    e.target.value = ''
   }
 
-  const handleDemo = () => {
-    seedDemoStory()
-    reload()
-  }
+  const handleDemo = () => { seedDemoStory(); reload() }
 
   return (
     <div style={{ marginBottom: 36 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', margin: 0 }}>
-          📖 Mis Historias
+        <h2 style={{ fontSize: kidsMode ? 20 : 18, fontWeight: 800, color: '#fff', margin: 0 }}>
+          📖 {t('myStories')}
         </h2>
-        {/* Toolbar */}
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          {/* Import .bond */}
           <label style={{
-            fontSize: 11, color: '#06b6d4', cursor: 'pointer',
-            padding: '5px 12px',
-            border: '1px solid rgba(6,182,212,0.35)',
-            borderRadius: 8, fontWeight: 600,
+            fontSize: kidsMode ? 13 : 11, color: '#06b6d4', cursor: 'pointer',
+            padding: kidsMode ? '8px 16px' : '5px 12px',
+            border: '1px solid rgba(6,182,212,0.35)', borderRadius: 8, fontWeight: 600,
             background: 'rgba(6,182,212,0.06)',
             display: 'flex', alignItems: 'center', gap: 4,
             transition: 'all 0.15s',
           }}>
-            📂 Cargar .bond
-            <input type="file" accept=".bond,.json" onChange={handleImportFile}
-              style={{ display: 'none' }} />
+            {t('loadBond')}
+            <input type="file" accept=".bond,.json" onChange={handleImportFile} style={{ display: 'none' }} />
           </label>
           {stories.length > 0 && (
             <Link href="/story-engine" style={{
-              fontSize: 11, color: '#ec4899', textDecoration: 'none',
-              padding: '5px 12px',
-              border: '1px solid rgba(236,72,153,0.35)',
-              borderRadius: 8, fontWeight: 600,
+              fontSize: kidsMode ? 13 : 11, color: '#ec4899', textDecoration: 'none',
+              padding: kidsMode ? '8px 16px' : '5px 12px',
+              border: '1px solid rgba(236,72,153,0.35)', borderRadius: 8, fontWeight: 600,
               background: 'rgba(236,72,153,0.06)',
             }}>
-              + Nueva
+              {t('newStory')}
             </Link>
           )}
         </div>
       </div>
 
-      {/* Import message */}
       {importMsg && (
         <div style={{
           padding: '10px 16px', borderRadius: 10, marginBottom: 14,
           background: importMsg.startsWith('✅') ? 'rgba(74,222,128,0.1)' : 'rgba(239,68,68,0.1)',
           border: `1px solid ${importMsg.startsWith('✅') ? 'rgba(74,222,128,0.3)' : 'rgba(239,68,68,0.3)'}`,
-          fontSize: 13, color: importMsg.startsWith('✅') ? '#4ade80' : '#fca5a5',
+          fontSize: kidsMode ? 14 : 13,
+          color: importMsg.startsWith('✅') ? '#4ade80' : '#fca5a5',
         }}>
           {importMsg}
         </div>
@@ -312,36 +330,38 @@ function MyStoriesGallery() {
 
       {stories.length === 0 ? (
         <div style={{
-          textAlign: 'center', padding: '44px 24px',
+          textAlign: 'center', padding: kidsMode ? '56px 24px' : '44px 24px',
           background: 'rgba(255,255,255,0.03)',
           border: '2px dashed rgba(255,255,255,0.12)',
           borderRadius: 20,
         }}>
-          <div style={{ fontSize: 52, marginBottom: 12 }}>🚀</div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#e2e8f0', marginBottom: 6 }}>
-            ¡Aún no tienes historias!
+          <div style={{ fontSize: kidsMode ? 64 : 52, marginBottom: 12 }}>🚀</div>
+          <div style={{ fontSize: kidsMode ? 18 : 16, fontWeight: 700, color: '#e2e8f0', marginBottom: 6 }}>
+            {t('noStories')}
           </div>
-          <div style={{ fontSize: 13, color: '#64748b', marginBottom: 20 }}>
-            Crea la primera o carga un ejemplo para explorar
+          <div style={{ fontSize: kidsMode ? 15 : 13, color: '#64748b', marginBottom: 20 }}>
+            {t('noStoriesHint')}
           </div>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/story-engine" style={{
-              display: 'inline-block', padding: '12px 24px',
+              display: 'inline-block', padding: kidsMode ? '14px 28px' : '12px 24px',
               background: 'linear-gradient(135deg, #ec4899, #a855f7)',
-              borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 14,
-              textDecoration: 'none', boxShadow: '0 4px 20px rgba(236,72,153,0.3)',
+              borderRadius: kidsMode ? 16 : 12, color: '#fff', fontWeight: 700,
+              fontSize: kidsMode ? 16 : 14, textDecoration: 'none',
+              boxShadow: '0 4px 20px rgba(236,72,153,0.3)',
             }}>
-              ✨ Crear historia
+              {t('createFirst')}
             </Link>
             {!hasDemoStory() && (
               <button onClick={handleDemo} style={{
-                padding: '12px 24px',
+                padding: kidsMode ? '14px 28px' : '12px 24px',
                 background: 'rgba(6,182,212,0.12)',
                 border: '1px solid rgba(6,182,212,0.35)',
-                borderRadius: 12, color: '#06b6d4', fontWeight: 700, fontSize: 14,
+                borderRadius: kidsMode ? 16 : 12, color: '#06b6d4',
+                fontWeight: 700, fontSize: kidsMode ? 16 : 14,
                 cursor: 'pointer', fontFamily: 'inherit',
               }}>
-                ⚡ Ver ejemplo
+                {t('viewExample')}
               </button>
             )}
           </div>
@@ -350,10 +370,10 @@ function MyStoriesGallery() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))',
-          gap: 14,
+          gap: kidsMode ? 16 : 14,
         }}>
           {stories.map((story, i) => (
-            <StoryCard key={story.id} story={story} delay={`${i * 0.05}s`} />
+            <StoryCard key={story.id} story={story} delay={`${i * 0.05}s`} kidsMode={kidsMode} />
           ))}
         </div>
       )}
@@ -361,16 +381,13 @@ function MyStoriesGallery() {
   )
 }
 
-function StoryCard({ story, delay }: { story: BondStory; delay: string }) {
+function StoryCard({ story, delay, kidsMode }: { story: BondStory; delay: string; kidsMode: boolean }) {
+  const t = useTranslations('dashboard')
   const [hov, setHov] = useState(false)
-  const date = new Date(story.updatedAt).toLocaleDateString('es-MX', {
-    day: '2-digit', month: 'short',
-  })
+  const date = new Date(story.updatedAt).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })
 
   const handleSave = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    // Dynamic import to avoid SSR issues
+    e.preventDefault(); e.stopPropagation()
     import('@/lib/bondSave').then(({ saveBondFile }) => saveBondFile(story))
   }
 
@@ -380,26 +397,23 @@ function StoryCard({ story, delay }: { story: BondStory; delay: string }) {
         href={`/my-stories?id=${story.id}`}
         className="story-card"
         style={{
-          textDecoration: 'none',
-          animationDelay: delay,
+          textDecoration: 'none', animationDelay: delay,
           transform: hov ? 'translateY(-4px)' : 'translateY(0)',
           boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.4)' : '0 2px 8px rgba(0,0,0,0.2)',
           borderColor: hov ? 'rgba(236,72,153,0.4)' : 'rgba(255,255,255,0.1)',
-          transition: 'all 0.2s',
-          display: 'block',
+          transition: 'all 0.2s', display: 'block',
+          borderRadius: kidsMode ? '20px' : undefined,
         }}
         onMouseEnter={() => setHov(true)}
         onMouseLeave={() => setHov(false)}
       >
-        {/* Cover emoji */}
         <div style={{
-          fontSize: 44, textAlign: 'center', marginBottom: 10,
-          background: 'rgba(255,255,255,0.05)',
-          borderRadius: 12, padding: '12px 0',
+          fontSize: kidsMode ? 52 : 44, textAlign: 'center', marginBottom: 10,
+          background: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: '12px 0',
         }}>
           {story.cover_emoji || '📖'}
         </div>
-        <div style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', marginBottom: 4, lineHeight: 1.3 }}>
+        <div style={{ fontSize: kidsMode ? 15 : 14, fontWeight: 700, color: '#f1f5f9', marginBottom: 4, lineHeight: 1.3 }}>
           {story.title}
         </div>
         {story.genre && (
@@ -408,22 +422,17 @@ function StoryCard({ story, delay }: { story: BondStory; delay: string }) {
           </div>
         )}
         <div style={{ fontSize: 10, color: '#475569', marginBottom: 8 }}>
-          📅 {date} · {story.chapters.length} cap.
+          📅 {date} · {story.chapters.length} ch.
         </div>
-        {/* Save button */}
-        <button
-          onClick={handleSave}
-          title="Guardar como archivo .bond en tu computadora"
+        <button onClick={handleSave} title="Save as .bond file"
           style={{
-            width: '100%', padding: '6px 0',
-            background: 'rgba(6,182,212,0.08)',
-            border: '1px solid rgba(6,182,212,0.2)',
+            width: '100%', padding: kidsMode ? '8px 0' : '6px 0',
+            background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.2)',
             borderRadius: 8, color: '#06b6d4',
-            fontSize: 10, fontWeight: 700, cursor: 'pointer',
+            fontSize: kidsMode ? 12 : 10, fontWeight: 700, cursor: 'pointer',
             fontFamily: 'inherit', letterSpacing: '0.05em',
-          }}
-        >
-          💾 Guardar .bond
+          }}>
+          {t('saveBond')}
         </button>
       </Link>
     </div>
@@ -432,63 +441,59 @@ function StoryCard({ story, delay }: { story: BondStory; delay: string }) {
 
 // ── QuickTip ──────────────────────────────────────────────────────────────────
 
-function QuickTip() {
+function QuickTip({ kidsMode }: { kidsMode: boolean }) {
+  const t = useTranslations('dashboard')
   const [tipIdx, setTipIdx] = useState(0)
   const [fading, setFading] = useState(false)
 
-  useEffect(() => {
-    // Randomize initial tip
-    setTipIdx(Math.floor(Math.random() * TIPS.length))
-  }, [])
+  // Use bilingual tips — show EN tip with ES tip below in kids mode
+  const tipsEN = TIPS_EN
+  const tipsES = TIPS_ES
+
+  useEffect(() => { setTipIdx(Math.floor(Math.random() * tipsEN.length)) }, [])
 
   const nextTip = () => {
     setFading(true)
-    setTimeout(() => {
-      setTipIdx(i => (i + 1) % TIPS.length)
-      setFading(false)
-    }, 200)
+    setTimeout(() => { setTipIdx(i => (i + 1) % tipsEN.length); setFading(false) }, 200)
   }
 
   return (
     <div style={{
-      padding: '16px 20px',
+      padding: kidsMode ? '20px 24px' : '16px 20px',
       background: 'rgba(251,191,36,0.06)',
-      border: '1px solid rgba(251,191,36,0.2)',
-      borderRadius: 16,
-      display: 'flex',
-      alignItems: 'center',
-      gap: 14,
+      border: `1px solid rgba(251,191,36,${kidsMode ? '0.35' : '0.2'})`,
+      borderRadius: kidsMode ? 20 : 16,
+      display: 'flex', alignItems: 'center', gap: 14,
     }}>
-      <span style={{ fontSize: 28, flexShrink: 0 }}>🌟</span>
+      <span style={{ fontSize: kidsMode ? 36 : 28, flexShrink: 0 }}>🌟</span>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 10, color: '#fbbf24', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
-          Consejo del día
+        <div style={{ fontSize: kidsMode ? 12 : 10, color: '#fbbf24', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>
+          {t('tip')}
         </div>
         <div style={{
-          fontSize: 13, color: '#fde68a', lineHeight: 1.5,
-          opacity: fading ? 0 : 1,
-          transition: 'opacity 0.2s',
+          fontSize: kidsMode ? 15 : 13, color: '#fde68a', lineHeight: 1.5,
+          opacity: fading ? 0 : 1, transition: 'opacity 0.2s',
         }}>
-          {TIPS[tipIdx]}
+          {tipsEN[tipIdx]}
+          {kidsMode && (
+            <div style={{ marginTop: 4, opacity: 0.6, fontSize: '0.9em' }}>
+              {tipsES[tipIdx]}
+            </div>
+          )}
         </div>
       </div>
-      <button
-        onClick={nextTip}
-        style={{
-          background: 'rgba(251,191,36,0.15)',
-          border: '1px solid rgba(251,191,36,0.3)',
-          borderRadius: 8,
-          color: '#fbbf24',
-          fontSize: 11, fontWeight: 600,
-          padding: '6px 12px', cursor: 'pointer',
-          fontFamily: 'inherit',
-          flexShrink: 0,
-          transition: 'all 0.15s',
-        }}
+      <button onClick={nextTip} style={{
+        background: 'rgba(251,191,36,0.15)', border: '1px solid rgba(251,191,36,0.3)',
+        borderRadius: 8, color: '#fbbf24',
+        fontSize: kidsMode ? 13 : 11, fontWeight: 600,
+        padding: kidsMode ? '8px 14px' : '6px 12px',
+        cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0,
+        transition: 'all 0.15s',
+      }}
         onMouseEnter={e => (e.currentTarget.style.background = 'rgba(251,191,36,0.25)')}
         onMouseLeave={e => (e.currentTarget.style.background = 'rgba(251,191,36,0.15)')}
       >
-        Otro →
+        {t('tipNext')}
       </button>
     </div>
   )
@@ -497,12 +502,16 @@ function QuickTip() {
 // ── Main Dashboard ─────────────────────────────────────────────────────────────
 
 export function Dashboard() {
+  const { kidsMode } = useKidsMode()
+
   return (
-    <main style={{
+    <main className={kidsMode ? 'kids-mode' : ''} style={{
       minHeight: '100vh',
       background: 'linear-gradient(160deg, #070510 0%, #0d0618 40%, #0a1020 100%)',
       color: '#e2e8f0',
-      fontFamily: 'system-ui, -apple-system, sans-serif',
+      fontFamily: kidsMode
+        ? "'Segoe UI', system-ui, -apple-system, sans-serif"
+        : 'system-ui, -apple-system, sans-serif',
       overflowX: 'hidden',
     }}>
       {/* Ambient blobs */}
@@ -528,10 +537,10 @@ export function Dashboard() {
       `}</style>
 
       <div style={{ position: 'relative', zIndex: 1, maxWidth: 1100, margin: '0 auto', padding: '28px 20px' }}>
-        <HeroBanner />
-        <ActionGrid />
-        <MyStoriesGallery />
-        <QuickTip />
+        <HeroBanner kidsMode={kidsMode} />
+        <ActionGrid kidsMode={kidsMode} />
+        <MyStoriesGallery kidsMode={kidsMode} />
+        <QuickTip kidsMode={kidsMode} />
 
         {/* Footer */}
         <div style={{

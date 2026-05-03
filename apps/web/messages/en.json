@@ -101,11 +101,22 @@
     "step3": "Save",
     "myStories": "My Stories",
     "noStories": "No stories yet!",
-    "noStoriesHint": "Create your first and start your adventure",
+    "noStoriesHint": "Create your first story or load a demo",
     "createFirst": "✨ Create my first story",
-    "viewExample": "⚡ See example",
+    "viewExample": "⚡ See demo",
     "loadBond": "📂 Load .bond",
     "saveBond": "💾 Save .bond",
-    "tip": "Daily Tip"
+    "tip": "Daily Tip",
+    "tipNext": "Next →",
+    "whatToDo": "What do you want to do today? 🚀",
+    "newStory": "+ New Story",
+    "actionCreate": "Create Story",
+    "actionCreateSub": "Your magic helper writes with you!",
+    "actionDraw": "My Drawings",
+    "actionDrawSub": "Turn your story into manga!",
+    "actionSeries": "My Series",
+    "actionSeriesSub": "Organize your stories!",
+    "actionTemplates": "Templates",
+    "actionTemplatesSub": "Choose your story style!"
   }
 }

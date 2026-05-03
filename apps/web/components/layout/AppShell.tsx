@@ -99,11 +99,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <button
             onClick={toggleKidsMode}
             className={`kids-mode-toggle${kidsMode ? ' kids-mode-toggle--active' : ''}`}
-            title={kidsMode ? 'Cambiar a modo adulto' : 'Cambiar a modo niños'}
+            title={kidsMode ? 'Switch to adult mode / Cambiar a modo adulto' : 'Switch to kids mode / Cambiar a modo niños'}
             aria-pressed={kidsMode}
-            style={{ fontSize: 10, padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}
           >
-            {kidsMode ? '🧒 NIÑOS' : '👨‍💻 ADULTOS'}
+            {kidsMode ? '🧒 KIDS MODE' : '👤 ADULT MODE'}
           </button>
           <LanguageSelector />
 

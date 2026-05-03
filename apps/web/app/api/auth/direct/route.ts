@@ -21,6 +21,9 @@ function getValidCodes(): Set<string> {
   return new Set(['BOND-GERO-2026', ...extra]);
 }
 
+/** Codes that automatically enable kids mode after login */
+const KIDS_CODES = new Set(['BOND-GERO-2026']);
+
 function getSecret(): string {
   return (
     process.env.CONVERGEVERSE_LOCAL_SECRET ??
@@ -67,7 +70,7 @@ export async function POST(req: NextRequest) {
   const safePath =
     redirectParam.startsWith('/') && !redirectParam.startsWith('//') ? redirectParam : '/';
 
-  const res = NextResponse.json({ ok: true, redirect: safePath });
+  const res = NextResponse.json({ ok: true, redirect: safePath, kidsMode: KIDS_CODES.has(code) });
   res.cookies.set(SESSION_COOKIE, token, {
     httpOnly: true,
     secure: isProd,
@@ -75,6 +78,17 @@ export async function POST(req: NextRequest) {
     path: '/',
     maxAge: TTL_SECONDS,
   });
+
+  // Auto-enable kids mode for kid accounts
+  if (KIDS_CODES.has(code)) {
+    res.cookies.set('kids_mode', '1', {
+      httpOnly: false, // readable by client JS so useKidsMode can pick it up
+      secure: isProd,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: TTL_SECONDS,
+    });
+  }
 
   return res;
 }

@@ -94,18 +94,29 @@
     "copied": "¡Copiado!"
   },
   "dashboard": {
-    "heroTitle": "Tus Historias Cobran Vida",
+    "heroTitle": "¡Tus Historias Cobran Vida!",
     "heroSubtitle": "Imagina · Crea · Guarda tu aventura",
     "step1": "Imagina",
     "step2": "Crea",
     "step3": "Guarda",
     "myStories": "Mis Historias",
     "noStories": "¡Aún no tienes historias!",
-    "noStoriesHint": "Crea la primera y empieza tu aventura",
+    "noStoriesHint": "Crea la primera o carga un ejemplo",
     "createFirst": "✨ Crear mi primera historia",
-    "viewExample": "⚡ Ver ejemplo",
+    "viewExample": "⚡ Ver demo",
     "loadBond": "📂 Cargar .bond",
     "saveBond": "💾 Guardar .bond",
-    "tip": "Consejo del día"
+    "tip": "Consejo del día",
+    "tipNext": "Otro →",
+    "whatToDo": "¿Qué quieres hacer hoy? 🚀",
+    "newStory": "+ Nueva Historia",
+    "actionCreate": "Crear Historia",
+    "actionCreateSub": "¡Tu ayudante mágico escribe contigo!",
+    "actionDraw": "Mis Dibujos",
+    "actionDrawSub": "¡Convierte tu historia en manga!",
+    "actionSeries": "Mis Series",
+    "actionSeriesSub": "¡Organiza tus historias!",
+    "actionTemplates": "Plantillas",
+    "actionTemplatesSub": "¡Elige el estilo de tu historia!"
   }
 }
