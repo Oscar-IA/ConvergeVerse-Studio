@@ -50,8 +50,20 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ConvergeVerse Studio',
-  description: 'Autonomous Anime Creator — Bond Converge Universe',
+  title: {
+    default: 'ConvergeVerse Studio — BOND Studios',
+    template: '%s · ConvergeVerse',
+  },
+  description: 'Plataforma profesional de creación anime autónoma. Story Engine, Manga Studio, Series Platform y más — BOND Studios.',
+  keywords: ['anime', 'manga', 'story engine', 'BOND Studios', 'ConvergeVerse', 'narrative AI', 'creative platform'],
+  authors: [{ name: 'BOND Studios' }],
+  creator: 'BOND Studios',
+  openGraph: {
+    type: 'website',
+    title: 'ConvergeVerse Studio — BOND Studios',
+    description: 'Plataforma profesional de creación anime — desde la historia hasta el manga publicado',
+    siteName: 'ConvergeVerse Studio',
+  },
 };
 
 export default async function RootLayout({

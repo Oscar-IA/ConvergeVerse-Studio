@@ -10,7 +10,8 @@
     "projects": "Projects",
     "settings": "Settings",
     "studio": "Studio",
-    "series": "Series"
+    "series": "Series",
+    "templates": "Templates"
   },
   "auth": {
     "connectBondCentral": "Connect to BOND Central",

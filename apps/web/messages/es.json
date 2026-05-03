@@ -10,7 +10,8 @@
     "projects": "Proyectos",
     "settings": "Configuración",
     "studio": "Estudio",
-    "series": "Series"
+    "series": "Series",
+    "templates": "Plantillas"
   },
   "auth": {
     "connectBondCentral": "Conectar a BOND Central",
