@@ -47,10 +47,11 @@ function BondAuthContent() {
   const redirect = params.get("redirect") ?? "/";
   const nexusUrl = `${central}/nexus`;
 
-  const [code,      setCode]      = useState("");
-  const [loading,   setLoading]   = useState(false);
-  const [codeError, setCodeError] = useState<[string,string] | null>(null);
-  const [tab,       setTab]       = useState<"code" | "central">("code");
+  const [code,       setCode]       = useState("");
+  const [loading,    setLoading]    = useState(false);
+  const [codeError,  setCodeError]  = useState<[string,string] | null>(null);
+  const [tab,        setTab]        = useState<"code" | "central">("code");
+  const [welcomed,   setWelcomed]   = useState<{ name: string; emoji: string } | null>(null);
 
   const handleCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,9 +65,18 @@ function BondAuthContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: trimmed }),
       });
-      const data = (await res.json()) as { ok: boolean; error?: string; redirect?: string };
+      const data = (await res.json()) as {
+        ok: boolean; error?: string; redirect?: string;
+        profile?: { name: string; emoji: string } | null;
+      };
       if (data.ok) {
-        router.replace(data.redirect ?? redirect);
+        if (data.profile) {
+          // Show personalized welcome for ~1.2s before redirecting
+          setWelcomed(data.profile);
+          setTimeout(() => router.replace(data.redirect ?? redirect), 1400);
+        } else {
+          router.replace(data.redirect ?? redirect);
+        }
       } else {
         setCodeError(ERROR_MESSAGES[data.error ?? ""] ?? ERROR_MESSAGES.invalid_code);
       }
@@ -197,8 +207,49 @@ function BondAuthContent() {
             </div>
           )}
 
+          {/* ── Welcome flash (shown briefly after successful login) ── */}
+          {welcomed && (
+            <div style={{
+              textAlign: "center", padding: "24px 0",
+              animation: "ba-welcome-in 0.4s ease both",
+            }}>
+              <style>{`@keyframes ba-welcome-in{0%{opacity:0;transform:scale(0.8)}100%{opacity:1;transform:scale(1)}}`}</style>
+              <div style={{ fontSize: 80, marginBottom: 16, animation: "bond-bounce 1s ease-in-out infinite" }}>
+                {welcomed.emoji}
+              </div>
+              <h2 style={{
+                fontSize: 26, fontWeight: 900, margin: "0 0 8px",
+                background: "linear-gradient(135deg,#fff,#22d3ee)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              }}>
+                Hi {welcomed.name}! 👋
+                <span style={{ display: "block", fontSize: "0.65em", opacity: 0.55, marginTop: 4 }}>
+                  ¡Hola {welcomed.name}!
+                </span>
+              </h2>
+              <p style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", margin: "0 0 4px" }}>
+                Ready to create! ✨
+              </p>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.3)" }}>¡Listo para crear!</p>
+              <div style={{ marginTop: 16, display: "flex", justifyContent: "center" }}>
+                <div style={{
+                  width: 160, height: 4, borderRadius: 4,
+                  background: "rgba(255,255,255,0.1)",
+                  overflow: "hidden",
+                }}>
+                  <div style={{
+                    height: "100%", background: "linear-gradient(90deg,#22d3ee,#a855f7)",
+                    animation: "cv-progress 1.3s linear forwards",
+                    borderRadius: 4,
+                  }}/>
+                  <style>{`@keyframes cv-progress{0%{width:0%}100%{width:100%}}`}</style>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* ── Code tab ── */}
-          {tab === "code" && (
+          {!welcomed && tab === "code" && (
             <form onSubmit={handleCodeSubmit}>
               <label style={{
                 display: "block", fontSize: 13, fontWeight: 700,
@@ -267,7 +318,7 @@ function BondAuthContent() {
           )}
 
           {/* ── BOND Central / Admin tab ── */}
-          {tab === "central" && (
+          {!welcomed && tab === "central" && (
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: 48, marginBottom: 16 }}>🔐</div>
               <p style={{
