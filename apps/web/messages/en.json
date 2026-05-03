@@ -3,19 +3,32 @@
     "save": "Save",
     "cancel": "Cancel",
     "loading": "Loading...",
-    "error": "Error"
+    "error": "Error",
+    "back": "Back",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "confirm": "Confirm",
+    "search": "Search"
   },
   "nav": {
     "home": "Home",
+    "studio": "Studio",
+    "myStories": "My Stories",
     "projects": "Projects",
     "settings": "Settings",
-    "studio": "Studio",
     "series": "Series",
     "templates": "Templates"
   },
   "auth": {
     "connectBondCentral": "Connect to BOND Central",
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "accessCode": "Access Code",
+    "enterCode": "Enter your access code",
+    "enterStudio": "Enter Studio",
+    "verifying": "Verifying…",
+    "invalidCode": "Invalid code. Please try again.",
+    "codeHint": "Access codes are issued by BOND Studios."
   },
   "studio": {
     "newProject": "New Project",
@@ -37,10 +50,62 @@
     "generator": "GENERATOR",
     "generatingPanels": "GENERATING PANELS…",
     "generateMangaPanels": "◆ GENERATE MANGA PANELS",
-    "mangaPhase": "MANGA PHASE — Keyframes → Replicate (Solo Leveling / webtoon)",
+    "mangaPhase": "MANGA PHASE — Keyframes → Replicate",
     "noImage": "NO IMAGE",
     "panels": "PANELS ({count})",
     "enrichFuture": "◇ ENRICH FUTURE",
     "regenerateHardReset": "↻ REGENERATE (HARD RESET)"
+  },
+  "myStories": {
+    "title": "My Stories",
+    "subtitle": "Stories saved on this device",
+    "noStories": "No stories saved yet",
+    "noStoriesHint": "Create your first story or load a .bond file",
+    "loadDemo": "Load Demo Story",
+    "newStory": "New Story",
+    "loadFile": "Load .bond",
+    "saveBond": "Save .bond file",
+    "chapters": "{count} chapters",
+    "continueStudio": "Continue in Studio",
+    "updated": "Updated"
+  },
+  "series": {
+    "title": "Series Platform",
+    "subtitle": "Your story library · anime · manga · novels",
+    "newSeries": "New Series",
+    "noSeries": "Your library is empty!",
+    "noSeriesHint": "Create your first series and build your anime universe",
+    "createFirst": "Create my first series",
+    "statTotal": "Total Series",
+    "statActive": "Active",
+    "statChapters": "Chapters",
+    "statGenres": "Genres"
+  },
+  "templates": {
+    "title": "Anime Templates",
+    "subtitle": "Choose your story style",
+    "use": "Use this Template!",
+    "episodes": "eps",
+    "arcs": "Story Arcs",
+    "themes": "Core Themes",
+    "structure": "Narrative Structure",
+    "startPrompt": "Starting Prompt",
+    "copy": "Copy",
+    "copied": "Copied!"
+  },
+  "dashboard": {
+    "heroTitle": "Your Stories Come to Life",
+    "heroSubtitle": "Imagine · Create · Save your adventure",
+    "step1": "Imagine",
+    "step2": "Create",
+    "step3": "Save",
+    "myStories": "My Stories",
+    "noStories": "No stories yet!",
+    "noStoriesHint": "Create your first and start your adventure",
+    "createFirst": "✨ Create my first story",
+    "viewExample": "⚡ See example",
+    "loadBond": "📂 Load .bond",
+    "saveBond": "💾 Save .bond",
+    "tip": "Daily Tip"
   }
 }

@@ -377,7 +377,7 @@ function StoryCard({ story, delay }: { story: BondStory; delay: string }) {
   return (
     <div style={{ position: 'relative' }}>
       <Link
-        href={`/story-engine?story=${story.id}`}
+        href={`/my-stories?id=${story.id}`}
         className="story-card"
         style={{
           textDecoration: 'none',

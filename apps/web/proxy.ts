@@ -24,26 +24,18 @@ function isSupportedLocale(value: string): value is SupportedLocale {
 }
 
 /**
- * Resolve locale from cookie first, then Accept-Language header.
- * Falls back to DEFAULT_LOCALE. No URL-prefix rewriting — cookie-only.
+ * Resolve locale from cookie only.
+ * English is the default and persists until the user explicitly changes it
+ * via the LanguageSelector. Accept-Language is intentionally ignored so the
+ * app always launches in English regardless of browser settings.
  */
 function resolveLocale(req: NextRequest): SupportedLocale {
-  // 1. Explicit cookie set by LanguageSelector
+  // Only honour an explicit user preference (set by LanguageSelector)
   const cookieLocale = req.cookies.get(LOCALE_COOKIE)?.value;
   if (cookieLocale && isSupportedLocale(cookieLocale)) {
     return cookieLocale;
   }
-
-  // 2. Accept-Language header (first matching tag wins)
-  const acceptLang = req.headers.get('accept-language') ?? '';
-  for (const segment of acceptLang.split(',')) {
-    const tag = segment.trim().split(';')[0].trim().toLowerCase();
-    // Match full tag or just the primary subtag (e.g. "fr-CA" → "fr")
-    if (isSupportedLocale(tag)) return tag;
-    const primary = tag.split('-')[0];
-    if (isSupportedLocale(primary)) return primary;
-  }
-
+  // Always default to English — user can switch via the language selector
   return DEFAULT_LOCALE;
 }
 

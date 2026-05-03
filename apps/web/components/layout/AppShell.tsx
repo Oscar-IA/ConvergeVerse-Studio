@@ -11,7 +11,7 @@ import { useKidsMode } from '@/hooks/useKidsMode';
 const navItems = [
   { href: '/',             key: 'home'      as const, icon: '⬡' },
   { href: '/story-engine', key: 'studio'    as const, icon: '✍️' },
-  { href: '/manga',        key: 'projects'  as const, icon: '🎨' },
+  { href: '/my-stories',   key: 'myStories' as const, icon: '📖' },
   { href: '/series',       key: 'series'    as const, icon: '📚' },
   { href: '/templates',    key: 'templates' as const, icon: '🌸' },
   { href: '/creative-hub', key: 'settings'  as const, icon: '🔮' },

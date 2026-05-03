@@ -3,19 +3,32 @@
     "save": "Guardar",
     "cancel": "Cancelar",
     "loading": "Cargando...",
-    "error": "Error"
+    "error": "Error",
+    "back": "Volver",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "confirm": "Confirmar",
+    "search": "Buscar"
   },
   "nav": {
     "home": "Inicio",
+    "studio": "Estudio",
+    "myStories": "Mis Historias",
     "projects": "Proyectos",
     "settings": "Configuración",
-    "studio": "Estudio",
     "series": "Series",
     "templates": "Plantillas"
   },
   "auth": {
     "connectBondCentral": "Conectar a BOND Central",
-    "signIn": "Iniciar Sesión"
+    "signIn": "Iniciar Sesión",
+    "accessCode": "Código de Acceso",
+    "enterCode": "Ingresa tu código de acceso",
+    "enterStudio": "Entrar al Estudio",
+    "verifying": "Verificando…",
+    "invalidCode": "Código inválido. Por favor intenta de nuevo.",
+    "codeHint": "Los códigos de acceso son emitidos por BOND Studios."
   },
   "studio": {
     "newProject": "Nuevo Proyecto",
@@ -37,10 +50,62 @@
     "generator": "GENERADOR",
     "generatingPanels": "GENERANDO PANELES…",
     "generateMangaPanels": "◆ GENERAR PANELES MANGA",
-    "mangaPhase": "FASE MANGA — Keyframes → Replicate (Solo Leveling / webtoon)",
+    "mangaPhase": "FASE MANGA — Keyframes → Replicate",
     "noImage": "SIN IMAGEN",
     "panels": "PANELES ({count})",
     "enrichFuture": "◇ ENRIQUECER FUTURO",
     "regenerateHardReset": "↻ REGENERAR (HARD RESET)"
+  },
+  "myStories": {
+    "title": "Mis Historias",
+    "subtitle": "Historias guardadas en este dispositivo",
+    "noStories": "No hay historias guardadas",
+    "noStoriesHint": "Crea tu primera historia o carga un archivo .bond",
+    "loadDemo": "Cargar Historia Demo",
+    "newStory": "Nueva Historia",
+    "loadFile": "Cargar .bond",
+    "saveBond": "Guardar archivo .bond",
+    "chapters": "{count} capítulos",
+    "continueStudio": "Continuar en el Estudio",
+    "updated": "Actualizado"
+  },
+  "series": {
+    "title": "Series Platform",
+    "subtitle": "Tu biblioteca de historias · anime · manga · novelas",
+    "newSeries": "Nueva Serie",
+    "noSeries": "¡Tu biblioteca está vacía!",
+    "noSeriesHint": "Crea tu primera serie y construye tu universo anime",
+    "createFirst": "Crear mi primera serie",
+    "statTotal": "Total Series",
+    "statActive": "Activas",
+    "statChapters": "Capítulos",
+    "statGenres": "Géneros"
+  },
+  "templates": {
+    "title": "Plantillas de Anime",
+    "subtitle": "Elige el estilo de tu historia",
+    "use": "¡Usar este Template!",
+    "episodes": "eps",
+    "arcs": "Arcos de la Historia",
+    "themes": "Temas Centrales",
+    "structure": "Estructura Narrativa",
+    "startPrompt": "Prompt de Inicio",
+    "copy": "Copiar",
+    "copied": "¡Copiado!"
+  },
+  "dashboard": {
+    "heroTitle": "Tus Historias Cobran Vida",
+    "heroSubtitle": "Imagina · Crea · Guarda tu aventura",
+    "step1": "Imagina",
+    "step2": "Crea",
+    "step3": "Guarda",
+    "myStories": "Mis Historias",
+    "noStories": "¡Aún no tienes historias!",
+    "noStoriesHint": "Crea la primera y empieza tu aventura",
+    "createFirst": "✨ Crear mi primera historia",
+    "viewExample": "⚡ Ver ejemplo",
+    "loadBond": "📂 Cargar .bond",
+    "saveBond": "💾 Guardar .bond",
+    "tip": "Consejo del día"
   }
 }
