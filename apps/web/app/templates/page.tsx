@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-// ── Template Data ─────────────────────────────────────────────────────────────
+// ── Template Data (unchanged IDs, genres, structure, samplePrompt) ────────────
 
 interface AnimeTemplate {
   id: string
@@ -31,7 +31,7 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#f97316',
     episodes: 52,
     arcs: ['Despertar del Poder', 'Torneo del Destino', 'Arco del Antagonista', 'Guerra Final', 'Epílogo'],
-    description: 'El clásico viaje del héroe con poderes únicos, entrenamiento, amistades forjadas en batalla y un destino épico. El estándar de oro del género de acción.',
+    description: 'El clásico viaje del héroe con poderes únicos, entrenamiento, amistades forjadas en batalla y un destino épico.',
     worldType: 'Mundo con sistema de poderes (aura, chakra, energía mística)',
     protagonist: 'Joven ordinario con poder oculto extraordinario. Determinación inquebrantable.',
     antagonist: 'Figura poderosa con filosofía opuesta. Pasado trágico que justifica sus acciones.',
@@ -78,7 +78,7 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#8b5cf6',
     episodes: 26,
     arcs: ['Llegada al Nuevo Mundo', 'Forjando Alianzas', 'El Destino del Invocado', 'La Amenaza del Maou'],
-    description: 'Protagonista transportado a un mundo de fantasía con conocimiento del mundo moderno como ventaja única. Construcción de reino, magia y sistemas de niveles.',
+    description: 'Protagonista transportado a un mundo de fantasía con conocimiento del mundo moderno como ventaja única.',
     worldType: 'Reino de fantasía medieval con magia, clases y sistema de stats',
     protagonist: 'Joven con habilidades del mundo moderno (tecnología, conocimiento). Hábil estratega.',
     antagonist: 'Demon Lord / Calamidad antigua / Sistema corrompido del nuevo mundo.',
@@ -101,7 +101,7 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#dc2626',
     episodes: 24,
     arcs: ['El Primer Movimiento', 'Cat and Mouse', 'El Sistema Se Quiebra', 'Jaque Mate'],
-    description: 'Duelo intelectual entre dos genios con moralidades opuestas. Tensión psicológica, giros narrativos y cuestionamiento de la justicia.',
+    description: 'Duelo intelectual entre dos genios con moralidades opuestas. Tensión psicológica y giros narrativos.',
     worldType: 'Mundo contemporáneo con elementos de thriller criminal',
     protagonist: 'Genio con poder sobrenatural o intelectual extraordinario. Código moral propio.',
     antagonist: 'Investigador o figura de orden igual de brillante. El antagonista puede ser el "héroe".',
@@ -124,7 +124,7 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#06b6d4',
     episodes: 26,
     arcs: ['Primer Contacto con el Mecha', 'La Facción Opuesta', 'El Secreto de la Guerra', 'La Batalla Final Orbital'],
-    description: 'Pilotos jóvenes en mechas gigantes defienden la humanidad. Conspiración militar, traumas de guerra y el costo humano del conflicto.',
+    description: 'Pilotos jóvenes en mechas gigantes defienden la humanidad. Conspiración militar y el costo humano del conflicto.',
     worldType: 'Futuro cercano — guerra entre facciones humanas o contra invasores extraterrestres',
     protagonist: 'Piloto con incompatibilidad perfecta con el mecha — conexión misteriosa. PTSD realista.',
     antagonist: 'El sistema militar mismo. + Antagonista personal con historia compartida.',
@@ -137,7 +137,7 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 20–23: Conspiración militar revelada',
       'Eps 24–26: Sacrificio y resolución — fin de la guerra',
     ],
-    samplePrompt: 'La humanidad perdió el 40% de la Tierra ante entidades llamadas "Sombras". Un adolescente con trastorno de estrés post-traumático descubre que puede pilotar el Colossus Omega — el único mecha capaz de combatir a la entidad de clase Extinción que ningún piloto sobrevivió.',
+    samplePrompt: 'La humanidad perdió el 40% de la Tierra ante entidades llamadas "Sombras". Un adolescente con trastorno de estrés post-traumático descubre que puede pilotar el Colossus Omega — el único mecha capaz de combatir a la entidad de clase Extinción.',
   },
   {
     id: 'slice_romance',
@@ -147,8 +147,8 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#ec4899',
     episodes: 13,
     arcs: ['El Encuentro', 'Acercamiento', 'Confesión', 'Resolución'],
-    description: 'Historia íntima de personajes complejos construyendo una conexión auténtica. Énfasis en el detalle cotidiano, crecimiento personal y emociones genuinas.',
-    worldType: 'Japón contemporáneo — escuela, barrio, trabajo, o entorno especial (pueblo costero, academia de arte)',
+    description: 'Historia íntima de personajes complejos construyendo una conexión auténtica. Énfasis en el detalle cotidiano.',
+    worldType: 'Japón contemporáneo — escuela, barrio, trabajo, o entorno especial',
     protagonist: 'Personaje con herida emocional interna. Crece a través de la conexión con otros.',
     antagonist: 'Los miedos internos. Los malentendidos. El tiempo y la distancia.',
     themes: ['Sanar el pasado', 'Vulnerabilidad y fortaleza', 'El valor de los momentos pequeños', 'Crecer juntos'],
@@ -170,8 +170,8 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#f43f5e',
     episodes: 26,
     arcs: ['La Iniciación', 'El Primer Gran Demonio', 'La Orden y sus Secretos', 'La Guerra de los Rangos'],
-    description: 'El mundo oculto de cazadores que combaten demonios mientras mantienen la apariencia de normalidad. Técnicas de respiración, artes marciales y transformaciones demoníacas.',
-    worldType: 'Japón de era Meiji / contemporáneo con demonios ocultos (o era victoriana)',
+    description: 'El mundo oculto de cazadores que combaten demonios. Técnicas de respiración y transformaciones demoníacas.',
+    worldType: 'Japón de era Meiji / contemporáneo con demonios ocultos',
     protagonist: 'Joven con trauma personal que lo motiva. Determinación de acero. Habilidad innata + trabajo duro.',
     antagonist: 'El Demonio Supremo y sus Doce Lunas — cada uno con poderes únicos y personalidades complejas.',
     themes: ['Venganza vs. Paz', 'Humanidad en los monstruos', 'El sacrificio familiar', 'Límites del cuerpo humano'],
@@ -193,7 +193,7 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#d97706',
     episodes: 39,
     arcs: ['El Exilado', 'La Alianza', 'La Primera Guerra', 'El Trono', 'La Era de Paz'],
-    description: 'Política de fantasía medieval, construcción de ejércitos y civilizaciones, magia de alto nivel y el peso de gobernar. Múltiples facciones con motivaciones complejas.',
+    description: 'Política de fantasía medieval, construcción de ejércitos y civilizaciones, magia de alto nivel.',
     worldType: 'Continente de fantasía con múltiples reinos, magia sistematizada y conflictos históricos',
     protagonist: 'Príncipe desterrado / noble caído / forastero con conocimiento moderno. Liderazgo emergente.',
     antagonist: 'Imperio expansionista. Nobleza corrupta. Amenaza supernatural que ningún reino puede enfrentar solo.',
@@ -210,16 +210,126 @@ const TEMPLATES: AnimeTemplate[] = [
   },
 ]
 
-// ── Components ────────────────────────────────────────────────────────────────
+// ── ComicPreview SVG ──────────────────────────────────────────────────────────
 
-const glass: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.09)',
-  borderRadius: 16,
-  backdropFilter: 'blur(12px)',
+function ComicPreview({
+  accentColor,
+  icon,
+  genre,
+}: {
+  accentColor: string
+  icon: string
+  genre: string
+}) {
+  // Genre-appropriate action words
+  const genreEffects: Record<string, string[]> = {
+    'Shōnen': ['⚡', '💥', '🔥'],
+    'Dark Fantasy': ['💀', '🌑', '⚫'],
+    'Isekai': ['✨', '🌀', '💫'],
+    'Psicológico': ['🔪', '🧠', '👁'],
+    'Mecha': ['🤖', '💥', '⚙️'],
+    'Slice of Life': ['🌸', '💕', '🍃'],
+    'Fantasy': ['👑', '⚔️', '🏰'],
+    default: ['✨', '💫', '⚡'],
+  }
+  const genreKey = Object.keys(genreEffects).find(k => genre.includes(k)) ?? 'default'
+  const [fx1, fx2] = genreEffects[genreKey]
+
+  return (
+    <svg
+      viewBox="0 0 320 240"
+      style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 10 }}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Background */}
+      <rect width="320" height="240" fill="#0a0a14" rx="10" />
+
+      {/* Panel borders */}
+      {/* Panel 1 — tall left */}
+      <rect x="6" y="6" width="120" height="228" fill={`${accentColor}15`} rx="4" stroke={accentColor} strokeWidth="2.5" />
+      {/* Panel 2 — top right */}
+      <rect x="134" y="6" width="180" height="110" fill={`${accentColor}0d`} rx="4" stroke={accentColor} strokeWidth="2" />
+      {/* Panel 3 — wide middle */}
+      <rect x="134" y="124" width="180" height="52" fill={`${accentColor}0a`} rx="4" stroke={accentColor} strokeWidth="2" />
+      {/* Panel 4 — bottom left small */}
+      <rect x="134" y="184" width="84" height="50" fill={`${accentColor}0d`} rx="4" stroke={accentColor} strokeWidth="2" />
+      {/* Panel 5 — bottom right small */}
+      <rect x="226" y="184" width="88" height="50" fill={`${accentColor}0d`} rx="4" stroke={accentColor} strokeWidth="2" />
+
+      {/* Panel 1 — gradient fill + icon */}
+      <defs>
+        <radialGradient id={`pg1-${accentColor.replace('#','')}`} cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stopColor={accentColor} stopOpacity="0.3" />
+          <stop offset="100%" stopColor={accentColor} stopOpacity="0.02" />
+        </radialGradient>
+        <radialGradient id={`pg2-${accentColor.replace('#','')}`} cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stopColor={accentColor} stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#0a0a14" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect x="6" y="6" width="120" height="228" fill={`url(#pg1-${accentColor.replace('#','')})`} rx="4" />
+      <rect x="134" y="6" width="180" height="110" fill={`url(#pg2-${accentColor.replace('#','')})`} rx="4" />
+
+      {/* Halftone dots on panel 1 */}
+      {Array.from({ length: 6 }).map((_, row) =>
+        Array.from({ length: 4 }).map((_, col) => (
+          <circle
+            key={`dot-${row}-${col}`}
+            cx={20 + col * 28}
+            cy={20 + row * 38}
+            r="2.5"
+            fill={accentColor}
+            opacity="0.15"
+          />
+        ))
+      )}
+
+      {/* Big icon on panel 1 */}
+      <text x="66" y="130" textAnchor="middle" fontSize="52" fill="white" opacity="0.9">{icon}</text>
+
+      {/* Action lines (speed effect) on panel 2 */}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <line
+          key={`line-${i}`}
+          x1={220 + i * 8}
+          y1="10"
+          x2={180 + i * 10}
+          y2="112"
+          stroke={accentColor}
+          strokeWidth="1"
+          opacity="0.2"
+        />
+      ))}
+
+      {/* Effect text on panel 2 */}
+      <text x="224" y="68" textAnchor="middle" fontSize="32" fill={accentColor} opacity="0.9"
+        style={{ fontWeight: 900 }}>{fx1}</text>
+
+      {/* Panel 3 — wide — dialog bubble */}
+      <rect x="148" y="134" width="120" height="30" fill="white" rx="6" opacity="0.08" />
+      <text x="208" y="148" textAnchor="middle" fontSize="10" fill={accentColor} opacity="0.9"
+        fontFamily="sans-serif" fontWeight="700">¡EPISODIO 1!</text>
+      <text x="208" y="162" textAnchor="middle" fontSize="10" fill="white" opacity="0.5"
+        fontFamily="sans-serif">comienza aquí</text>
+
+      {/* Panel 4 */}
+      <text x="176" y="216" textAnchor="middle" fontSize="20" fill="white" opacity="0.7">{fx2}</text>
+
+      {/* Panel 5 — ep count */}
+      <rect x="230" y="190" width="78" height="38" fill={`${accentColor}20`} rx="4" />
+      <text x="269" y="205" textAnchor="middle" fontSize="9" fill={accentColor} fontWeight="700"
+        fontFamily="monospace">EPS</text>
+
+      {/* Comic border shine */}
+      <rect x="6" y="6" width="308" height="228" fill="none" rx="10"
+        stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+    </svg>
+  )
 }
 
-function TemplateCard({
+// ── TemplatePreviewCard ───────────────────────────────────────────────────────
+
+function TemplatePreviewCard({
   template,
   onSelect,
   selected,
@@ -228,46 +338,59 @@ function TemplateCard({
   onSelect: (t: AnimeTemplate) => void
   selected: boolean
 }) {
+  const [hov, setHov] = useState(false)
+
   return (
     <button
       onClick={() => onSelect(template)}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
       style={{
-        width: '100%', textAlign: 'left',
-        padding: '18px 20px', cursor: 'pointer',
-        ...glass,
-        border: `1px solid ${selected ? template.accentColor + '50' : 'rgba(255,255,255,0.09)'}`,
-        background: selected ? `${template.accentColor}0C` : 'rgba(255,255,255,0.04)',
-        boxShadow: selected ? `0 0 24px ${template.accentColor}18` : 'none',
+        width: '100%', textAlign: 'left', cursor: 'pointer',
+        padding: 0, outline: 'none',
+        background: selected
+          ? `${template.accentColor}14`
+          : hov ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.03)',
+        border: `2px solid ${selected ? template.accentColor + '60' : hov ? template.accentColor + '30' : 'rgba(255,255,255,0.08)'}`,
+        borderRadius: 16,
+        boxShadow: selected ? `0 0 30px ${template.accentColor}20` : hov ? `0 4px 20px ${template.accentColor}10` : 'none',
         transition: 'all 0.2s',
         fontFamily: 'inherit',
-        outline: 'none',
+        overflow: 'hidden',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-        <span style={{ fontSize: 28, flexShrink: 0 }}>{template.icon}</span>
+      {/* SVG comic preview */}
+      <div style={{ borderRadius: '14px 14px 0 0', overflow: 'hidden' }}>
+        <ComicPreview accentColor={template.accentColor} icon={template.icon} genre={template.genre} />
+      </div>
+
+      {/* Info row */}
+      <div style={{ padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ fontSize: 24 }}>{template.icon}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9' }}>{template.name}</span>
-            <span style={{
-              fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
-              padding: '2px 7px', borderRadius: 4,
-              background: `${template.accentColor}18`, color: template.accentColor,
-              border: `1px solid ${template.accentColor}30`,
-            }}>
-              {template.episodes} eps
-            </span>
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', lineHeight: 1.2 }}>
+            {template.name}
           </div>
-          <div style={{ fontSize: 11, color: template.accentColor, marginBottom: 4, fontWeight: 600 }}>
+          <div style={{ fontSize: 10, color: template.accentColor, fontWeight: 600, marginTop: 2 }}>
             {template.genre}
           </div>
-          <div style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>
-            {template.description.slice(0, 100)}…
-          </div>
         </div>
+        <span style={{
+          fontSize: 9, fontWeight: 700, letterSpacing: '0.1em',
+          padding: '2px 8px', borderRadius: 6,
+          background: `${template.accentColor}20`, color: template.accentColor,
+          border: `1px solid ${template.accentColor}30`,
+          flexShrink: 0,
+          whiteSpace: 'nowrap',
+        }}>
+          {template.episodes} eps
+        </span>
       </div>
     </button>
   )
 }
+
+// ── TemplateDetail ────────────────────────────────────────────────────────────
 
 function TemplateDetail({ template }: { template: AnimeTemplate }) {
   const [copied, setCopied] = useState(false)
@@ -276,161 +399,191 @@ function TemplateDetail({ template }: { template: AnimeTemplate }) {
     navigator.clipboard.writeText(template.samplePrompt).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    })
+    }).catch(() => {})
   }
 
   return (
-    <div style={{ ...glass, padding: '24px 28px', position: 'sticky', top: 80 }}>
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
-        <div style={{
-          width: 56, height: 56, borderRadius: 14, flexShrink: 0,
-          background: `${template.accentColor}14`,
-          border: `1px solid ${template.accentColor}30`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 26,
-        }}>
-          {template.icon}
-        </div>
-        <div>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', margin: 0, fontFamily: 'inherit' }}>
-            {template.name}
-          </h2>
-          <div style={{ fontSize: 11, color: template.accentColor, marginTop: 2 }}>{template.genre}</div>
-        </div>
+    <div style={{
+      background: 'rgba(255,255,255,0.03)',
+      border: '1px solid rgba(255,255,255,0.09)',
+      borderRadius: 20,
+      backdropFilter: 'blur(12px)',
+      overflow: 'hidden',
+      position: 'sticky',
+      top: 80,
+    }}>
+      {/* Large comic preview at top */}
+      <div style={{
+        background: `linear-gradient(180deg, ${template.accentColor}18 0%, transparent 100%)`,
+        padding: '20px 20px 0',
+        borderBottom: `1px solid ${template.accentColor}20`,
+      }}>
+        <ComicPreview accentColor={template.accentColor} icon={template.icon} genre={template.genre} />
       </div>
 
-      <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, marginBottom: 18 }}>
-        {template.description}
-      </p>
-
-      {/* Info grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 18 }}>
-        {[
-          ['🌍 Mundo', template.worldType],
-          ['🎭 Protagonista', template.protagonist],
-          ['😈 Antagonista', template.antagonist],
-          ['📺 Episodios', `${template.episodes} eps · ${Math.ceil(template.episodes / 13)} cour`],
-        ].map(([label, value]) => (
-          <div key={label as string} style={{
-            padding: '10px 12px',
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: 8,
+      <div style={{ padding: '24px 28px' }}>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+          <div style={{
+            width: 52, height: 52, borderRadius: 14, flexShrink: 0,
+            background: `${template.accentColor}18`,
+            border: `2px solid ${template.accentColor}40`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 26,
           }}>
-            <div style={{ fontSize: 10, color: '#475569', marginBottom: 3 }}>{label as string}</div>
-            <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.5 }}>{value as string}</div>
+            {template.icon}
           </div>
-        ))}
-      </div>
+          <div>
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', margin: 0 }}>
+              {template.name}
+            </h2>
+            <div style={{ fontSize: 11, color: template.accentColor, marginTop: 2, fontWeight: 600 }}>
+              {template.genre}
+            </div>
+          </div>
+        </div>
 
-      {/* Themes */}
-      <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase', marginBottom: 8 }}>
-          Temas Centrales
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {template.themes.map(theme => (
-            <span key={theme} style={{
-              fontSize: 11, padding: '3px 10px', borderRadius: 20,
-              background: `${template.accentColor}10`, color: template.accentColor,
-              border: `1px solid ${template.accentColor}25`,
-            }}>
-              {theme}
-            </span>
-          ))}
-        </div>
-      </div>
+        <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, marginBottom: 18 }}>
+          {template.description}
+        </p>
 
-      {/* Structure */}
-      <div style={{ marginBottom: 18 }}>
-        <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase', marginBottom: 8 }}>
-          Estructura Narrativa
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          {template.structure.map((step, i) => (
-            <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-              <span style={{
-                width: 18, height: 18, borderRadius: '50%', flexShrink: 0, marginTop: 1,
-                background: `${template.accentColor}18`, color: template.accentColor,
-                fontSize: 9, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        {/* Arcs — visual row */}
+        <div style={{ marginBottom: 18 }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase', marginBottom: 8 }}>
+            Arcos de la Historia
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            {template.arcs.map((arc, i) => (
+              <span key={arc} style={{
+                fontSize: 11, padding: '4px 10px', borderRadius: 8,
+                background: `${template.accentColor}14`, color: template.accentColor,
+                border: `1px solid ${template.accentColor}30`,
+                fontWeight: 600,
               }}>
-                {i + 1}
+                {i + 1}. {arc}
               </span>
-              <span style={{ fontSize: 11, color: '#64748b', lineHeight: 1.6 }}>{step}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Info grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 18 }}>
+          {[
+            ['🌍 Mundo', template.worldType],
+            ['🎭 Protagonista', template.protagonist],
+            ['😈 Antagonista', template.antagonist],
+            ['📺 Episodios', `${template.episodes} eps · ${Math.ceil(template.episodes / 13)} cour`],
+          ].map(([label, value]) => (
+            <div key={label} style={{
+              padding: '10px 12px',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: 10,
+            }}>
+              <div style={{ fontSize: 10, color: '#475569', marginBottom: 3 }}>{label}</div>
+              <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.5 }}>{value}</div>
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Arcs */}
-      <div style={{ marginBottom: 18 }}>
-        <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase', marginBottom: 8 }}>
-          Arcos Narrativos
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {template.arcs.map((arc, i) => (
-            <span key={arc} style={{
-              fontSize: 11, padding: '3px 10px', borderRadius: 6,
-              background: 'rgba(255,255,255,0.04)', color: '#64748b',
-              border: '1px solid rgba(255,255,255,0.08)',
-            }}>
-              {i + 1}. {arc}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Sample prompt */}
-      <div style={{ marginBottom: 20 }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8,
-        }}>
-          <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase' }}>
-            Prompt de Inicio
+        {/* Themes */}
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase', marginBottom: 8 }}>
+            Temas Centrales
           </div>
-          <button
-            onClick={copyPrompt}
-            style={{
-              fontSize: 10, padding: '3px 10px', borderRadius: 6, cursor: 'pointer',
-              background: copied ? 'rgba(74,222,128,0.12)' : 'rgba(255,255,255,0.06)',
-              border: `1px solid ${copied ? 'rgba(74,222,128,0.3)' : 'rgba(255,255,255,0.1)'}`,
-              color: copied ? '#4ade80' : '#64748b', fontFamily: 'inherit',
-            }}
-          >
-            {copied ? '✓ Copiado' : 'Copiar'}
-          </button>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {template.themes.map(theme => (
+              <span key={theme} style={{
+                fontSize: 11, padding: '3px 10px', borderRadius: 20,
+                background: `${template.accentColor}10`, color: template.accentColor,
+                border: `1px solid ${template.accentColor}25`,
+              }}>
+                {theme}
+              </span>
+            ))}
+          </div>
         </div>
-        <div style={{
-          padding: '12px 14px',
-          background: 'rgba(0,0,0,0.3)',
-          border: `1px solid ${template.accentColor}20`,
-          borderRadius: 8,
-          fontSize: 12, color: '#94a3b8', lineHeight: 1.7,
-          fontStyle: 'italic',
-        }}>
-          "{template.samplePrompt}"
-        </div>
-      </div>
 
-      {/* CTA */}
-      <Link
-        href={`/story-engine?template=${template.id}&prompt=${encodeURIComponent(template.samplePrompt)}`}
-        style={{
-          display: 'block', textAlign: 'center',
-          padding: '13px 0',
-          background: `${template.accentColor}18`,
-          border: `1px solid ${template.accentColor}40`,
-          borderRadius: 10,
-          color: template.accentColor,
-          fontSize: 12, fontWeight: 700,
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-          textDecoration: 'none',
-          transition: 'all 0.2s',
-        }}
-      >
-        ✨ Usar este Template en Story Engine
-      </Link>
+        {/* Structure */}
+        <div style={{ marginBottom: 18 }}>
+          <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase', marginBottom: 8 }}>
+            Estructura Narrativa
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+            {template.structure.map((step, i) => (
+              <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                <span style={{
+                  width: 18, height: 18, borderRadius: '50%', flexShrink: 0, marginTop: 1,
+                  background: `${template.accentColor}20`, color: template.accentColor,
+                  fontSize: 9, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {i + 1}
+                </span>
+                <span style={{ fontSize: 11, color: '#64748b', lineHeight: 1.6 }}>{step}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Sample prompt */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+            <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase' }}>
+              Prompt de Inicio
+            </div>
+            <button
+              onClick={copyPrompt}
+              style={{
+                fontSize: 10, padding: '4px 12px', borderRadius: 8, cursor: 'pointer',
+                background: copied ? 'rgba(74,222,128,0.12)' : 'rgba(255,255,255,0.06)',
+                border: `1px solid ${copied ? 'rgba(74,222,128,0.3)' : 'rgba(255,255,255,0.1)'}`,
+                color: copied ? '#4ade80' : '#64748b', fontFamily: 'inherit',
+                fontWeight: 600,
+                transition: 'all 0.2s',
+              }}
+            >
+              {copied ? '✓ Copiado!' : '📋 Copiar'}
+            </button>
+          </div>
+          <div style={{
+            padding: '14px 16px',
+            background: 'rgba(0,0,0,0.3)',
+            border: `1px solid ${template.accentColor}20`,
+            borderRadius: 12,
+            fontSize: 12, color: '#94a3b8', lineHeight: 1.7,
+            fontStyle: 'italic',
+          }}>
+            &ldquo;{template.samplePrompt}&rdquo;
+          </div>
+        </div>
+
+        {/* CTA */}
+        <Link
+          href={`/story-engine?template=${template.id}&prompt=${encodeURIComponent(template.samplePrompt)}`}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            padding: '14px 0',
+            background: `linear-gradient(135deg, ${template.accentColor} 0%, ${template.accentColor}cc 100%)`,
+            borderRadius: 12,
+            color: '#fff',
+            fontSize: 14, fontWeight: 800,
+            textDecoration: 'none',
+            boxShadow: `0 4px 20px ${template.accentColor}30`,
+            transition: 'transform 0.15s, box-shadow 0.15s',
+          }}
+          onMouseEnter={e => {
+            ;(e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-2px)'
+            ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 8px 30px ${template.accentColor}50`
+          }}
+          onMouseLeave={e => {
+            ;(e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)'
+            ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 4px 20px ${template.accentColor}30`
+          }}
+        >
+          <span style={{ fontSize: 20 }}>{template.icon}</span>
+          ¡Usar este Template!
+        </Link>
+      </div>
     </div>
   )
 }
@@ -445,7 +598,8 @@ export default function TemplatesPage() {
   const genres = Array.from(new Set(TEMPLATES.map(t => t.genre.split(' / ')[0])))
 
   const filtered = TEMPLATES.filter(t => {
-    const matchSearch = !search || t.name.toLowerCase().includes(search.toLowerCase()) ||
+    const matchSearch = !search ||
+      t.name.toLowerCase().includes(search.toLowerCase()) ||
       t.description.toLowerCase().includes(search.toLowerCase()) ||
       t.themes.some(th => th.toLowerCase().includes(search.toLowerCase()))
     const matchGenre = !genreFilter || t.genre.includes(genreFilter)
@@ -470,30 +624,29 @@ export default function TemplatesPage() {
           <h1 style={{
             fontSize: 'clamp(1.5rem,4vw,2.5rem)', fontWeight: 900,
             color: '#fff', margin: 0, letterSpacing: '-0.01em',
-            fontFamily: 'system-ui,sans-serif',
           }}>
-            🌸 Anime Templates
+            🌸 Plantillas de Anime
           </h1>
           <p style={{ fontSize: 13, color: '#64748b', marginTop: 6 }}>
-            Plantillas profesionales de estructuras narrativas para anime. Selecciona, personaliza y genera con el Story Engine.
+            Elige el estilo de tu historia — ¡haz clic en cualquier plantilla para verla en detalle!
           </p>
         </div>
 
         {/* Filters */}
-        <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 10, marginBottom: 24, flexWrap: 'wrap', alignItems: 'center' }}>
           <input
             style={{
               background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 8, padding: '8px 14px', color: '#e2e8f0', fontSize: 13,
+              borderRadius: 10, padding: '9px 14px', color: '#e2e8f0', fontSize: 13,
               outline: 'none', fontFamily: 'inherit', width: 240,
             }}
             value={search} onChange={e => setSearch(e.target.value)}
-            placeholder="🔍 Buscar template…"
+            placeholder="🔍 Buscar plantilla…"
           />
           <select
             style={{
               background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 8, padding: '8px 14px', color: '#e2e8f0', fontSize: 13,
+              borderRadius: 10, padding: '9px 14px', color: '#e2e8f0', fontSize: 13,
               outline: 'none', fontFamily: 'inherit', cursor: 'pointer',
             }}
             value={genreFilter} onChange={e => setGenreFilter(e.target.value)}
@@ -502,17 +655,17 @@ export default function TemplatesPage() {
             {genres.map(g => <option key={g} value={g}>{g}</option>)}
           </select>
           <span style={{ fontSize: 12, color: '#475569', display: 'flex', alignItems: 'center' }}>
-            {filtered.length} template{filtered.length !== 1 ? 's' : ''}
+            {filtered.length} plantilla{filtered.length !== 1 ? 's' : ''}
           </span>
         </div>
 
         {/* Two-column layout */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px,420px) 1fr', gap: 24, alignItems: 'flex-start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(260px,380px) 1fr', gap: 24, alignItems: 'flex-start' }}>
 
-          {/* Template list */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {/* Template grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
             {filtered.map(t => (
-              <TemplateCard
+              <TemplatePreviewCard
                 key={t.id}
                 template={t}
                 onSelect={setSelected}
@@ -523,7 +676,6 @@ export default function TemplatesPage() {
 
           {/* Detail panel */}
           <TemplateDetail template={selected} />
-
         </div>
       </div>
     </main>

@@ -323,16 +323,24 @@ export default function SeriesPage() {
   }
 
   const handleDelete = async (id: string) => {
-    await fetch(`${API_BASE}/api/story-engine/series/${id}`, { method: 'DELETE' })
+    try {
+      await fetch(`${API_BASE}/api/story-engine/series/${id}`, { method: 'DELETE' })
+    } catch {
+      // Continue — still refresh the list
+    }
     fetchSeries()
   }
 
   const handleStatusChange = async (id: string, status: string) => {
-    await fetch(`${API_BASE}/api/story-engine/series/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status }),
-    })
+    try {
+      await fetch(`${API_BASE}/api/story-engine/series/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      })
+    } catch {
+      // Continue — still refresh the list
+    }
     fetchSeries()
   }
 

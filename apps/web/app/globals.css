@@ -2967,4 +2967,59 @@ a.card-link:hover {
 .status-badge--pink  { background: rgba(236,72,153,0.12); color: #ec4899; border: 1px solid rgba(236,72,153,0.25); }
 .status-badge--amber { background: rgba(251,191,36,0.12);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
 .status-badge--red   { background: rgba(248,113,113,0.12); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+
+/* ── Kids-mode enhanced animations ──────────────────────────────────────────── */
+@keyframes bond-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.02); }
+}
+@keyframes bond-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+@keyframes bond-rainbow {
+  0%   { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+@keyframes bond-pop-in {
+  0%   { transform: scale(0.8); opacity: 0; }
+  80%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+/* Big action button */
+.btn-action {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px; padding: 24px 20px;
+  border-radius: 16px; cursor: pointer;
+  border: 3px solid rgba(255,255,255,0.15);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.5), 0 0 30px rgba(236,72,153,0.1);
+  text-decoration: none; color: inherit;
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: bond-pop-in 0.4s ease both;
+}
+.btn-action:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 0 rgba(0,0,0,0.4), 0 0 40px rgba(236,72,153,0.2);
+}
+.btn-action:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.5);
+}
+/* Story card */
+.story-card {
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: bond-pop-in 0.3s ease both;
+}
+.story-card:hover {
+  border-color: rgba(236,72,153,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
 .status-badge--muted { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.35); border: 1px solid rgba(255,255,255,0.08); }

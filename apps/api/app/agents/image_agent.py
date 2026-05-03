@@ -5,7 +5,7 @@ import time
 from urllib.parse import quote
 
 from app.agents.base import BaseAgent, AgentContext, AgentResult
-from app.core.visual_style import build_image_prompt
+from app.story_engine.style_engine import build_styled_prompt, get_style, DEFAULT_STYLE
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +14,9 @@ _POLLINATIONS_FALLBACK = os.getenv("POLLINATIONS_FALLBACK", "true").lower() in (
 _POLLINATIONS_MAX_PROMPT = 900
 _POLLINATIONS_WIDTH = int(os.getenv("POLLINATIONS_WIDTH", "1024"))
 _POLLINATIONS_HEIGHT = int(os.getenv("POLLINATIONS_HEIGHT", "1536"))
+
+# Default model: prefer flux-dev for quality; override via env REPLICATE_FLUX_MODEL
+DEFAULT_MODEL = os.getenv("REPLICATE_FLUX_MODEL", "black-forest-labs/flux-dev")
 
 # When Replicate fails: "pollinations" (default) then design preview; "design" = skip Pollinations, use static preview fast.
 _REPLICATE_FAIL_FALLBACK = os.getenv("REPLICATE_FAIL_FALLBACK", "pollinations").strip().lower()
@@ -74,14 +77,28 @@ def _design_placeholder_url(scene_index: int) -> str:
     return _SAMPLE_DESIGN_PLACEHOLDERS[idx % len(_SAMPLE_DESIGN_PLACEHOLDERS)]
 
 
-async def _generate_replicate(prompt: str) -> str | None:
+async def _generate_replicate(
+    prompt: str,
+    aspect_ratio: str = "2:3",
+    style_id: str = DEFAULT_STYLE,
+) -> str | None:
     import replicate
 
+    style = get_style(style_id)
+    model = os.getenv("REPLICATE_FLUX_MODEL", style.model)
+
+    base_params: dict = {
+        "prompt": prompt,
+        "aspect_ratio": aspect_ratio,
+        "num_outputs": 1,
+    }
+    # Add quality params for flux-dev / flux-1.1-pro
+    if "flux-dev" in model or "flux-1.1-pro" in model:
+        base_params["num_inference_steps"] = style.steps
+        base_params["guidance"] = style.guidance
+
     def _run():
-        output = replicate.run(
-            "black-forest-labs/flux-schnell",
-            input={"prompt": prompt, "aspect_ratio": "3:4"},
-        )
+        output = replicate.run(model, input=base_params)
         return _normalize_replicate_url(output)
 
     return await asyncio.to_thread(_run)
@@ -113,8 +130,9 @@ class ImageAgent(BaseAgent):
             os.environ["REPLICATE_API_TOKEN"] = token
 
         visual_bible = (context.extra.get("world_visual_bible") or "").strip()
+        style_id = context.extra.get("style_id", DEFAULT_STYLE)
         # Parallel per panel: each awaits Replicate (or skips) then assigns fallback URLs
-        tasks = [self._generate_one_panel(p, token, visual_bible) for p in panels_data]
+        tasks = [self._generate_one_panel(p, token, visual_bible, style_id) for p in panels_data]
         results = await asyncio.gather(*tasks)
 
         panels_out: list[dict] = []
@@ -136,11 +154,20 @@ class ImageAgent(BaseAgent):
         p: dict,
         token: str | None,
         world_visual_bible: str = "",
+        style_id: str = DEFAULT_STYLE,
     ) -> tuple[dict, dict | None]:
-        raw = p.get("image_prompt") or p.get("description", "anime manga panel, dramatic lighting")
-        base_prompt = build_image_prompt(raw)
-        if world_visual_bible:
-            base_prompt = f"{base_prompt}, CHARACTER AND LOCATION CONSISTENCY: {world_visual_bible}"
+        raw_scene = p.get("image_prompt") or p.get("description", "anime manga panel, dramatic lighting")
+        composition = p.get("composition", "")
+
+        # Build styled prompt via style_engine
+        styled_prompt, model_config = build_styled_prompt(
+            scene_description=raw_scene,
+            style_id=style_id,
+            character_context=world_visual_bible,
+            panel_composition=composition,
+        )
+        aspect_ratio = model_config["params"].get("aspect_ratio", "2:3")
+
         scene_idx = p.get("scene_index", 0)
 
         image_url: str | None = None
@@ -152,7 +179,7 @@ class ImageAgent(BaseAgent):
         if token:
             try:
                 image_url = await asyncio.wait_for(
-                    _generate_replicate(base_prompt),
+                    _generate_replicate(styled_prompt, aspect_ratio=aspect_ratio, style_id=style_id),
                     timeout=_DEFAULT_TIMEOUT,
                 )
                 elapsed = time.perf_counter() - started
@@ -177,7 +204,7 @@ class ImageAgent(BaseAgent):
             and not (replicate_issue and _REPLICATE_FAIL_FALLBACK == "design")
         )
         if use_pollinations:
-            image_url = _build_pollinations_url(base_prompt)
+            image_url = _build_pollinations_url(styled_prompt)
             image_provider = "pollinations"
             image_note = (
                 f"Pollinations.ai · {replicate_issue}" if replicate_issue else "Pollinations.ai (free)"
@@ -207,6 +234,7 @@ class ImageAgent(BaseAgent):
             "image_error": None if image_url else replicate_issue,
             "image_provider": image_provider,
             "image_note": image_note,
-            "prompt_used": base_prompt,
+            "prompt_used": styled_prompt,
+            "style_id": style_id,
         }
         return panel_dict, err_entry
