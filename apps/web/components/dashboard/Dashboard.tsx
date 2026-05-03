@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { loadBondStories } from '@/lib/bondSave'
+import { loadBondStories, autoSaveBondStory, parseBondFile, seedDemoStory, hasDemoStory } from '@/lib/bondSave'
 import type { BondStory } from '@/lib/bondSave'
 
 // ── Action Cards Data ─────────────────────────────────────────────────────────
@@ -230,33 +230,89 @@ function ActionCard({ card }: { card: typeof ACTION_CARDS[0] }) {
 
 function MyStoriesGallery() {
   const [stories, setStories] = useState<BondStory[]>([])
+  const [importMsg, setImportMsg] = useState<string | null>(null)
 
-  useEffect(() => {
-    setStories(loadBondStories())
-  }, [])
+  const reload = () => setStories(loadBondStories())
+
+  useEffect(() => { reload() }, [])
+
+  // Import .bond file from user's computer
+  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const content = ev.target?.result as string
+      const story = parseBondFile(content)
+      if (!story) {
+        setImportMsg('❌ Archivo no válido. Asegúrate de que sea un archivo .bond de BOND Studios.')
+      } else {
+        autoSaveBondStory(story)
+        reload()
+        setImportMsg(`✅ "${story.title}" cargada desde tu computadora!`)
+      }
+      setTimeout(() => setImportMsg(null), 3000)
+    }
+    reader.readAsText(file)
+    e.target.value = '' // reset so same file can be re-imported
+  }
+
+  const handleDemo = () => {
+    seedDemoStory()
+    reload()
+  }
 
   return (
     <div style={{ marginBottom: 36 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', margin: 0 }}>
           📖 Mis Historias
         </h2>
-        {stories.length > 0 && (
-          <Link href="/story-engine" style={{
-            fontSize: 12, color: '#ec4899', textDecoration: 'none',
-            padding: '6px 14px',
-            border: '1px solid rgba(236,72,153,0.35)',
-            borderRadius: 8,
-            fontWeight: 600,
+        {/* Toolbar */}
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {/* Import .bond */}
+          <label style={{
+            fontSize: 11, color: '#06b6d4', cursor: 'pointer',
+            padding: '5px 12px',
+            border: '1px solid rgba(6,182,212,0.35)',
+            borderRadius: 8, fontWeight: 600,
+            background: 'rgba(6,182,212,0.06)',
+            display: 'flex', alignItems: 'center', gap: 4,
+            transition: 'all 0.15s',
           }}>
-            + Nueva
-          </Link>
-        )}
+            📂 Cargar .bond
+            <input type="file" accept=".bond,.json" onChange={handleImportFile}
+              style={{ display: 'none' }} />
+          </label>
+          {stories.length > 0 && (
+            <Link href="/story-engine" style={{
+              fontSize: 11, color: '#ec4899', textDecoration: 'none',
+              padding: '5px 12px',
+              border: '1px solid rgba(236,72,153,0.35)',
+              borderRadius: 8, fontWeight: 600,
+              background: 'rgba(236,72,153,0.06)',
+            }}>
+              + Nueva
+            </Link>
+          )}
+        </div>
       </div>
+
+      {/* Import message */}
+      {importMsg && (
+        <div style={{
+          padding: '10px 16px', borderRadius: 10, marginBottom: 14,
+          background: importMsg.startsWith('✅') ? 'rgba(74,222,128,0.1)' : 'rgba(239,68,68,0.1)',
+          border: `1px solid ${importMsg.startsWith('✅') ? 'rgba(74,222,128,0.3)' : 'rgba(239,68,68,0.3)'}`,
+          fontSize: 13, color: importMsg.startsWith('✅') ? '#4ade80' : '#fca5a5',
+        }}>
+          {importMsg}
+        </div>
+      )}
 
       {stories.length === 0 ? (
         <div style={{
-          textAlign: 'center', padding: '40px 24px',
+          textAlign: 'center', padding: '44px 24px',
           background: 'rgba(255,255,255,0.03)',
           border: '2px dashed rgba(255,255,255,0.12)',
           borderRadius: 20,
@@ -265,27 +321,35 @@ function MyStoriesGallery() {
           <div style={{ fontSize: 16, fontWeight: 700, color: '#e2e8f0', marginBottom: 6 }}>
             ¡Aún no tienes historias!
           </div>
-          <div style={{ fontSize: 13, color: '#64748b', marginBottom: 16 }}>
-            Crea la primera y empieza tu aventura
+          <div style={{ fontSize: 13, color: '#64748b', marginBottom: 20 }}>
+            Crea la primera o carga un ejemplo para explorar
           </div>
-          <Link href="/story-engine" style={{
-            display: 'inline-block',
-            padding: '12px 28px',
-            background: 'linear-gradient(135deg, #ec4899, #a855f7)',
-            borderRadius: 12,
-            color: '#fff',
-            fontWeight: 700,
-            fontSize: 14,
-            textDecoration: 'none',
-            boxShadow: '0 4px 20px rgba(236,72,153,0.3)',
-          }}>
-            ✨ Crear mi primera historia
-          </Link>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/story-engine" style={{
+              display: 'inline-block', padding: '12px 24px',
+              background: 'linear-gradient(135deg, #ec4899, #a855f7)',
+              borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 14,
+              textDecoration: 'none', boxShadow: '0 4px 20px rgba(236,72,153,0.3)',
+            }}>
+              ✨ Crear historia
+            </Link>
+            {!hasDemoStory() && (
+              <button onClick={handleDemo} style={{
+                padding: '12px 24px',
+                background: 'rgba(6,182,212,0.12)',
+                border: '1px solid rgba(6,182,212,0.35)',
+                borderRadius: 12, color: '#06b6d4', fontWeight: 700, fontSize: 14,
+                cursor: 'pointer', fontFamily: 'inherit',
+              }}>
+                ⚡ Ver ejemplo
+              </button>
+            )}
+          </div>
         </div>
       ) : (
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))',
           gap: 14,
         }}>
           {stories.map((story, i) => (
@@ -303,41 +367,66 @@ function StoryCard({ story, delay }: { story: BondStory; delay: string }) {
     day: '2-digit', month: 'short',
   })
 
+  const handleSave = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    // Dynamic import to avoid SSR issues
+    import('@/lib/bondSave').then(({ saveBondFile }) => saveBondFile(story))
+  }
+
   return (
-    <Link
-      href={`/story-engine?story=${story.id}`}
-      className="story-card"
-      style={{
-        textDecoration: 'none',
-        animationDelay: delay,
-        transform: hov ? 'translateY(-4px)' : 'translateY(0)',
-        boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.4)' : '0 2px 8px rgba(0,0,0,0.2)',
-        borderColor: hov ? 'rgba(236,72,153,0.4)' : 'rgba(255,255,255,0.1)',
-        transition: 'all 0.2s',
-      }}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-    >
-      {/* Cover emoji */}
-      <div style={{
-        fontSize: 44, textAlign: 'center', marginBottom: 10,
-        background: 'rgba(255,255,255,0.05)',
-        borderRadius: 12, padding: '12px 0',
-      }}>
-        {story.cover_emoji || '📖'}
-      </div>
-      <div style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', marginBottom: 4, lineHeight: 1.3 }}>
-        {story.title}
-      </div>
-      {story.genre && (
-        <div style={{ fontSize: 10, color: '#ec4899', fontWeight: 600, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-          {story.genre.replace(/_/g, ' ')}
+    <div style={{ position: 'relative' }}>
+      <Link
+        href={`/story-engine?story=${story.id}`}
+        className="story-card"
+        style={{
+          textDecoration: 'none',
+          animationDelay: delay,
+          transform: hov ? 'translateY(-4px)' : 'translateY(0)',
+          boxShadow: hov ? '0 8px 24px rgba(0,0,0,0.4)' : '0 2px 8px rgba(0,0,0,0.2)',
+          borderColor: hov ? 'rgba(236,72,153,0.4)' : 'rgba(255,255,255,0.1)',
+          transition: 'all 0.2s',
+          display: 'block',
+        }}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+      >
+        {/* Cover emoji */}
+        <div style={{
+          fontSize: 44, textAlign: 'center', marginBottom: 10,
+          background: 'rgba(255,255,255,0.05)',
+          borderRadius: 12, padding: '12px 0',
+        }}>
+          {story.cover_emoji || '📖'}
         </div>
-      )}
-      <div style={{ fontSize: 10, color: '#475569' }}>
-        📅 {date} · {story.chapters.length} cap.
-      </div>
-    </Link>
+        <div style={{ fontSize: 14, fontWeight: 700, color: '#f1f5f9', marginBottom: 4, lineHeight: 1.3 }}>
+          {story.title}
+        </div>
+        {story.genre && (
+          <div style={{ fontSize: 10, color: '#ec4899', fontWeight: 600, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            {story.genre.replace(/_/g, ' ')}
+          </div>
+        )}
+        <div style={{ fontSize: 10, color: '#475569', marginBottom: 8 }}>
+          📅 {date} · {story.chapters.length} cap.
+        </div>
+        {/* Save button */}
+        <button
+          onClick={handleSave}
+          title="Guardar como archivo .bond en tu computadora"
+          style={{
+            width: '100%', padding: '6px 0',
+            background: 'rgba(6,182,212,0.08)',
+            border: '1px solid rgba(6,182,212,0.2)',
+            borderRadius: 8, color: '#06b6d4',
+            fontSize: 10, fontWeight: 700, cursor: 'pointer',
+            fontFamily: 'inherit', letterSpacing: '0.05em',
+          }}
+        >
+          💾 Guardar .bond
+        </button>
+      </Link>
+    </div>
   )
 }
 

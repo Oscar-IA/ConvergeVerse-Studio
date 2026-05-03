@@ -210,121 +210,478 @@ const TEMPLATES: AnimeTemplate[] = [
   },
 ]
 
-// ── ComicPreview SVG ──────────────────────────────────────────────────────────
+// ── ComicPreview SVG — unique art style per template ─────────────────────────
 
-function ComicPreview({
-  accentColor,
-  icon,
-  genre,
-}: {
-  accentColor: string
-  icon: string
-  genre: string
-}) {
-  // Genre-appropriate action words
-  const genreEffects: Record<string, string[]> = {
-    'Shōnen': ['⚡', '💥', '🔥'],
-    'Dark Fantasy': ['💀', '🌑', '⚫'],
-    'Isekai': ['✨', '🌀', '💫'],
-    'Psicológico': ['🔪', '🧠', '👁'],
-    'Mecha': ['🤖', '💥', '⚙️'],
-    'Slice of Life': ['🌸', '💕', '🍃'],
-    'Fantasy': ['👑', '⚔️', '🏰'],
-    default: ['✨', '💫', '⚡'],
+function ComicPreview({ templateId }: { templateId: string }) {
+  switch (templateId) {
+
+    // ── SHŌNEN BATTLE — bold black ink, orange fire, speed lines ─────────────
+    case 'shonen_battle':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="240" fill="#0d0800" />
+          {/* Speed lines from center-right */}
+          {Array.from({ length: 20 }).map((_, i) => {
+            const angle = (i / 20) * Math.PI * 2
+            return <line key={i} x1="240" y1="120" x2={240 + Math.cos(angle) * 160} y2={120 + Math.sin(angle) * 160} stroke="#f97316" strokeWidth={i % 3 === 0 ? 1.5 : 0.5} opacity={i % 3 === 0 ? 0.6 : 0.2} />
+          })}
+          {/* Panel 1 — tall left, black ink */}
+          <rect x="4" y="4" width="130" height="232" fill="#080500" rx="2" stroke="#f97316" strokeWidth="3" />
+          {/* Fighter silhouette */}
+          <ellipse cx="69" cy="90" rx="22" ry="28" fill="#1a0800" stroke="#f97316" strokeWidth="2" />
+          <rect x="57" y="115" width="24" height="60" fill="#1a0800" rx="4" stroke="#f97316" strokeWidth="2" />
+          {/* Fist extended right */}
+          <ellipse cx="115" cy="118" rx="18" ry="14" fill="#f97316" opacity="0.9" />
+          <ellipse cx="115" cy="118" rx="10" ry="8" fill="#fff8" />
+          {/* Impact burst */}
+          {[0,45,90,135,180,225,270,315].map((a,i) => (
+            <line key={i} x1="115" y1="118" x2={115+Math.cos(a*Math.PI/180)*28} y2={118+Math.sin(a*Math.PI/180)*28} stroke="#fff" strokeWidth="2" opacity="0.8" />
+          ))}
+          {/* Panel 2 — top right */}
+          <rect x="142" y="4" width="174" height="112" fill="#0a0500" rx="2" stroke="#f97316" strokeWidth="2.5" />
+          {/* Bold FIGHT text */}
+          <text x="229" y="58" textAnchor="middle" fontSize="36" fill="#f97316" fontWeight="900" fontFamily="sans-serif" letterSpacing="-2">FIGHT!</text>
+          <text x="229" y="58" textAnchor="middle" fontSize="36" fill="none" stroke="#fff" strokeWidth="1" fontWeight="900" fontFamily="sans-serif" letterSpacing="-2" opacity="0.3">FIGHT!</text>
+          {/* Halftone dots bottom of panel 2 */}
+          {Array.from({length:3}).map((_,r) => Array.from({length:8}).map((_,c) => (
+            <circle key={`${r}-${c}`} cx={152+c*22} cy={90+r*10} r="2" fill="#f97316" opacity="0.25" />
+          )))}
+          {/* Panel 3 — wide middle */}
+          <rect x="142" y="124" width="174" height="56" fill="#0a0500" rx="2" stroke="#f97316" strokeWidth="2" />
+          <text x="229" y="147" textAnchor="middle" fontSize="10" fill="#fff" fontFamily="sans-serif" fontWeight="700">¡El poder oculto despierta!</text>
+          <text x="229" y="163" textAnchor="middle" fontSize="9" fill="#f97316" fontFamily="sans-serif">52 episodios · Shōnen</text>
+          {/* Panel 4 — bottom left */}
+          <rect x="142" y="188" width="80" height="48" fill="#0a0500" rx="2" stroke="#f97316" strokeWidth="2" />
+          <text x="182" y="218" textAnchor="middle" fontSize="28" fill="#f97316">⚡</text>
+          {/* Panel 5 — bottom right */}
+          <rect x="230" y="188" width="86" height="48" fill="#1a0800" rx="2" stroke="#f97316" strokeWidth="2" />
+          <text x="273" y="210" textAnchor="middle" fontSize="9" fill="#f97316" fontWeight="700" fontFamily="monospace">POW!</text>
+          <text x="273" y="228" textAnchor="middle" fontSize="9" fill="#fff6" fontFamily="monospace">¡Combate!</text>
+          <rect width="320" height="240" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+        </svg>
+      )
+
+    // ── DARK FANTASY MANHWA — cold noir, shadows, minimal color ──────────────
+    case 'dark_fantasy_manhwa':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="mw-glow" cx="50%" cy="40%" r="50%">
+              <stop offset="0%" stopColor="#818cf8" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#000" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="mw-shadow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#050510" />
+              <stop offset="100%" stopColor="#0d0d20" />
+            </linearGradient>
+          </defs>
+          <rect width="320" height="240" fill="url(#mw-shadow)" />
+          {/* Tall single panel — manhwa vertical style */}
+          <rect x="4" y="4" width="312" height="232" fill="#06060f" rx="3" stroke="#6366f1" strokeWidth="2" />
+          {/* Sky with cold gradient */}
+          <rect x="4" y="4" width="312" height="130" fill="url(#mw-glow)" />
+          {/* Shadow figure — solo hunter */}
+          <ellipse cx="160" cy="148" rx="16" ry="20" fill="#000" stroke="#6366f1" strokeWidth="1.5" opacity="0.9" />
+          <rect x="150" y="165" width="20" height="50" fill="#000" rx="3" stroke="#6366f1" strokeWidth="1.5" />
+          {/* Aura rings */}
+          {[30, 50, 72].map((r, i) => (
+            <ellipse key={i} cx="160" cy="175" rx={r} ry={r * 0.35} fill="none" stroke="#6366f1" strokeWidth={1.5 - i * 0.4} opacity={0.6 - i * 0.15} strokeDasharray="4 3" />
+          ))}
+          {/* Shadow army below */}
+          {Array.from({length:9}).map((_,i) => (
+            <g key={i}>
+              <ellipse cx={60+i*23} cy={210} rx={6} ry={8} fill="#6366f1" opacity={0.12+i*0.03} />
+              <rect x={57+i*23} y={217} width={6} height={12} fill="#6366f1" opacity={0.1+i*0.02} rx={1} />
+            </g>
+          ))}
+          {/* Particle dust */}
+          {Array.from({length:30}).map((_,i) => (
+            <circle key={i} cx={20+i*10+(i%3)*5} cy={30+i*6} r={1} fill="#818cf8" opacity={0.08+Math.random()*0.2} />
+          ))}
+          {/* Title panel — horizontal stripe at top */}
+          <rect x="4" y="4" width="312" height="36" fill="rgba(0,0,0,0.7)" />
+          <text x="160" y="24" textAnchor="middle" fontSize="13" fill="#818cf8" fontWeight="900" fontFamily="sans-serif" letterSpacing="3">DARK FANTASY</text>
+          <text x="160" y="36" textAnchor="middle" fontSize="8" fill="#6366f155" fontFamily="monospace" letterSpacing="6">MANHWA STYLE</text>
+          {/* Bottom text */}
+          <rect x="4" y="208" width="312" height="28" fill="rgba(0,0,0,0.75)" />
+          <text x="160" y="222" textAnchor="middle" fontSize="9" fill="#6366f1" fontFamily="sans-serif">El más débil asciende al poder absoluto</text>
+          <text x="160" y="234" textAnchor="middle" fontSize="8" fill="#ffffff44" fontFamily="monospace">26 episodios · 4 arcos</text>
+          <rect width="320" height="240" fill="none" stroke="#6366f130" strokeWidth="2" />
+        </svg>
+      )
+
+    // ── ISEKAI ADVENTURE — purple portal, magical sparkles, vivid contrast ────
+    case 'isekai_adventure':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="isk-portal" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#a855f7" stopOpacity="0.95" />
+              <stop offset="50%" stopColor="#7c3aed" stopOpacity="0.7" />
+              <stop offset="100%" stopColor="#1e0a3c" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="isk-world" cx="50%" cy="60%" r="60%">
+              <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.4" />
+              <stop offset="60%" stopColor="#10b981" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#0a0a1a" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="320" height="240" fill="#0a0616" />
+          {/* World below — green hills */}
+          <ellipse cx="160" cy="260" rx="200" ry="80" fill="#10b981" opacity="0.15" />
+          <ellipse cx="80" cy="240" rx="120" ry="50" fill="#22d3ee" opacity="0.08" />
+          {/* Portal swirl rings */}
+          {[70, 56, 42, 28, 14].map((r, i) => (
+            <ellipse key={i} cx="160" cy="110" rx={r} ry={r * 0.55}
+              fill={i === 0 ? 'none' : 'none'}
+              stroke={i % 2 === 0 ? '#a855f7' : '#7c3aed'}
+              strokeWidth={2 - i * 0.3}
+              opacity={0.8 - i * 0.1}
+              strokeDasharray={i > 0 ? `${i * 4} ${i * 2}` : undefined}
+            />
+          ))}
+          <ellipse cx="160" cy="110" rx="70" ry="38" fill="url(#isk-portal)" />
+          {/* Sparkles */}
+          {[[40,50],[280,70],[60,180],[290,160],[150,30],[200,200],[100,130],[250,130]].map(([x,y],i) => (
+            <g key={i}>
+              <line x1={x} y1={y-8} x2={x} y2={y+8} stroke="#f0abfc" strokeWidth="1.5" opacity="0.7" />
+              <line x1={x-8} y1={y} x2={x+8} y2={y} stroke="#f0abfc" strokeWidth="1.5" opacity="0.7" />
+              <circle cx={x} cy={y} r="2" fill="#fff" opacity="0.9" />
+            </g>
+          ))}
+          {/* Falling figure into portal */}
+          <ellipse cx="160" cy="95" rx="8" ry="10" fill="#c4b5fd" opacity="0.9" />
+          <rect x="155" y="104" width="10" height="18" fill="#c4b5fd" opacity="0.7" rx="3" />
+          {/* Panel grid — 3 small panels bottom */}
+          <rect x="4" y="175" width="96" height="61" fill="#0e0820" rx="3" stroke="#8b5cf6" strokeWidth="2" />
+          <rect x="108" y="175" width="96" height="61" fill="#0e0820" rx="3" stroke="#8b5cf6" strokeWidth="2" />
+          <rect x="212" y="175" width="104" height="61" fill="#0e0820" rx="3" stroke="#8b5cf6" strokeWidth="2" />
+          <text x="52" y="210" textAnchor="middle" fontSize="18" fill="#a855f7">🌀</text>
+          <text x="156" y="207" textAnchor="middle" fontSize="8" fill="#c4b5fd" fontFamily="sans-serif">Otro mundo</text>
+          <text x="156" y="220" textAnchor="middle" fontSize="7" fill="#8b5cf677" fontFamily="sans-serif">espera…</text>
+          <text x="264" y="207" textAnchor="middle" fontSize="8" fill="#c4b5fd" fontFamily="monospace">26 eps</text>
+          <text x="264" y="220" textAnchor="middle" fontSize="7" fill="#a855f7" fontFamily="monospace">Isekai</text>
+          {/* Title overlay */}
+          <rect x="4" y="4" width="312" height="30" fill="rgba(10,6,22,0.8)" />
+          <text x="160" y="22" textAnchor="middle" fontSize="12" fill="#c4b5fd" fontWeight="800" fontFamily="sans-serif" letterSpacing="2">✨ ISEKAI — OTRO MUNDO ✨</text>
+        </svg>
+      )
+
+    // ── PSYCHOLOGICAL THRILLER — pure B&W + single red accent, high contrast ──
+    case 'psychological_thriller':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="240" fill="#030303" />
+          {/* Cross-hatch texture fill */}
+          {Array.from({length:14}).map((_,i) => (
+            <line key={`h${i}`} x1="0" y1={i*17} x2="320" y2={i*17} stroke="#1a1a1a" strokeWidth="0.5" />
+          ))}
+          {Array.from({length:22}).map((_,i) => (
+            <line key={`v${i}`} x1={i*15} y1="0" x2={i*15} y2="240" stroke="#111" strokeWidth="0.5" />
+          ))}
+          {/* LARGE eye panel — center top */}
+          <rect x="4" y="4" width="312" height="120" fill="#050505" rx="2" stroke="#fff" strokeWidth="3" />
+          {/* Eye whites */}
+          <ellipse cx="160" cy="64" rx="90" ry="40" fill="#0a0a0a" stroke="#fff" strokeWidth="2.5" />
+          <ellipse cx="160" cy="64" rx="70" ry="30" fill="#101010" />
+          {/* Iris */}
+          <circle cx="160" cy="64" r="22" fill="#1a1a1a" stroke="#fff" strokeWidth="1.5" />
+          <circle cx="160" cy="64" r="14" fill="#0d0d0d" />
+          {/* Pupil — RED */}
+          <circle cx="160" cy="64" r="8" fill="#dc2626" />
+          <circle cx="163" cy="61" r="3" fill="#fff" opacity="0.8" />
+          {/* Reflection lines in eye */}
+          {Array.from({length:8}).map((_,i) => (
+            <line key={i} x1={135+i*7} y1="44" x2={133+i*7} y2="84" stroke="#fff" strokeWidth="0.4" opacity="0.15" />
+          ))}
+          {/* 3 bottom panels */}
+          <rect x="4" y="132" width="100" height="104" fill="#060606" rx="2" stroke="#fff" strokeWidth="2.5" />
+          <rect x="112" y="132" width="96" height="104" fill="#060606" rx="2" stroke="#fff" strokeWidth="2.5" />
+          <rect x="216" y="132" width="100" height="104" fill="#060606" rx="2" stroke="#fff" strokeWidth="2.5" />
+          {/* Panel 4 — notebook + RED pen */}
+          <rect x="20" y="148" width="68" height="70" fill="#0c0c0c" stroke="#333" strokeWidth="1" />
+          {Array.from({length:6}).map((_,i) => (
+            <line key={i} x1="24" y1={158+i*10} x2="84" y2={158+i*10} stroke="#333" strokeWidth="0.7" />
+          ))}
+          <line x1="32" y1="148" x2="32" y2="218" stroke="#dc262640" strokeWidth="1.5" />
+          {/* Red writing on notebook */}
+          <text x="40" y="165" fontSize="7" fill="#dc2626" fontFamily="monospace">DAY 1...</text>
+          <text x="40" y="177" fontSize="7" fill="#dc2626" fontFamily="monospace">TARGET</text>
+          <text x="40" y="189" fontSize="7" fill="#dc2626" fontFamily="monospace">FOUND</text>
+          {/* Panel 5 — chess piece */}
+          <rect x="134" y="170" width="52" height="50" fill="#0d0d0d" stroke="#2a2a2a" strokeWidth="0.5" />
+          <ellipse cx="160" cy="190" rx="14" ry="6" fill="#222" stroke="#fff" strokeWidth="1" />
+          <rect x="155" y="170" width="10" height="20" fill="#1a1a1a" stroke="#fff" strokeWidth="1" />
+          <circle cx="160" cy="166" r="7" fill="#1a1a1a" stroke="#fff" strokeWidth="1.5" />
+          {/* Panel 6 — quote */}
+          <text x="266" y="185" textAnchor="middle" fontSize="9" fill="#fff" fontFamily="sans-serif" fontStyle="italic">&ldquo;72 horas.</text>
+          <text x="266" y="198" textAnchor="middle" fontSize="9" fill="#fff" fontFamily="sans-serif" fontStyle="italic">El juego</text>
+          <text x="266" y="211" textAnchor="middle" fontSize="9" fill="#fff" fontFamily="sans-serif" fontStyle="italic">comienza.&rdquo;</text>
+          <text x="266" y="228" textAnchor="middle" fontSize="8" fill="#dc2626" fontFamily="monospace">24 eps</text>
+          <rect width="320" height="240" fill="none" stroke="#ffffff15" strokeWidth="1" />
+        </svg>
+      )
+
+    // ── MECHA SCI-FI — cold cyan blueprint, circuit patterns, hard geometry ───
+    case 'mecha_scifi':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="mch-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#030d14" />
+              <stop offset="100%" stopColor="#05131f" />
+            </linearGradient>
+          </defs>
+          <rect width="320" height="240" fill="url(#mch-bg)" />
+          {/* Blueprint grid */}
+          {Array.from({length:16}).map((_,i) => (
+            <line key={`h${i}`} x1="0" y1={i*15} x2="320" y2={i*15} stroke="#06b6d4" strokeWidth="0.3" opacity="0.2" />
+          ))}
+          {Array.from({length:22}).map((_,i) => (
+            <line key={`v${i}`} x1={i*15} y1="0" x2={i*15} y2="240" stroke="#06b6d4" strokeWidth="0.3" opacity="0.2" />
+          ))}
+          {/* Mecha frame — angular geometric */}
+          {/* Body */}
+          <polygon points="130,80 190,80 210,110 200,170 120,170 110,110" fill="#051520" stroke="#06b6d4" strokeWidth="2" />
+          {/* Head */}
+          <rect x="145" y="48" width="30" height="34" fill="#051520" rx="2" stroke="#06b6d4" strokeWidth="2" />
+          {/* Visor — glowing */}
+          <rect x="150" y="56" width="20" height="8" fill="#06b6d4" rx="1" opacity="0.9" />
+          <rect x="150" y="56" width="20" height="8" fill="#22d3ee" rx="1" opacity="0.3" />
+          {/* Shoulder armor */}
+          <polygon points="108,90 130,85 130,115 105,115" fill="#051520" stroke="#06b6d4" strokeWidth="1.5" />
+          <polygon points="190,85 212,90 215,115 190,115" fill="#051520" stroke="#06b6d4" strokeWidth="1.5" />
+          {/* Legs */}
+          <rect x="125" y="168" width="22" height="44" fill="#051520" stroke="#06b6d4" strokeWidth="1.5" rx="1" />
+          <rect x="173" y="168" width="22" height="44" fill="#051520" stroke="#06b6d4" strokeWidth="1.5" rx="1" />
+          {/* Feet */}
+          <rect x="115" y="210" width="38" height="12" fill="#051520" stroke="#06b6d4" strokeWidth="1.5" rx="2" />
+          <rect x="167" y="210" width="38" height="12" fill="#051520" stroke="#06b6d4" strokeWidth="1.5" rx="2" />
+          {/* Circuit lines on body */}
+          <path d="M145 100 L140 108 L150 108" fill="none" stroke="#06b6d4" strokeWidth="1" opacity="0.6" />
+          <path d="M175 100 L180 108 L170 108" fill="none" stroke="#06b6d4" strokeWidth="1" opacity="0.6" />
+          <circle cx="160" cy="125" r="8" fill="none" stroke="#06b6d4" strokeWidth="1.5" />
+          <circle cx="160" cy="125" r="3" fill="#06b6d4" opacity="0.8" />
+          {/* Energy blast from arm */}
+          {[0,15,-15,25,-25].map((a,i) => (
+            <line key={i} x1="215" y1="110" x2={215+60+i*5} y2={110+Math.tan(a*Math.PI/180)*60} stroke="#06b6d4" strokeWidth={2-i*0.3} opacity={0.9-i*0.15} />
+          ))}
+          <circle cx="280" cy="110" r="12" fill="#06b6d4" opacity="0.3" />
+          <circle cx="280" cy="110" r="6" fill="#22d3ee" opacity="0.7" />
+          {/* HUD panel — top right */}
+          <rect x="230" y="8" width="86" height="52" fill="#030d14" rx="2" stroke="#06b6d4" strokeWidth="1.5" />
+          <text x="273" y="24" textAnchor="middle" fontSize="8" fill="#06b6d4" fontFamily="monospace" letterSpacing="1">BOND-Ω-001</text>
+          <text x="273" y="36" textAnchor="middle" fontSize="7" fill="#22d3ee88" fontFamily="monospace">UNIT: ACTIVE</text>
+          <text x="273" y="48" textAnchor="middle" fontSize="7" fill="#06b6d4" fontFamily="monospace">PWR: ████░</text>
+          {/* HUD panel — bottom left */}
+          <rect x="4" y="8" width="86" height="52" fill="#030d14" rx="2" stroke="#06b6d4" strokeWidth="1.5" />
+          <text x="47" y="28" textAnchor="middle" fontSize="10" fill="#06b6d4" fontFamily="monospace">MECHA</text>
+          <text x="47" y="42" textAnchor="middle" fontSize="8" fill="#06b6d422" fontFamily="monospace">SCI-FI</text>
+          <text x="47" y="54" textAnchor="middle" fontSize="7" fill="#06b6d4" fontFamily="monospace">26 EPS</text>
+          <rect width="320" height="240" fill="none" stroke="#06b6d420" strokeWidth="2" />
+        </svg>
+      )
+
+    // ── SLICE OF LIFE + ROMANCE — soft watercolor, petals, warm pastel ────────
+    case 'slice_romance':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="sl-sky" cx="50%" cy="0%" r="80%">
+              <stop offset="0%" stopColor="#fdf4f9" stopOpacity="0.12" />
+              <stop offset="100%" stopColor="#0f0818" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="sl-sun" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#0f0818" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="320" height="240" fill="#0f0818" />
+          <rect width="320" height="240" fill="url(#sl-sky)" />
+          {/* Soft bokeh circles */}
+          {[[40,60,30],[280,40,22],[60,180,18],[300,200,26],[160,30,35],[200,170,20],[100,100,15]].map(([x,y,r],i) => (
+            <circle key={i} cx={x} cy={y} r={r} fill="#ec4899" opacity={0.04+i*0.01} />
+          ))}
+          {/* Main panel — soft border */}
+          <rect x="4" y="4" width="312" height="232" fill="rgba(255,245,250,0.02)" rx="12" stroke="#ec4899" strokeWidth="1.5" strokeDasharray="8 3" />
+          {/* Two figures side by side — silhouettes */}
+          <ellipse cx="138" cy="148" rx="14" ry="18" fill="#1a0d18" stroke="#ec4899" strokeWidth="1.5" opacity="0.9" />
+          <rect x="127" y="163" width="22" height="48" fill="#1a0d18" rx="4" stroke="#ec4899" strokeWidth="1.5" />
+          <ellipse cx="182" cy="148" rx="14" ry="18" fill="#1a0d18" stroke="#ec4899" strokeWidth="1.5" opacity="0.9" />
+          <rect x="171" y="163" width="22" height="48" fill="#1a0d18" rx="4" stroke="#ec4899" strokeWidth="1.5" />
+          {/* Holding hands */}
+          <line x1="149" y1="188" x2="171" y2="188" stroke="#ec4899" strokeWidth="2" />
+          <circle cx="152" cy="188" r="4" fill="#ec4899" opacity="0.7" />
+          <circle cx="168" cy="188" r="4" fill="#ec4899" opacity="0.7" />
+          {/* Cherry blossoms */}
+          {[[55,55],[85,35],[250,45],[290,75],[30,150],[305,150],[160,20],[220,25],[45,210],[275,220]].map(([x,y],i) => (
+            <g key={i} transform={`translate(${x},${y}) rotate(${i*37})`}>
+              <circle cx="0" cy="-5" r="4" fill="#f9a8d4" opacity="0.55" />
+              <circle cx="5" cy="0" r="4" fill="#f9a8d4" opacity="0.55" />
+              <circle cx="0" cy="5" r="4" fill="#fbcfe8" opacity="0.55" />
+              <circle cx="-5" cy="0" r="4" fill="#f9a8d4" opacity="0.55" />
+              <circle cx="0" cy="0" r="2" fill="#fce7f3" opacity="0.8" />
+            </g>
+          ))}
+          {/* Sun/warm light behind */}
+          <circle cx="160" cy="100" r="50" fill="url(#sl-sun)" />
+          {/* Piano keys at bottom — Slice of Life touch */}
+          <rect x="60" y="210" width="200" height="25" fill="#0d0815" rx="4" stroke="#ec489944" strokeWidth="1" />
+          {Array.from({length:12}).map((_,i) => (
+            <rect key={i} x={65+i*16} y="212" width="13" height="20" fill={i%2===0?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.6)'} rx="1" stroke="#ec489930" strokeWidth="0.5" />
+          ))}
+          {/* Title */}
+          <rect x="4" y="4" width="312" height="28" fill="rgba(15,8,24,0.85)" rx="12" />
+          <text x="160" y="21" textAnchor="middle" fontSize="11" fill="#f9a8d4" fontWeight="700" fontFamily="sans-serif">🌸 SLICE OF LIFE + ROMANCE 🌸</text>
+        </svg>
+      )
+
+    // ── DEMON HUNTER — deep crimson, fire, Japanese patterns, dark drama ───────
+    case 'demon_hunter':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="dh-fire" cx="50%" cy="100%" r="60%">
+              <stop offset="0%" stopColor="#ef4444" stopOpacity="0.5" />
+              <stop offset="50%" stopColor="#f97316" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#000" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="dh-bg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#0a0000" />
+              <stop offset="100%" stopColor="#1a0505" />
+            </linearGradient>
+          </defs>
+          <rect width="320" height="240" fill="url(#dh-bg)" />
+          <rect width="320" height="240" fill="url(#dh-fire)" />
+          {/* Japanese cloud pattern — top */}
+          {[40,100,170,230,280].map((x,i) => (
+            <g key={i}>
+              <circle cx={x} cy={20+i*3} r={12+i} fill="none" stroke="#f4433615" strokeWidth="1" />
+              <circle cx={x+10} cy={14+i*3} r={9+i} fill="none" stroke="#f4433610" strokeWidth="1" />
+            </g>
+          ))}
+          {/* Main panel — vertical */}
+          <rect x="4" y="4" width="312" height="180" fill="#050000" rx="2" stroke="#ef4444" strokeWidth="2.5" />
+          {/* Moon */}
+          <circle cx="260" cy="50" r="28" fill="#1a0505" stroke="#ef4444" strokeWidth="1.5" />
+          <circle cx="252" cy="44" r="22" fill="#0a0000" />
+          {/* Hunter figure — dramatic pose */}
+          <ellipse cx="130" cy="100" rx="15" ry="19" fill="#100000" stroke="#ef4444" strokeWidth="2" />
+          <rect x="119" y="116" width="22" height="52" fill="#100000" rx="3" stroke="#ef4444" strokeWidth="1.5" />
+          {/* Cape flowing */}
+          <path d="M119 120 Q80 150 75 175 L119 175" fill="#1a0505" stroke="#ef4444" strokeWidth="1.5" opacity="0.8" />
+          {/* Sword extended */}
+          <line x1="141" y1="108" x2="230" y2="85" stroke="#f8fafc" strokeWidth="2.5" />
+          <line x1="141" y1="108" x2="230" y2="85" stroke="#ef444460" strokeWidth="4" />
+          {/* Sword glow at tip */}
+          <circle cx="230" cy="85" r="6" fill="#ef4444" opacity="0.7" />
+          {/* Demon shadow opposite */}
+          <ellipse cx="240" cy="100" rx="20" ry="25" fill="#200000" stroke="#ef444460" strokeWidth="1.5" />
+          <rect x="228" y="122" width="24" height="50" fill="#200000" rx="3" stroke="#ef444460" strokeWidth="1" />
+          {/* Demon horns */}
+          <path d="M230 102 Q224 80 228 72" fill="none" stroke="#ef4444" strokeWidth="2" />
+          <path d="M250 102 Q256 80 252 72" fill="none" stroke="#ef4444" strokeWidth="2" />
+          {/* Fire particles at bottom */}
+          {Array.from({length:16}).map((_,i) => {
+            const x = 20+i*18; const h = 20+Math.sin(i)*15
+            return (
+              <g key={i}>
+                <ellipse cx={x} cy={180} rx={5} ry={h/2} fill="#ef4444" opacity={0.25+Math.sin(i)*0.15} />
+                <ellipse cx={x} cy={180} rx={3} ry={h/3} fill="#f97316" opacity={0.3} />
+              </g>
+            )
+          })}
+          {/* 2 bottom panels */}
+          <rect x="4" y="192" width="150" height="44" fill="#080000" rx="2" stroke="#ef4444" strokeWidth="2" />
+          <rect x="162" y="192" width="154" height="44" fill="#080000" rx="2" stroke="#ef4444" strokeWidth="2" />
+          <text x="79" y="215" textAnchor="middle" fontSize="9" fill="#ef4444" fontFamily="sans-serif">¡Venganza y sacrificio!</text>
+          <text x="79" y="228" textAnchor="middle" fontSize="8" fill="#ef444466" fontFamily="monospace">26 eps · Dark Fantasy</text>
+          <text x="239" y="215" textAnchor="middle" fontSize="9" fill="#fff8" fontFamily="sans-serif" fontStyle="italic">&ldquo;Ni uno más.&rdquo;</text>
+          <text x="239" y="228" textAnchor="middle" fontSize="8" fill="#ef4444" fontFamily="monospace">Cazador Lv.MAX</text>
+        </svg>
+      )
+
+    // ── FANTASY KINGDOM — gold/amber, castle, royal heraldry ─────────────────
+    case 'fantasy_kingdom':
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="fk-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#0a0600" />
+              <stop offset="60%" stopColor="#1a0e00" />
+              <stop offset="100%" stopColor="#0d0900" />
+            </linearGradient>
+            <radialGradient id="fk-moon" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#0a0600" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          <rect width="320" height="240" fill="url(#fk-sky)" />
+          {/* Stars */}
+          {[[30,30],[80,15],[150,25],[220,18],[270,35],[50,60],[300,50],[180,45],[120,55],[250,60]].map(([x,y],i) => (
+            <circle key={i} cx={x} cy={y} r={1+i%2} fill="#fbbf24" opacity={0.4+i*0.05} />
+          ))}
+          {/* Moon glow */}
+          <circle cx="260" cy="55" r="40" fill="url(#fk-moon)" />
+          <circle cx="260" cy="55" r="20" fill="#120c00" stroke="#fbbf24" strokeWidth="1.5" />
+          {/* Castle silhouette */}
+          {/* Main tower */}
+          <rect x="135" y="90" width="50" height="120" fill="#0a0700" stroke="#d97706" strokeWidth="1.5" />
+          {/* Battlements */}
+          {[135,145,155,165,175].map((x,i) => (
+            <rect key={i} x={x} y="82" width="8" height="12" fill="#0a0700" stroke="#d97706" strokeWidth="1" />
+          ))}
+          {/* Gate */}
+          <path d="M152 210 L152 168 Q160 155 168 168 L168 210" fill="#050300" stroke="#fbbf24" strokeWidth="1.5" />
+          {/* Left tower */}
+          <rect x="88" y="120" width="34" height="90" fill="#080600" stroke="#d97706" strokeWidth="1.5" />
+          {[88,96,104,114].map((x,i) => (
+            <rect key={i} x={x} y="112" width="8" height="12" fill="#080600" stroke="#d97706" strokeWidth="1" />
+          ))}
+          {/* Right tower */}
+          <rect x="198" y="120" width="34" height="90" fill="#080600" stroke="#d97706" strokeWidth="1.5" />
+          {[198,206,214,224].map((x,i) => (
+            <rect key={i} x={x} y="112" width="8" height="12" fill="#080600" stroke="#d97706" strokeWidth="1" />
+          ))}
+          {/* Windows with light */}
+          {[[105,145],[210,145],[148,130],[172,130]].map(([x,y],i) => (
+            <rect key={i} x={x} y={y} width="10" height="14" fill="#fbbf24" opacity="0.4" rx="5" />
+          ))}
+          {/* Crown above towers */}
+          <text x="160" y="82" textAnchor="middle" fontSize="22" fill="#fbbf24" opacity="0.9">👑</text>
+          {/* Diamond heraldry pattern left */}
+          {[[40,80],[20,100],[60,100],[40,120]].map(([x,y],i) => (
+            <rect key={i} x={x-8} y={y-8} width="16" height="16" fill="#d97706" opacity={0.15+i*0.05} transform={`rotate(45,${x},${y})`} />
+          ))}
+          {/* Diamond heraldry pattern right */}
+          {[[280,80],[260,100],[300,100],[280,120]].map(([x,y],i) => (
+            <rect key={i} x={x-8} y={y-8} width="16" height="16" fill="#d97706" opacity={0.15+i*0.05} transform={`rotate(45,${x},${y})`} />
+          ))}
+          {/* Ground */}
+          <rect x="0" y="208" width="320" height="32" fill="#0a0700" />
+          {/* Banner */}
+          <rect x="4" y="4" width="312" height="28" fill="rgba(10,7,0,0.9)" />
+          <text x="160" y="22" textAnchor="middle" fontSize="12" fill="#fbbf24" fontWeight="800" fontFamily="sans-serif" letterSpacing="2">⚔️ CONSTRUCCIÓN DE REINO ⚔️</text>
+        </svg>
+      )
+
+    // ── FALLBACK — generic colored gradient ───────────────────────────────────
+    default: {
+      const t = TEMPLATES.find(x => x.id === templateId)
+      const ac = t?.accentColor ?? '#ec4899'
+      return (
+        <svg viewBox="0 0 320 240" style={{ width: '100%', height: 'auto', display: 'block' }} xmlns="http://www.w3.org/2000/svg">
+          <rect width="320" height="240" fill="#0a0a14" rx="8" />
+          <rect x="6" y="6" width="120" height="228" fill={`${ac}18`} rx="4" stroke={ac} strokeWidth="2.5" />
+          <rect x="134" y="6" width="180" height="110" fill={`${ac}10`} rx="4" stroke={ac} strokeWidth="2" />
+          <rect x="134" y="124" width="180" height="110" fill={`${ac}10`} rx="4" stroke={ac} strokeWidth="2" />
+          <text x="66" y="130" textAnchor="middle" fontSize="52" fill="white" opacity="0.9">{t?.icon ?? '✨'}</text>
+          <text x="224" y="75" textAnchor="middle" fontSize="32" fill={ac} opacity="0.85">{t?.icon ?? '✨'}</text>
+          <text x="224" y="185" textAnchor="middle" fontSize="11" fill={ac} fontFamily="sans-serif" fontWeight="700">{t?.episodes ?? 0} eps</text>
+        </svg>
+      )
+    }
   }
-  const genreKey = Object.keys(genreEffects).find(k => genre.includes(k)) ?? 'default'
-  const [fx1, fx2] = genreEffects[genreKey]
-
-  return (
-    <svg
-      viewBox="0 0 320 240"
-      style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 10 }}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Background */}
-      <rect width="320" height="240" fill="#0a0a14" rx="10" />
-
-      {/* Panel borders */}
-      {/* Panel 1 — tall left */}
-      <rect x="6" y="6" width="120" height="228" fill={`${accentColor}15`} rx="4" stroke={accentColor} strokeWidth="2.5" />
-      {/* Panel 2 — top right */}
-      <rect x="134" y="6" width="180" height="110" fill={`${accentColor}0d`} rx="4" stroke={accentColor} strokeWidth="2" />
-      {/* Panel 3 — wide middle */}
-      <rect x="134" y="124" width="180" height="52" fill={`${accentColor}0a`} rx="4" stroke={accentColor} strokeWidth="2" />
-      {/* Panel 4 — bottom left small */}
-      <rect x="134" y="184" width="84" height="50" fill={`${accentColor}0d`} rx="4" stroke={accentColor} strokeWidth="2" />
-      {/* Panel 5 — bottom right small */}
-      <rect x="226" y="184" width="88" height="50" fill={`${accentColor}0d`} rx="4" stroke={accentColor} strokeWidth="2" />
-
-      {/* Panel 1 — gradient fill + icon */}
-      <defs>
-        <radialGradient id={`pg1-${accentColor.replace('#','')}`} cx="50%" cy="50%" r="60%">
-          <stop offset="0%" stopColor={accentColor} stopOpacity="0.3" />
-          <stop offset="100%" stopColor={accentColor} stopOpacity="0.02" />
-        </radialGradient>
-        <radialGradient id={`pg2-${accentColor.replace('#','')}`} cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stopColor={accentColor} stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#0a0a14" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <rect x="6" y="6" width="120" height="228" fill={`url(#pg1-${accentColor.replace('#','')})`} rx="4" />
-      <rect x="134" y="6" width="180" height="110" fill={`url(#pg2-${accentColor.replace('#','')})`} rx="4" />
-
-      {/* Halftone dots on panel 1 */}
-      {Array.from({ length: 6 }).map((_, row) =>
-        Array.from({ length: 4 }).map((_, col) => (
-          <circle
-            key={`dot-${row}-${col}`}
-            cx={20 + col * 28}
-            cy={20 + row * 38}
-            r="2.5"
-            fill={accentColor}
-            opacity="0.15"
-          />
-        ))
-      )}
-
-      {/* Big icon on panel 1 */}
-      <text x="66" y="130" textAnchor="middle" fontSize="52" fill="white" opacity="0.9">{icon}</text>
-
-      {/* Action lines (speed effect) on panel 2 */}
-      {Array.from({ length: 8 }).map((_, i) => (
-        <line
-          key={`line-${i}`}
-          x1={220 + i * 8}
-          y1="10"
-          x2={180 + i * 10}
-          y2="112"
-          stroke={accentColor}
-          strokeWidth="1"
-          opacity="0.2"
-        />
-      ))}
-
-      {/* Effect text on panel 2 */}
-      <text x="224" y="68" textAnchor="middle" fontSize="32" fill={accentColor} opacity="0.9"
-        style={{ fontWeight: 900 }}>{fx1}</text>
-
-      {/* Panel 3 — wide — dialog bubble */}
-      <rect x="148" y="134" width="120" height="30" fill="white" rx="6" opacity="0.08" />
-      <text x="208" y="148" textAnchor="middle" fontSize="10" fill={accentColor} opacity="0.9"
-        fontFamily="sans-serif" fontWeight="700">¡EPISODIO 1!</text>
-      <text x="208" y="162" textAnchor="middle" fontSize="10" fill="white" opacity="0.5"
-        fontFamily="sans-serif">comienza aquí</text>
-
-      {/* Panel 4 */}
-      <text x="176" y="216" textAnchor="middle" fontSize="20" fill="white" opacity="0.7">{fx2}</text>
-
-      {/* Panel 5 — ep count */}
-      <rect x="230" y="190" width="78" height="38" fill={`${accentColor}20`} rx="4" />
-      <text x="269" y="205" textAnchor="middle" fontSize="9" fill={accentColor} fontWeight="700"
-        fontFamily="monospace">EPS</text>
-
-      {/* Comic border shine */}
-      <rect x="6" y="6" width="308" height="228" fill="none" rx="10"
-        stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-    </svg>
-  )
 }
 
 // ── TemplatePreviewCard ───────────────────────────────────────────────────────
@@ -361,7 +718,7 @@ function TemplatePreviewCard({
     >
       {/* SVG comic preview */}
       <div style={{ borderRadius: '14px 14px 0 0', overflow: 'hidden' }}>
-        <ComicPreview accentColor={template.accentColor} icon={template.icon} genre={template.genre} />
+        <ComicPreview templateId={template.id} />
       </div>
 
       {/* Info row */}
@@ -418,7 +775,7 @@ function TemplateDetail({ template }: { template: AnimeTemplate }) {
         padding: '20px 20px 0',
         borderBottom: `1px solid ${template.accentColor}20`,
       }}>
-        <ComicPreview accentColor={template.accentColor} icon={template.icon} genre={template.genre} />
+        <ComicPreview templateId={template.id} />
       </div>
 
       <div style={{ padding: '24px 28px' }}>

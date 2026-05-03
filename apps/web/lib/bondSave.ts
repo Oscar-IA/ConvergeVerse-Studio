@@ -141,3 +141,83 @@ export function createBondStory(partial: Partial<BondStory>): BondStory {
     version: '1.0',
   }
 }
+
+// ── Demo story — pre-loaded example for kids to explore ──────────────────────
+
+export function seedDemoStory(): BondStory {
+  const demo: BondStory = {
+    id: 'demo-bond-001',
+    title: '⚡ El Chico del Viento',
+    genre: 'shonen',
+    cover_emoji: '⚡',
+    template_id: 'shonen_battle',
+    prompt: 'Kai tiene 14 años y nunca pudo controlar su poder — el viento lo obedece, pero de forma caótica. El día de su examen final, un demonio ataca la escuela. Es ahora o nunca.',
+    chapters: [
+      {
+        number: 1,
+        title: 'El Examen del Destino',
+        script: `El pasillo de la Academia Viento Libre olía a tiza y nervios.
+
+KAI (14 años, cabello alborotado por el viento constante) sostenía su número de examen: el 13. Mal augurio.
+
+— Vamos, Kai. Esta vez sí lo controlas — se dijo, apretando los puños.
+
+En la sala de pruebas, el MAESTRO ISHIRO observaba con expresión neutral.
+
+— Prueba de control elemental. Tienes tres intentos.
+
+Kai cerró los ojos. Respiró. El viento respondió — y arrasó con todos los papeles del salón.
+
+Entre las risas de sus compañeros, nadie notó que las ventanas se habían abierto solas. Nadie excepto una figura oscura en el tejado.
+
+FIN DEL CAPÍTULO 1.`,
+        panels: [
+          { description: 'Panel 1: Vista del pasillo de la academia, estudiantes nerviosos en fila' },
+          { description: 'Panel 2: Primer plano de Kai con cabello moviéndose por el viento, número 13 en mano' },
+          { description: 'Panel 3: El viento explota en el salón, papeles volando por todas partes' },
+          { description: 'Panel 4: Silueta misteriosa en el tejado, observando' },
+        ],
+        status: 'complete',
+      },
+      {
+        number: 2,
+        title: 'La Sombra en el Tejado',
+        script: `La academia se sacudió. No era un terremoto.
+
+Una criatura de sombras y viento oscuro descendió del tejado. Los estudiantes gritaron y corrieron.
+
+KAI no se movió. Algo dentro de él reconoció esa energía — era como la suya, pero corrompida.
+
+— ¿Eres... como yo? — preguntó.
+
+La criatura rio, un sonido como el viento a través de huesos.
+
+— Soy lo que SERÁS si no aprendes a controlarlo.
+
+El viento de Kai rugió — esta vez con intención.
+
+FIN DEL CAPÍTULO 2.`,
+        panels: [
+          { description: 'Panel 1: Criatura de sombras descendiendo del tejado, estudiantes huyendo' },
+          { description: 'Panel 2: Kai de pie frente a la criatura, sin huir — contrapicado dramático' },
+          { description: 'Panel 3: El viento de Kai brillando en azul claro vs el viento oscuro de la criatura' },
+          { description: 'Panel 4: Close-up del ojo de Kai determinado, con reflejo de la criatura' },
+        ],
+        status: 'complete',
+      },
+    ],
+    createdAt: new Date('2026-05-01T10:00:00Z').toISOString(),
+    updatedAt: now(),
+    version: '1.0',
+  }
+
+  // Save to localStorage
+  autoSaveBondStory(demo)
+  return demo
+}
+
+// ── Check if demo story already exists ───────────────────────────────────────
+
+export function hasDemoStory(): boolean {
+  return loadBondStories().some(s => s.id === 'demo-bond-001')
+}

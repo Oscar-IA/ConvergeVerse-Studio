@@ -146,13 +146,33 @@ interface CourContext {
 
 const api = async (path: string, method = 'GET', body?: object) => {
   const base = getApiBaseUrl();
-  const res = await fetch(`${base}/api/story-engine${path}`, {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${base}/api/story-engine${path}`, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined,
+      signal: AbortSignal.timeout(45000),
+    });
+  } catch (fetchErr) {
+    const msg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+    if (msg.includes('timeout') || msg.includes('abort') || msg.includes('Timeout')) {
+      throw new Error('⏱️ El servidor tardó demasiado. ¿Está la API corriendo? (localhost:8000)');
+    }
+    throw new Error(`🔌 No se pudo conectar con la API. Verifica que esté activa en ${base}`);
+  }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
+    if (res.status === 409) {
+      const detail = (err as { detail?: string }).detail || '';
+      throw new Error(`⚠️ ${detail || 'Ya existen capítulos para este día. Aprueba o elimina los borradores primero.'}`);
+    }
+    if (res.status === 429) {
+      throw new Error('🛑 Demasiadas generaciones. Espera un momento e inténtalo de nuevo.');
+    }
+    if (res.status === 503) {
+      throw new Error('🔑 Falta la clave API (ANTHROPIC_API_KEY). Configúrala en apps/api/.env');
+    }
     throw new Error(formatApiError(err, res.status));
   }
   return res.json();
