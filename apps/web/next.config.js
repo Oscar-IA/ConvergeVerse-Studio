@@ -10,8 +10,9 @@ const nextConfig = {
    * En Next.js 14 esto va dentro de `experimental`.
    */
   experimental: {
-    // outputFileTracingRoot moved here (Next 14 correct location)
-    outputFileTracingRoot: path.join(__dirname, '../..'),
+    // Only needed locally in the monorepo — Vercel resolves paths correctly on its own.
+    // Setting this on Vercel causes a doubled-path bug: /vercel/path0/vercel/path0/...
+    ...(process.env.VERCEL ? {} : { outputFileTracingRoot: path.join(__dirname, '../..') }),
     serverComponentsExternalPackages: [
       'nspell',
       'dictionary-en-us',
