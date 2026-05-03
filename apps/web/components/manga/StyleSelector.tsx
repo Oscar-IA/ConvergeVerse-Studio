@@ -41,21 +41,21 @@ const GENRE_COLORS: Record<string, string> = {
   dark: '#4b5563',
 }
 
-// Fallback styles if API is not available
+// Fallback styles if API is not available (names are BOND Studios originals)
 const FALLBACK_STYLES: AnimeStyleInfo[] = [
-  { id: 'solo_leveling', name: 'Solo Leveling', description: 'Korean dark fantasy manhwa with dramatic energy auras', genre_tags: ['dark_fantasy', 'action', 'manhwa'], sample_keywords: ['shadow monarch'], aspect_ratio: '2:3' },
-  { id: 'jujutsu_kaisen', name: 'Jujutsu Kaisen', description: 'Cursed energy horror action manga', genre_tags: ['horror', 'action', 'supernatural'], sample_keywords: ['cursed energy'], aspect_ratio: '2:3' },
-  { id: 'sword_art_online', name: 'Sword Art Online', description: 'Luminous VR isekai fantasy', genre_tags: ['isekai', 'fantasy', 'romance'], sample_keywords: ['virtual world'], aspect_ratio: '2:3' },
-  { id: 'demon_slayer', name: 'Demon Slayer', description: 'Breathtaking watercolor breathing arts', genre_tags: ['dark_fantasy', 'action', 'historical'], sample_keywords: ['breathing technique'], aspect_ratio: '2:3' },
-  { id: 'attack_on_titan', name: 'Attack on Titan', description: 'Gritty military dystopia manga', genre_tags: ['dark', 'military', 'horror'], sample_keywords: ['Titan'], aspect_ratio: '2:3' },
-  { id: 'naruto', name: 'Naruto', description: 'Classic ninja chakra shonen', genre_tags: ['action', 'adventure', 'ninja'], sample_keywords: ['chakra jutsu'], aspect_ratio: '2:3' },
-  { id: 'one_piece', name: 'One Piece', description: 'Bold pirate adventure comedy', genre_tags: ['adventure', 'comedy', 'pirate'], sample_keywords: ['Devil Fruit'], aspect_ratio: '2:3' },
-  { id: 'fairy_tail', name: 'Fairy Tail', description: 'Colorful guild magic fantasy', genre_tags: ['fantasy', 'adventure', 'romance'], sample_keywords: ['guild magic'], aspect_ratio: '2:3' },
-  { id: 'hunter_x_hunter', name: 'Hunter x Hunter', description: 'Strategic Nen ability battles', genre_tags: ['action', 'adventure', 'psychological'], sample_keywords: ['Nen ability'], aspect_ratio: '2:3' },
-  { id: 'fullmetal_alchemist', name: 'Fullmetal Alchemist', description: 'Steampunk alchemy equivalent exchange', genre_tags: ['steampunk', 'dark_fantasy', 'drama'], sample_keywords: ['transmutation circle'], aspect_ratio: '2:3' },
-  { id: 'bleach', name: 'BLEACH', description: 'Stylish Soul Reaper Zanpakuto battles', genre_tags: ['action', 'supernatural', 'shonen'], sample_keywords: ['Bankai'], aspect_ratio: '2:3' },
-  { id: 'children_kawaii', name: 'Kawaii Kids Comics', description: 'Bright cheerful chibi style for children', genre_tags: ['children', 'comedy', 'magical'], sample_keywords: ['kawaii adventure'], aspect_ratio: '2:3' },
-  { id: 'sci_fi_mecha', name: 'Mecha Sci-Fi', description: 'Epic mecha battles Gundam/EVA style', genre_tags: ['mecha', 'sci_fi', 'military'], sample_keywords: ['Mobile Suit'], aspect_ratio: '2:3' },
+  { id: 'solo_leveling', name: 'Shadow Ascent', description: 'Korean dark fantasy manhwa with dramatic blue-black energy auras', genre_tags: ['dark_fantasy', 'action', 'manhwa'], sample_keywords: ['shadow monarch'], aspect_ratio: '2:3' },
+  { id: 'jujutsu_kaisen', name: 'Cursed Force', description: 'High-contrast cursed energy horror action manga', genre_tags: ['horror', 'action', 'supernatural'], sample_keywords: ['cursed energy'], aspect_ratio: '2:3' },
+  { id: 'sword_art_online', name: 'Digital Realm', description: 'Luminous virtual world isekai fantasy', genre_tags: ['isekai', 'fantasy', 'romance'], sample_keywords: ['virtual world'], aspect_ratio: '2:3' },
+  { id: 'demon_slayer', name: 'Spirit Blade', description: 'Breathtaking watercolor breathing arts with elemental effects', genre_tags: ['dark_fantasy', 'action', 'historical'], sample_keywords: ['breathing technique'], aspect_ratio: '2:3' },
+  { id: 'attack_on_titan', name: 'Colossus War', description: 'Gritty military dystopia with colossal figures', genre_tags: ['dark', 'military', 'horror'], sample_keywords: ['giant siege'], aspect_ratio: '2:3' },
+  { id: 'naruto', name: 'Ninja Chronicles', description: 'Classic ninja chakra action shonen', genre_tags: ['action', 'adventure', 'ninja'], sample_keywords: ['chakra jutsu'], aspect_ratio: '2:3' },
+  { id: 'one_piece', name: 'Grand Voyage', description: 'Bold pirate adventure with supernatural abilities', genre_tags: ['adventure', 'comedy', 'pirate'], sample_keywords: ['pirate crew'], aspect_ratio: '2:3' },
+  { id: 'fairy_tail', name: 'Mage Guild', description: 'Colorful guild magic with European fantasy setting', genre_tags: ['fantasy', 'adventure', 'romance'], sample_keywords: ['guild magic'], aspect_ratio: '2:3' },
+  { id: 'hunter_x_hunter', name: "Hunter's Path", description: 'Strategic energy ability battles with psychological depth', genre_tags: ['action', 'adventure', 'psychological'], sample_keywords: ['ability aura'], aspect_ratio: '2:3' },
+  { id: 'fullmetal_alchemist', name: 'Iron Alchemy', description: 'Steampunk industrial alchemy with geometric transmutation', genre_tags: ['steampunk', 'dark_fantasy', 'drama'], sample_keywords: ['transmutation circle'], aspect_ratio: '2:3' },
+  { id: 'bleach', name: 'Soul Reaper', description: 'Stylish spirit blade battles with fashion-forward designs', genre_tags: ['action', 'supernatural', 'shonen'], sample_keywords: ['blade release'], aspect_ratio: '2:3' },
+  { id: 'children_kawaii', name: 'Kawaii Kids', description: 'Bright cheerful chibi style perfect for children\'s stories', genre_tags: ['children', 'comedy', 'magical'], sample_keywords: ['kawaii adventure'], aspect_ratio: '2:3' },
+  { id: 'sci_fi_mecha', name: 'Iron Colossus', description: 'Epic mecha battles with detailed mechanical design', genre_tags: ['mecha', 'sci_fi', 'military'], sample_keywords: ['mobile suit'], aspect_ratio: '2:3' },
 ]
 
 interface Props {

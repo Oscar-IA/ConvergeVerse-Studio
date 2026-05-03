@@ -81,8 +81,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   fontSize: 10, letterSpacing: '0.15em',
                   color: isActive ? '#ec4899' : 'rgba(255,255,255,0.45)',
                   textDecoration: 'none',
-                  padding: '4px 8px', borderRadius: 6,
-                  background: isActive ? 'rgba(236,72,153,0.08)' : 'transparent',
+                  padding: '4px 8px', borderRadius: 2,
+                  background: isActive ? 'rgba(236,72,153,0.07)' : 'transparent',
+                  boxShadow: isActive ? 'inset 0 -2px 0 #ec4899' : 'none',
                   transition: 'all 0.15s',
                 }}
               >

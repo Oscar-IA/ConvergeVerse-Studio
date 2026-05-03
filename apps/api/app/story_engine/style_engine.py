@@ -31,18 +31,18 @@ class AnimeStyle:
 STYLES: dict[str, AnimeStyle] = {
     "solo_leveling": AnimeStyle(
         id="solo_leveling",
-        name="Solo Leveling — Dark Manhwa",
+        name="Shadow Ascent — Dark Manhwa",
         description="Korean dark fantasy manhwa with dramatic blue/black energy auras",
         model=FLUX_DEV,
         steps=35,
         guidance=4.5,
         prompt_prefix=(
-            "manhwa webtoon digital art, Korean dark fantasy manhwa, Solo Leveling aesthetic, "
+            "manhwa webtoon digital art, Korean dark fantasy manhwa, Shadow Ascent aesthetic, "
             "dramatic blue-black shadow painting, glowing magical blue and purple energy particles, "
-            "shadow monarch dark aura, Sung Jin-Woo character aesthetic, intense cinematic lighting, "
+            "shadow monarch dark aura, intense cinematic lighting, "
             "sharp ultra-detailed linework, painterly digital shading, cell-shaded look, "
             "ultra-detailed urban/dungeon backgrounds, vertical webtoon panel composition, "
-            "Jin-ho Chul and Dubu artist style, professional manhwa quality, "
+            "professional manhwa quality, "
         ),
         prompt_suffix=(
             "masterpiece, best quality, ultra detailed, 8K resolution, "
@@ -60,17 +60,17 @@ STYLES: dict[str, AnimeStyle] = {
 
     "jujutsu_kaisen": AnimeStyle(
         id="jujutsu_kaisen",
-        name="Jujutsu Kaisen — Cursed Horror",
+        name="Cursed Force — Dark Sorcery",
         description="High-contrast manga with cursed energy and horror action elements",
         model=FLUX_DEV,
         steps=38,
         guidance=5.0,
         prompt_prefix=(
-            "Jujutsu Kaisen manga art style, Gege Akutami artwork, high-contrast ink illustration, "
+            "dark sorcery manga art style, high-contrast ink illustration, "
             "cursed energy purple black aura effects, domain expansion visual atmosphere, "
             "haunting atmospheric horror elements, bold thick variable-width ink lines, "
             "white speed lines for action, dynamic extreme perspective panels, "
-            "Sukuna tattoo aesthetic, Tokyo Jujutsu High setting, infinite void backgrounds, "
+            "sorcerer tattoo aesthetic, dark academy setting, infinite void backgrounds, "
             "cursed spirit manifestations, reverse cursed technique effects, "
         ),
         prompt_suffix=(
@@ -88,18 +88,18 @@ STYLES: dict[str, AnimeStyle] = {
 
     "sword_art_online": AnimeStyle(
         id="sword_art_online",
-        name="Sword Art Online — Virtual Isekai",
+        name="Digital Realm — Virtual Isekai",
         description="Luminous VR fantasy with game UI elements and magical particle effects",
         model=FLUX_DEV,
         steps=30,
         guidance=4.0,
         prompt_prefix=(
-            "Sword Art Online anime digital art, A-1 Pictures high quality animation style, "
+            "Digital Realm anime digital art, high quality animation style, "
             "isekai fantasy RPG virtual world aesthetic, luminous magical particle effects, "
             "vivid saturated fantasy colors, beautiful detailed character designs, "
             "fantasy MMORPG UI holographic elements, glowing skill names floating text, "
-            "Aincrad floating castle background, Underworld ethereal realm, Kirito black swordsman aesthetic, "
-            "Asuna Knights of Blood guild colors, ALO fairy wings, "
+            "floating castle background, ethereal realm, black swordsman aesthetic, "
+            "guild colors, fairy wings, "
             "soft cel shading with specular highlights, ethereal volumetric lighting, "
             "sword skill burst effects, menu screen overlays tasteful, "
         ),
@@ -118,20 +118,20 @@ STYLES: dict[str, AnimeStyle] = {
 
     "demon_slayer": AnimeStyle(
         id="demon_slayer",
-        name="Demon Slayer — Breathing Arts",
+        name="Spirit Blade — Breathing Arts",
         description="Breathtaking watercolor backgrounds with elemental breathing technique effects",
         model=FLUX_DEV,
         steps=38,
         guidance=4.5,
         prompt_prefix=(
-            "Kimetsu no Yaiba Demon Slayer art style, Koyoharu Gotouge manga aesthetic, "
-            "Ufotable anime adaptation quality, beautiful watercolor and ink wash backgrounds, "
+            "Spirit Blade manga art style, watercolor and ink wash backgrounds, "
+            "breathtaking watercolor and ink wash backgrounds, "
             "Water Breathing water wave effects, Flame Breathing fire burst effects, "
             "Thunder Breathing lightning yellow effects, Sun Breathing golden radiance, "
             "traditional Taisho era Japan setting, Japanese architecture and nature, "
             "cherry blossom petals in moonlight, delicate linework bold action contrast, "
-            "Zenitsu thunder sparks, Inosuke boar mask, Tanjiro hanafuda earrings, "
-            "Nezuko bamboo muzzle and pink kimono, demon blood art effects, "
+            "thunder sparks, boar warrior mask, spirit blade slayer aesthetic, "
+            "pink haori kimono, demon blood art effects, "
         ),
         prompt_suffix=(
             "masterpiece, best quality, ultra detailed, breathtaking composition, "
@@ -148,20 +148,20 @@ STYLES: dict[str, AnimeStyle] = {
 
     "attack_on_titan": AnimeStyle(
         id="attack_on_titan",
-        name="Attack on Titan — Dark Epic",
+        name="Colossus War — Dark Epic",
         description="Gritty realistic proportions with military dystopian atmosphere",
         model=FLUX_DEV,
         steps=40,
         guidance=5.5,
         prompt_prefix=(
-            "Hajime Isayama art style, Shingeki no Kyojin manga, dark gritty epic saga, "
+            "Colossus War manga art style, dark gritty epic saga, "
             "realistic proportions and military uniforms, 3D Maneuver Gear omni-directional cables, "
-            "towering Titan silhouettes against apocalyptic sky, Survey Corps green cloaks, "
-            "Walls Maria Rose Sina massive stone architecture, military dystopian atmosphere, "
+            "towering Colossus silhouettes against apocalyptic sky, Recon Corps green cloaks, "
+            "massive stone wall architecture, military dystopian atmosphere, "
             "sepia and muted tone panels, desaturated war photography aesthetic, "
             "intense emotional character close-ups with tears and determination, "
-            "Colossal Titan steam explosion, Crystal Titan armor shards, "
-            "Rumbling earthquake and marching Colossal Titans, Paradise island setting, "
+            "Colossal giant steam explosion, Crystal armor shards, "
+            "Rumbling earthquake and marching giants, island fortress setting, "
         ),
         prompt_suffix=(
             "masterpiece, highly detailed, professional manga illustration, "
@@ -179,22 +179,21 @@ STYLES: dict[str, AnimeStyle] = {
 
     "naruto": AnimeStyle(
         id="naruto",
-        name="Naruto — Classic Shonen",
+        name="Ninja Chronicles — Classic Shonen",
         description="Expressive ninja action with chakra nature transformations",
         model=FLUX_DEV,
         steps=28,
         guidance=4.0,
         prompt_prefix=(
-            "Masashi Kishimoto manga art style, Naruto Shippuden anime quality, "
-            "classic shonen manga aesthetic, bold expressive ink lines, "
+            "Ninja Chronicles manga art style, classic shonen manga aesthetic, bold expressive ink lines, "
             "chakra nature transformation effects: fire release flames, water dragon, "
-            "lightning chidori blue sparks, wind rasenshuriken, earth rock armor, "
-            "Hidden Leaf Village Konoha setting, ninja hand seal poses, "
-            "Sage Mode orange toad eyes, Nine-Tails fox chakra red-black mode, "
-            "Sharingan red eye with tomoe, Byakugan pale eyes veins, Rinnegan rings, "
+            "lightning blue sparks, wind spiral shuriken, earth rock armor, "
+            "Hidden Leaf Village setting, ninja hand seal poses, "
+            "Sage Mode orange eyes, Nine-Tails fox chakra red-black mode, "
+            "sharingan red eye with tomoe, pale eyes veins, cosmic ripple eyes, "
             "kunai and shuriken weapon action, shadow clone smoke puffs, "
-            "Chunin exam arena, Valley of the End waterfall, "
-            "orange jumpsuit Naruto, ANBU black ops masks, "
+            "ninja exam arena, waterfall valley setting, "
+            "orange jumpsuit protagonist, black ops masks, "
         ),
         prompt_suffix=(
             "masterpiece, best quality, detailed manga illustration, "
@@ -211,28 +210,28 @@ STYLES: dict[str, AnimeStyle] = {
 
     "one_piece": AnimeStyle(
         id="one_piece",
-        name="One Piece — Grand Adventure",
+        name="Grand Voyage — Pirate Adventure",
         description="Bold cartoonish pirate adventure with Devil Fruit power effects",
         model=FLUX_DEV,
         steps=28,
         guidance=3.5,
         prompt_prefix=(
-            "Eiichiro Oda manga art style, One Piece anime aesthetic, "
+            "Grand Voyage manga art style, pirate adventure anime aesthetic, "
             "bold exaggerated cartoonish character designs with unique silhouettes, "
-            "thick bold black outlines Oda signature style, "
-            "Gum-Gum rubber stretching effects with impact lines, "
+            "thick bold black outlines signature style, "
+            "rubber stretching effects with impact lines, "
             "Devil Fruit power visual effects: flame magma ice ice-ice smoke, "
             "New World exotic island settings, Grand Line sea adventure, "
-            "Marine warships and pirate ships, Thousand Sunny Merry ships, "
+            "Marine warships and pirate ships, pirate crew ship, "
             "Haki invisible willpower aura black coating, "
-            "Gear Fifth divine cloud form, laugh panels, dramatic reveal panels, "
-            "Luffy straw hat, Zoro three swords, Nami weather staff, "
-            "Robin 'Mil Fleurs' flower arms, Chopper reindeer transformations, "
+            "divine cloud form, laugh panels, dramatic reveal panels, "
+            "straw hat captain, three-sword fighter, weather navigator, "
+            "flower arms, reindeer transformations, "
         ),
         prompt_suffix=(
             "masterpiece, best quality, bold manga illustration, "
             "vibrant tropical adventure color palette, grand heroic composition, "
-            "Oda's unique character expressiveness"
+            "bold expressive character design"
         ),
         negative_prompt=(
             "realistic proportions, grimdark, low quality, blurry, "
@@ -244,20 +243,19 @@ STYLES: dict[str, AnimeStyle] = {
 
     "fairy_tail": AnimeStyle(
         id="fairy_tail",
-        name="Fairy Tail — Guild Magic",
+        name="Mage Guild — Guild Magic",
         description="Colorful guild magic with European fantasy setting",
         model=FLUX_DEV,
         steps=28,
         guidance=4.0,
         prompt_prefix=(
-            "Hiro Mashima manga art style, Fairy Tail anime aesthetic, "
-            "vibrant colorful guild magic spells, Natsu fire dragon slayer flames, "
-            "Erza requip armor summoning magical girl-knight aesthetic, "
-            "Lucy celestial spirit summon gates golden keys, "
-            "Gray ice-make freeze sculpture magic, Wendy sky dragon healing winds, "
-            "Fairy Tail guild hall Magnolia town European fantasy setting, "
-            "guild mark tattoo insignia, Exceed flying cat companions, "
-            "Etherion magical cannon, Dragon Cry ancient dragon magic, "
+            "Mage Guild manga art style, vibrant colorful guild magic spells, "
+            "fire dragon slayer flames, requip armor summoning magical girl-knight aesthetic, "
+            "celestial spirit summon gates golden keys, "
+            "ice-make freeze sculpture magic, sky dragon healing winds, "
+            "guild hall European fantasy setting, "
+            "guild mark tattoo insignia, flying cat companions, "
+            "magical cannon, ancient dragon magic, "
             "friendship power-up golden energy glow, "
         ),
         prompt_suffix=(
@@ -274,20 +272,20 @@ STYLES: dict[str, AnimeStyle] = {
 
     "hunter_x_hunter": AnimeStyle(
         id="hunter_x_hunter",
-        name="Hunter x Hunter — Nen Battles",
+        name="Hunter's Path — Nen Battles",
         description="Strategic Nen ability battles with psychological depth",
         model=FLUX_DEV,
         steps=35,
         guidance=4.5,
         prompt_prefix=(
-            "Yoshihiro Togashi manga art style, Hunter x Hunter aesthetic, "
+            "Hunter's Path manga art style, strategic battle psychology aesthetic, "
             "Nen ability aura visualization: Ten Zetsu Ren Hatsu colored energy, "
-            "Gon's Jajanken rock-paper-scissors impact, Killua Godspeed lightning, "
-            "Hisoka magician card tricks and elastic bungee gum, "
-            "Chimera Ant arc horrifying hybrid designs, "
+            "rock-paper-scissors impact, Godspeed lightning, "
+            "magician card tricks and elastic bungee gum, "
+            "chimera hybrid horrifying designs, "
             "strategic battle psychology atmosphere, intense calculated tension, "
-            "Yorknew City underground auction, NGL wilderness, Heaven's Arena tower, "
-            "Green and turquoise Nen aura glow, "
+            "underground auction city, wilderness ruins, arena tower, "
+            "green and turquoise Nen aura glow, "
         ),
         prompt_suffix=(
             "masterpiece, best quality, detailed manga illustration, "
@@ -303,20 +301,20 @@ STYLES: dict[str, AnimeStyle] = {
 
     "fullmetal_alchemist": AnimeStyle(
         id="fullmetal_alchemist",
-        name="Fullmetal Alchemist — Alchemy",
+        name="Iron Alchemy — Equivalent Exchange",
         description="Steampunk alchemy with equivalent exchange and automail",
         model=FLUX_DEV,
         steps=32,
         guidance=4.5,
         prompt_prefix=(
-            "Hiromu Arakawa manga art style, Fullmetal Alchemist Brotherhood, "
+            "Iron Alchemy manga art style, steampunk industrial aesthetic, "
             "alchemy transmutation circles glowing blue geometric patterns, "
-            "Ed's automail arm and leg metal prosthetic, "
-            "philosopher's stone red liquid glowing, homunculus Ouroboros tattoo, "
-            "military uniform Amestris blue, steampunk industrial Ishval Resembool, "
+            "automail arm and leg metal prosthetic, "
+            "philosopher's stone red liquid glowing, Ouroboros tattoo, "
+            "military uniform blue, steampunk industrial village setting, "
             "Gate of Truth white void with hands, Truth void entity, "
             "chimera horror transmutation, Flamel cross symbol, "
-            "Central City military architecture, winry automail mechanic, "
+            "military city architecture, automail mechanic, "
         ),
         prompt_suffix=(
             "masterpiece, best quality, detailed manga illustration, "
@@ -332,23 +330,23 @@ STYLES: dict[str, AnimeStyle] = {
 
     "bleach": AnimeStyle(
         id="bleach",
-        name="BLEACH — Soul Reaper",
+        name="Soul Reaper — Spirit Blade",
         description="Stylish soul reaper battles with Zanpakuto releases and Hollow designs",
         model=FLUX_DEV,
         steps=35,
         guidance=4.8,
         prompt_prefix=(
-            "Tite Kubo manga art style, BLEACH anime aesthetic, "
-            "Soul Reaper Shinigami black shihakusho uniform, "
+            "Soul Reaper manga art style, fashion-forward character designs, "
+            "Soul Reaper black shihakusho uniform, "
             "Zanpakuto spirit manifestation and Bankai release explosion, "
-            "Hollow mask white bone cracking reveal, Espada Arrancar designs, "
-            "Getsuga Tensho black-red crescent energy wave, "
-            "Senbonzakura cherry blossom blade scatter, "
-            "Soifon flash step speed lines, Aizen butterfly wings transcendence, "
-            "Hueco Mundo white desert Las Noches fortress, "
-            "Soul Society Seireitei white buildings, Kurosaki Ichigo substitute soul reaper badge, "
-            "Reiatsu spirit pressure visible aura compression, "
-            "Kubo's fashion-forward character designs, stylish battle poses, "
+            "Hollow mask white bone cracking reveal, Arrancar designs, "
+            "black-red crescent energy wave, "
+            "cherry blossom blade scatter, "
+            "flash step speed lines, butterfly wings transcendence, "
+            "white desert fortress setting, "
+            "Soul Society white buildings, substitute soul reaper badge, "
+            "spirit pressure visible aura compression, "
+            "stylish battle poses, "
         ),
         prompt_suffix=(
             "masterpiece, best quality, stylish manga illustration, "
@@ -373,8 +371,8 @@ STYLES: dict[str, AnimeStyle] = {
             "kawaii chibi super-deformed anime style, children's manga picture book, "
             "bright saturated cheerful colors, simple cute rounded character designs, "
             "big expressive sparkle eyes, pastel rainbow color palette, "
-            "Studio Ghibli Totoro warmth and charm, Doraemon friendly robot vibes, "
-            "Cardcaptor Sakura magical girl brightness, Pokemon adventure friendliness, "
+            "warm cozy heartwarming forest spirit aesthetic, friendly robot companion vibes, "
+            "magical girl brightness and wonder, friendly creature adventure aesthetic, "
             "soft watercolor and marker texture, stars hearts sparkles decorations, "
             "friendly animals and nature spirits, cozy village and forest settings, "
             "happy smiling faces, action lines simple and clear, "
@@ -394,22 +392,22 @@ STYLES: dict[str, AnimeStyle] = {
 
     "sci_fi_mecha": AnimeStyle(
         id="sci_fi_mecha",
-        name="Mecha Sci-Fi — Gundam/EVA",
+        name="Iron Colossus — Mecha Sci-Fi",
         description="Epic mecha battles with futuristic military technology",
         model=FLUX_DEV,
         steps=38,
         guidance=5.0,
         prompt_prefix=(
-            "mecha anime art style, Gundam Evangelion aesthetic, "
+            "Iron Colossus mecha anime art style, epic battle aesthetic, "
             "giant robot battle mechanical suit detailed design, "
-            "beam saber blue energy blade, bazooka missile missile trail effects, "
-            "Newtype psychic burst waves spreading, "
-            "AT Field orange hexagonal barrier shattering, "
+            "beam saber blue energy blade, bazooka missile trail effects, "
+            "psychic burst waves spreading, "
+            "hexagonal barrier shattering, "
             "colony space station and Earth orbit backdrop, "
             "cockpit pilot interface view HUD display, "
-            "Federation vs Zeon forces mobile suit, "
-            "V-fin Gundam head distinctive design, "
-            "Unit 01 purple-green berserker form, Core Fighter ejection, "
+            "mobile suit faction battle, "
+            "V-fin mecha head distinctive design, "
+            "purple-green berserker unit form, core fighter ejection, "
             "city destruction giant robot scale, human pilots in cockpits, "
         ),
         prompt_suffix=(

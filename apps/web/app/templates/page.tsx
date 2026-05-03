@@ -20,7 +20,6 @@ interface AnimeTemplate {
   themes: string[]
   structure: string[]
   samplePrompt: string
-  inspirations: string[]
 }
 
 const TEMPLATES: AnimeTemplate[] = [
@@ -32,7 +31,7 @@ const TEMPLATES: AnimeTemplate[] = [
     accentColor: '#f97316',
     episodes: 52,
     arcs: ['Despertar del Poder', 'Torneo del Destino', 'Arco del Antagonista', 'Guerra Final', 'Epílogo'],
-    description: 'El clásico viaje del héroe con poderes únicos, entrenamiento, amistades forjadas en batalla y un destino épico. Inspirado en los grandes del género.',
+    description: 'El clásico viaje del héroe con poderes únicos, entrenamiento, amistades forjadas en batalla y un destino épico. El estándar de oro del género de acción.',
     worldType: 'Mundo con sistema de poderes (aura, chakra, energía mística)',
     protagonist: 'Joven ordinario con poder oculto extraordinario. Determinación inquebrantable.',
     antagonist: 'Figura poderosa con filosofía opuesta. Pasado trágico que justifica sus acciones.',
@@ -47,11 +46,10 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 51–52: Resolución + epílogo emocional',
     ],
     samplePrompt: 'Un adolescente sin poderes en un mundo donde todos los tienen descubre que su "vacío" es en realidad el poder más temido: absorber y neutralizar cualquier energía. El ejército del Imperio lo quiere muerto.',
-    inspirations: ['Naruto', 'My Hero Academia', 'Bleach', 'Black Clover'],
   },
   {
     id: 'dark_fantasy_manhwa',
-    name: 'Dark Fantasy — Solo Leveling Style',
+    name: 'Dark Fantasy — Manhwa Style',
     genre: 'Dark Fantasy / Manhwa',
     icon: '🌑',
     accentColor: '#6366f1',
@@ -71,7 +69,6 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 22–26: Confrontación con el Monarca — escala épica',
     ],
     samplePrompt: 'El "Hunter más débil del mundo" sobrevive imposiblemente a una mazmorra de clase S. Al despertar, un sistema de misiones invisible sólo visible para él le otorga poderes que escalan sin límite. Los Monarcas de las sombras lo notan.',
-    inspirations: ['Solo Leveling', 'The Beginning After the End', 'Omniscient Reader'],
   },
   {
     id: 'isekai_adventure',
@@ -95,7 +92,6 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 23–26: Enfrentar la amenaza mayor — decisión final',
     ],
     samplePrompt: 'Un desarrollador de videojuegos muere y renace como NPC de bajo nivel en el mundo de su propio juego — uno que diseñó pero nunca terminó. Conoce el código del mundo mejor que nadie, pero el juego tiene sus propias reglas que él rompió.',
-    inspirations: ['Overlord', 'Re:Zero', 'Konosuba', 'Shield Hero'],
   },
   {
     id: 'psychological_thriller',
@@ -118,8 +114,7 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 18–22: Crisis — el sistema entra en juego',
       'Eps 23–24: Resolución — uno cae, el otro paga el precio',
     ],
-    samplePrompt: 'Un estudiante brillante encuentra un cuaderno que mata a cualquier persona cuyo nombre escriba en él. Decide "limpiar" el mundo. Un detective prodigio anónimo lo identifica en 72 horas. Comienza el juego más peligroso.',
-    inspirations: ['Death Note', 'Code Geass', 'Erased', 'Classroom of the Elite'],
+    samplePrompt: 'Un estudiante brillante descubre que puede ver los crímenes futuros de cualquier persona con solo tocarla. Decide actuar antes de que ocurran. Un detective prodigio sin identidad conocida lo rastrea en 72 horas. Comienza el juego más peligroso.',
   },
   {
     id: 'mecha_scifi',
@@ -142,8 +137,7 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 20–23: Conspiración militar revelada',
       'Eps 24–26: Sacrificio y resolución — fin de la guerra',
     ],
-    samplePrompt: 'La humanidad perdió el 40% de la Tierra ante entidades llamadas "Sombras". Un adolescente con síndrome de estrés post-traumático descubre que puede sintonizar el EVA de clase Ω — el único capaz de combatir al "Ángel Negro" que ningún pilot sobrevivió.',
-    inspirations: ['Neon Genesis Evangelion', 'Gundam', 'Darling in the FranXX', 'Aldnoah.Zero'],
+    samplePrompt: 'La humanidad perdió el 40% de la Tierra ante entidades llamadas "Sombras". Un adolescente con trastorno de estrés post-traumático descubre que puede pilotar el Colossus Omega — el único mecha capaz de combatir a la entidad de clase Extinción que ningún piloto sobrevivió.',
   },
   {
     id: 'slice_romance',
@@ -167,7 +161,6 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 12–13: Resolución honesta — confesión o cierre',
     ],
     samplePrompt: 'Una pianista con parálisis escénica después de un accidente en su debut. Un fotógrafo que solo toma fotos de lugares vacíos, jamás de personas. Se cruzan en una residencia artística de verano donde todos están "reparándose".',
-    inspirations: ['Your Lie in April', 'Toradora', 'Clannad', 'Fruits Basket'],
   },
   {
     id: 'demon_hunter',
@@ -191,7 +184,6 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 23–26: Confrontación con el demonio que causó el trauma',
     ],
     samplePrompt: 'Una hermana mayor sobrevive a la masacre de su aldea por una entidad que convierte humanos en demonios. Con su hermano menor atrapado a medio camino entre humano y demonio, se convierte en Cazadora para encontrar la cura y la venganza.',
-    inspirations: ['Demon Slayer', 'Jujutsu Kaisen', 'Dororo', 'Chainsaw Man'],
   },
   {
     id: 'fantasy_kingdom',
@@ -215,7 +207,6 @@ const TEMPLATES: AnimeTemplate[] = [
       'Eps 35–39: Batalla decisiva + establecer el nuevo orden',
     ],
     samplePrompt: 'El décimo príncipe, considerado inútil por no tener magia, es enviado a gobernar un territorio fronterizo devastado. Con conocimiento del mundo moderno y un grimorio de "ciencias olvidadas", construye el estado más avanzado del continente.',
-    inspirations: ['Overlord', 'Re:Zero', 'The Rising of the Shield Hero', 'Maoyuu Maou Yuusha'],
   },
 ]
 
@@ -385,24 +376,6 @@ function TemplateDetail({ template }: { template: AnimeTemplate }) {
               border: '1px solid rgba(255,255,255,0.08)',
             }}>
               {i + 1}. {arc}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Inspirations */}
-      <div style={{ marginBottom: 18 }}>
-        <div style={{ fontSize: 10, letterSpacing: '0.2em', color: '#475569', textTransform: 'uppercase', marginBottom: 8 }}>
-          Inspiraciones
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {template.inspirations.map(insp => (
-            <span key={insp} style={{
-              fontSize: 11, padding: '3px 10px', borderRadius: 6,
-              background: 'rgba(255,255,255,0.04)', color: '#94a3b8',
-              border: '1px solid rgba(255,255,255,0.08)',
-            }}>
-              {insp}
             </span>
           ))}
         </div>
