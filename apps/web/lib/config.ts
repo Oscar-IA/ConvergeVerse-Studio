@@ -1,11 +1,13 @@
-/** Default Python FastAPI (must match uvicorn --port 8000). */
-export const DEFAULT_API_BASE = 'http://localhost:8000';
-
 /**
- * Python FastAPI base URL — port 8000, never the Next.js dev port (3000/3001).
- * Set NEXT_PUBLIC_API_URL in apps/web/.env.local if needed.
+ * API base URL resolver.
+ *
+ * Priority:
+ *   1. NEXT_PUBLIC_API_URL env var  (explicit override — set this to http://localhost:8000
+ *      in .env.local to use the local Python FastAPI during development)
+ *   2. Empty string  → relative paths  → Next.js API routes at /api/story-engine/*
+ *      (works on Vercel and any environment where the Python API is not running)
  */
 export function getApiBaseUrl(): string {
-  const raw = (process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_BASE).trim();
+  const raw = (process.env.NEXT_PUBLIC_API_URL ?? '').trim();
   return raw.replace(/\/+$/, '');
 }

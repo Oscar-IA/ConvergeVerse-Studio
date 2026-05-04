@@ -14,7 +14,17 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { createHmac, randomBytes } from 'crypto';
-import { getProfileForCode, PROFILE_COOKIES } from '@/lib/userProfiles';
+
+// Lazy-load profiles so a module error never kills the auth gate
+let _getProfile: ((code: string) => import('@/lib/userProfiles').UserProfile | null) | null = null;
+let _COOKIES: typeof import('@/lib/userProfiles').PROFILE_COOKIES | null = null;
+try {
+  const mod = require('@/lib/userProfiles') as typeof import('@/lib/userProfiles');
+  _getProfile = mod.getProfileForCode;
+  _COOKIES    = mod.PROFILE_COOKIES;
+} catch {
+  // profiles module unavailable — auth still works, just no personalization
+}
 
 const SESSION_COOKIE = 'bond_satellite_session';
 const TTL_SECONDS    = 8 * 60 * 60; // 8 hours
@@ -85,8 +95,8 @@ export async function POST(req: NextRequest) {
   const safePath =
     redirectParam.startsWith('/') && !redirectParam.startsWith('//') ? redirectParam : '/';
 
-  // Look up user profile for this code
-  const profile = getProfileForCode(code);
+  // Look up user profile for this code (safe — falls back to null)
+  const profile = _getProfile ? _getProfile(code) : null;
 
   const res = NextResponse.json({
     ok:       true,
@@ -116,14 +126,14 @@ export async function POST(req: NextRequest) {
   }
 
   // ── User profile cookies (client-readable) ────────────────────────────────
-  if (profile) {
-    setClientCookie(res, PROFILE_COOKIES.name,    profile.name,                         isProd);
-    setClientCookie(res, PROFILE_COOKIES.mode,    profile.mode,                         isProd);
-    setClientCookie(res, PROFILE_COOKIES.anxiety, profile.needs.anxiety ? '1' : '0',   isProd);
-    setClientCookie(res, PROFILE_COOKIES.lang,    profile.language,                     isProd);
-    setClientCookie(res, PROFILE_COOKIES.emoji,   profile.emoji,                        isProd);
+  if (profile && _COOKIES) {
+    setClientCookie(res, _COOKIES.name,    profile.name,                         isProd);
+    setClientCookie(res, _COOKIES.mode,    profile.mode,                         isProd);
+    setClientCookie(res, _COOKIES.anxiety, profile.needs.anxiety ? '1' : '0',   isProd);
+    setClientCookie(res, _COOKIES.lang,    profile.language,                     isProd);
+    setClientCookie(res, _COOKIES.emoji,   profile.emoji,                        isProd);
     // Strip leading # so the cookie value stays URL-safe
-    setClientCookie(res, PROFILE_COOKIES.color,   profile.color.replace(/^#/, ''),      isProd);
+    setClientCookie(res, _COOKIES.color,   profile.color.replace(/^#/, ''),      isProd);
   }
 
   return res;
