@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 
-export const dynamic = 'force-dynamic';
+export const dynamic    = 'force-dynamic';
+export const maxDuration = 60; // seconds — required for Anthropic calls (Vercel Pro)
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -54,7 +55,7 @@ async function callAnthropic(prompt: string): Promise<string> {
     },
     body: JSON.stringify({
       model: process.env.ANTHROPIC_MODEL ?? 'claude-3-5-haiku-20241022',
-      max_tokens: 4096,
+      max_tokens: 2048,
       messages: [{ role: 'user', content: prompt }],
     }),
     signal: AbortSignal.timeout(55_000),
@@ -118,46 +119,21 @@ function buildPrompt(
     .filter(Boolean)
     .join(', ') || 'exciting';
 
-  return `You are a creative story writer for an anime/manga story engine. Generate exactly 3 chapters for Day ${day} of the story.
+  return `You are a creative story writer for an anime/manga story engine. Generate exactly 3 short chapters for Day ${day} of the story.
 
 STORY CONCEPT: ${plotIdea || 'An exciting adventure story with a young hero who discovers special powers.'}
-
 TONE: ${toneDesc}
 ${backgroundLore ? `WORLD LORE: ${backgroundLore}` : ''}
 
-RULES:
-- Each chapter should be 300-500 words of vivid, engaging prose
-- Include 4-6 manga panels per chapter with visual descriptions
-- Chapters build on each other: setup → escalation → cliffhanger
-- Keep the language accessible and exciting (suitable for all ages)
+RULES (keep responses SHORT and FAST):
+- Each chapter: 120-180 words maximum
+- Include exactly 3 manga panels per chapter
+- Chapters: setup → escalation → cliffhanger
+- Language: simple, exciting, suitable for all ages
 - No graphic violence or adult content
 
-Respond with ONLY valid JSON in this exact format:
-{
-  "chapters": [
-    {
-      "title": "Chapter title",
-      "arc_position": "rising_action",
-      "script": "The full story text for this chapter...",
-      "panels": [
-        { "description": "Visual description of the scene", "dialogue": "Character dialogue or caption" },
-        { "description": "Next panel visual", "dialogue": "Dialogue" }
-      ]
-    },
-    {
-      "title": "Chapter 2 title",
-      "arc_position": "climax",
-      "script": "...",
-      "panels": [...]
-    },
-    {
-      "title": "Chapter 3 title",
-      "arc_position": "falling_action",
-      "script": "...",
-      "panels": [...]
-    }
-  ]
-}`;
+Respond with ONLY valid JSON — no extra text, no markdown fences:
+{"chapters":[{"title":"Chapter title","arc_position":"rising_action","script":"Story text here (120-180 words)...","panels":[{"description":"Panel 1 visual","dialogue":"Dialogue"},{"description":"Panel 2 visual","dialogue":"Dialogue"},{"description":"Panel 3 visual","dialogue":"Dialogue"}]},{"title":"Chapter 2 title","arc_position":"climax","script":"...","panels":[{"description":"...","dialogue":"..."},{"description":"...","dialogue":"..."},{"description":"...","dialogue":"..."}]},{"title":"Chapter 3 title","arc_position":"falling_action","script":"...","panels":[{"description":"...","dialogue":"..."},{"description":"...","dialogue":"..."},{"description":"...","dialogue":"..."}]}]}`;
 }
 
 // ─── Route handler ────────────────────────────────────────────────────────────
